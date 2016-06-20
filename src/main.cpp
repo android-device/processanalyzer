@@ -8,12 +8,14 @@ Description : CPU and Memory Analyzer for KPI standards
 ============================================================================
 */
 
-#include "kpi_consts.h"
+#include <cstddef>
 #include "stdlib.h"
 #include "stdio.h"
 #include "stdarg.h"
 #include "unistd.h"
 #include "fcntl.h"
+
+#include "kpi_consts.h"
 #include "print.h"
 #include "kpi.h"
 

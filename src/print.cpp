@@ -1,7 +1,7 @@
 #include "print.h"
 
 //  Print message. Prepend with program name.
-void analyzer_print_string(const char *message)
+void print_string(const char *message)
 {
     if (message != NULL)
     {
