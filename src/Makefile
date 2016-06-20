@@ -13,7 +13,7 @@ RELDIR=../rel
 INCDIR=../inc
 ETCDIR=../etc
 
-C_INCS += -I../inc/
+C_INCS += -Lcstddef -I../inc/
 ARFLAGS  = -r -s --target=elf64-x86-64 
 
 PROG     = $(RELDIR)/kpiAnalyzer
@@ -55,4 +55,3 @@ clean:
 	@echo "kpiAnalyzer: Cleanup obj & rel dir ..."
 	@rm -f $(OBJDIR)/*
 	@rm -f $(RELDIR)/*
-

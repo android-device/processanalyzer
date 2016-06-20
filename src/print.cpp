@@ -1,24 +1,24 @@
 #include "print.h"
 
 //  Print message. Prepend with program name.
-void print_string(const char *message)
+void print_string(const std::string message)
 {
-    if (message != NULL)
+    if (message != "")
     {
-	printf ("%s: %s\n", canProg, message);
+	printf ("%s: %s\n", kpiProg, message);
     }
 }
 
 //  Format message for printing, then print it.
-void format_message (const char *rawData)
+void format_message (const std::string rawData)
 {
 }
 
-void openFile(const char* fname)
+void openFile(const std::string  fname)
 {
 }
 
-void openFile(const char* fname, const char *path)
+void openFile(const std::string  fname, const std::string path)
 {
     openFile(fname);
 }

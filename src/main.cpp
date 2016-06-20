@@ -8,9 +8,7 @@ Description : CPU and Memory Analyzer for KPI standards
 ============================================================================
 */
 
-#include <cstddef>
 #include "stdlib.h"
-#include "stdio.h"
 #include "stdarg.h"
 #include "unistd.h"
 #include "fcntl.h"
@@ -19,10 +17,12 @@ Description : CPU and Memory Analyzer for KPI standards
 #include "print.h"
 #include "kpi.h"
 
+using namespace std;
+
 //  Print Usage Message
 int prtUsage ()
 {
-    print_string(helpMessage, kpiProg);
+    print_string(helpMessage);
 }
 
 //
@@ -30,7 +30,7 @@ int prtUsage ()
 //
 int main(int argc, char *argv[])
 {
-    pinfo* processInfo;
+    procinfo* pinfo;
     kpiProg = argv[0];
 
     /* Retreive Parameters.
@@ -103,7 +103,7 @@ int main(int argc, char *argv[])
 
     while (true)
     {
-	get_proc_info(processInfo);
+	get_proc_info(pinfo);
 	sleep (1);
     }
     return 0;
