@@ -119,13 +119,18 @@ int main(int argc, char *argv[])
 
     procinfo pinfo;
     bool keepLogging = true;
-    while (true)
+    //TODO repeat
+    //while (true)
     {
 	switch(get_proc_info(&pinfo))
 	{
+	    case -2: //error condition
+		keepLogging = false;
+		print_string("Read too many values");
+		break;
 	    case -1: //error condition
 		keepLogging = false;
-		print_string("Error while reading pid info");
+		print_string("Error while opening stat file");
 		break;
 	    case 0:
 		keepLogging = true;
