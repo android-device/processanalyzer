@@ -1,11 +1,28 @@
+#include "print.h"
+
 //  Print message. Prepend with program name.
-void analyzer_print_string(const char *s)
+void analyzer_print_string(const char *message)
 {
-    if (s != NULL)
+    if (message != NULL)
     {
-	printf ("%s: %s\n", canProg, s);
+	printf ("%s: %s\n", canProg, message);
     }
 }
 
 //  Format message for printing, then print it.
-void analyzer_format_message (const char *message)
+void format_message (const char *rawData)
+{
+}
+
+void openFile(const char* fname)
+{
+}
+
+void openFile(const char* fname, const char *path)
+{
+    openFile(fname);
+}
+
+void closeFile()
+{
+}

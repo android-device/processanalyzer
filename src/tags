@@ -5,10 +5,19 @@
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
 KPI	kpi.h	4;"	d
-KPI_CONSTS	kpi_consts.h	4;"	d
+KPI_CONSTS	kpi_consts.h	6;"	d
 analyzer_print_string	print.cpp	/^void analyzer_print_string(const char *s)$/;"	f
-kpiDev	kpi_consts.h	/^static char *kpiDev  = NULL;              \/\/  Pointer to device or file name.$/;"	v
-kpiProg	kpi_consts.h	/^static char *kpiProg = NULL;              \/\/  Pointer to program name$/;"	v
+fname	kpi_consts.h	/^static char *fname; \/\/default file name is pname.log$/;"	v
+format_message	print.cpp	/^void format_message (const char *rawData)$/;"	f
+fpath	kpi_consts.h	/^static char *fpath = "\/tmp"; \/\/default location is \/tmp$/;"	v
+helpMessage	kpi_consts.h	/^static const char *helpMessage = "KPI Analyzer logs the cpu and memory usage of a process\\n-i <pid>\\n-n <process name>\\tWill search in ps with grep to find the pid\\n-f <filename>\\n-p <path>\\t Path to where the output log should be written\\n-s\\tDo no stop execution if the program is not found, keep searching for it until it starts - useful if running the analyzer before the process is started.\\n-h\\tShow this message";$/;"	v
+kpiDev	kpi_consts.h	/^static char *kpiDev  = NULL;$/;"	v
+kpiProg	kpi_consts.h	/^static char *kpiProg = NULL;$/;"	v
 logHeader	kpi_consts.h	/^static const char* logHeader = "state,utime,stime,cutime,cstime,priority,vsize,rss,rlim,starttime";$/;"	v
 main	main.cpp	/^int main(int argc, char *argv[])$/;"	f
+openFile	print.cpp	/^void openFile(const char* fname)$/;"	f
+openFile	print.cpp	/^void openFile(const char* fname, const char *path)$/;"	f
+pid	kpi_consts.h	/^static int pid;$/;"	v
+pname	kpi_consts.h	/^static char *pname;$/;"	v
 prtUsage	main.cpp	/^int prtUsage ()$/;"	f
+search	kpi_consts.h	/^static bool search = false; \/\/default is to quit immediately if process is not found$/;"	v

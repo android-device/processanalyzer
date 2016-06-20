@@ -20,7 +20,7 @@ Description : CPU and Memory Analyzer for KPI standards
 //  Print Usage Message
 int prtUsage ()
 {
-    analyzer_print_message (helpMessage, kpiProg);
+    print_string(helpMessage, kpiProg);
 }
 
 //
@@ -29,7 +29,6 @@ int prtUsage ()
 int main(int argc, char *argv[])
 {
     kpiProg = argv[0];
-    bool search;
 
     /* Retreive Parameters.
      * Possible parameters:
@@ -38,7 +37,9 @@ int main(int argc, char *argv[])
      * p file Path
      * f File name
      * s keep Searching
+     * o Output to terminal
      * h show Help
+     * anything else: show help
      */
     for(int i=0; i<argc; i++)
     {
@@ -48,16 +49,17 @@ int main(int argc, char *argv[])
 	    {
 		switch(argv[i][1])
 		{
-		    case 'p': //path parameter
+		    case 'p': //file path parameter
 			fpath = argv[i+1];
 			break;
 
-		    case 'f': //name parameter
+		    case 'f': //file name parameter
 			fname = argv[i+1];
 			break;
 
 		    case 's': //search parameter
-			search = true;
+			//TODO: Implement search feature
+			//search = true;
 			break;
 
 		    case 'i': //given the pid!
@@ -66,6 +68,10 @@ int main(int argc, char *argv[])
 
 		    case 'n': //process name, which will be used to find the pid
 			pname = argv[i+1];
+			break;
+
+		    case 'o': //output to terminal instead of file - file name and path do nothing
+			terminalOutput = true;
 			break;
 
 		    default: //includes help parameter...
@@ -80,8 +86,6 @@ int main(int argc, char *argv[])
 	    }
 	}
     }
-
-    kpiDev  = argv[1];
 
     analyzer_print_message ("Initializing ....");
     if (AnalyzerOpen())

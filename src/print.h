@@ -13,9 +13,11 @@ void print_string(const char *message);
  */
 void write_string(const char *message);
 
+//TODO: implement file output
 /* Functions for handling the file creation. If the user has specified a path,
  * that is handled here.
  */
 void openFile(const char *fname);
+//TODO: Implement custom path
 void openFile(const char *fname, const char *path);
 void closeFile();
