@@ -28,6 +28,7 @@ int prtUsage ()
 //
 int main(int argc, char *argv[])
 {
+    pinfo* processInfo;
     kpiProg = argv[0];
 
     /* Retreive Parameters.
@@ -88,8 +89,9 @@ int main(int argc, char *argv[])
     }
 
     print_string("Initializing ....");
-    if (processSearch())
+    if (!processSearch()) //process not found
     {
+	print_string("Process not found");
 	return 1;
     }
 
@@ -99,7 +101,7 @@ int main(int argc, char *argv[])
 
     while (true)
     {
-	analyzerPoll();
+	get_proc_info(processInfo);
 	sleep (1);
     }
     return 0;
