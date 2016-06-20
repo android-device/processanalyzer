@@ -99,7 +99,9 @@ int main(int argc, char *argv[])
 	}
     }
 
+#ifdef DEBUG
     print_string("Searching for process");
+#endif
     if (!processSearch()) //process not found
     {
 	print_string("Process not found");
@@ -111,10 +113,10 @@ int main(int argc, char *argv[])
 	return 1;
     }
 
-    print_string("Logging " + pname + ", " + pid);
-
     //TODO: implement quit on state change
+#ifdef DEBUG
     print_string("Gathering Data");
+#endif
     fflush(stdout);
 
     procinfo pinfo;
@@ -124,9 +126,11 @@ int main(int argc, char *argv[])
     {
 	switch(get_proc_info(&pinfo))
 	{
+	    case -3: //error condition
+		print_string("Not all pinfo values filled");
+		break;
 	    case -2: //error condition
-		keepLogging = false;
-		print_string("Read too many values");
+		print_string("Extraneous values, some not read");
 		break;
 	    case -1: //error condition
 		keepLogging = false;

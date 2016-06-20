@@ -31,7 +31,8 @@ int get_proc_info(procinfo * pinfo)
     {
 	statFile >> currVal;
 	//add to pinfo based on the index of the current value being read
-	switch(currIndex) {
+	switch(currIndex)
+	{
 	    case 0:
 		pinfo->pid = currVal;
 #ifdef DEBUG
@@ -254,15 +255,13 @@ int get_proc_info(procinfo * pinfo)
 		print_string(currVal);
 #endif
 		break;
-	    default: //out of range??
+	    default: //More values available than are being used.
+		statFile.close();
 		return -2;
 	}
 	currIndex++;
 	currVal = "";
     }
     statFile.close();
-#ifdef DEBUG
-    print_string("Returning...");
-#endif
-    return 0;
+    return -3; //less value available than are being used.
 }
