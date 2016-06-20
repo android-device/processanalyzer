@@ -16,7 +16,7 @@ ETCDIR=../etc
 C_INCS += -I../inc/
 ARFLAGS  = -r -s --target=elf64-x86-64 
 
-PROG     = $(RELDIR)/can-poll
+PROG     = $(RELDIR)/kpiAnalyzer
 
 SRCS     = $(wildcard $(SRCDIR)/*.cpp)
 TMP_OBJS = $(subst .cpp,.o,$(filter %.cpp, $(SRCS)))
@@ -26,7 +26,7 @@ LIB_OBJS = $(addprefix $(OBJDIR), $(subst $(SRCDIR), , $(TMP_OBJS)))
 VPATH    = $(SRCDIR)
 
 all: time_stamp $(PROG)
-	@echo "can-poll: Build complete ..."
+	@echo "kpiAnalyzer: Build complete ..."
 
 time_stamp:
 	@touch ../src/main.cpp
@@ -48,11 +48,11 @@ $(OBJDIR)/%.o : %.cpp
 	@$(CC) $(CFLAGS) $(CDEFS) $(C_INCS) -o $@ -c $<
 
 $(PROG): $(LIB_OBJS)
-	@echo "can-poll: Building .."
+	@echo "kpiAnalyzer: Building .."
 	@$(CC) -o $@ $^ $(LDFLAGS) -lstdc++
 
 clean:
-	@echo "can-poll: Cleanup obj & rel dir ..."
+	@echo "kpiAnalyzer: Cleanup obj & rel dir ..."
 	@rm -f $(OBJDIR)/*
 	@rm -f $(RELDIR)/*
 
