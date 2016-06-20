@@ -87,13 +87,14 @@ int main(int argc, char *argv[])
 	}
     }
 
-    analyzer_print_message ("Initializing ....");
-    if (AnalyzerOpen())
+    print_string("Initializing ....");
+    if (processSearch())
     {
 	return 1;
     }
 
-    analyzer_print_message ("Entering wait loop. ctrl-c to abort ...");
+    //TODO: implement quit on state change
+    print_string("Entering wait loop. ctrl-c to abort ...");
     fflush(stdout);
 
     while (true)

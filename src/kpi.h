@@ -10,6 +10,7 @@
  */
 bool processSearch();
 
-void getStat();
+//get the process info, using the pid, and put it in a pinfo
+int get_proc_info(procinfo *pinfo);
 
 #endif
