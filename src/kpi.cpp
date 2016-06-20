@@ -1,5 +1,5 @@
 #include "kpi.h"
-//#define DEBUG
+#define DEBUG
 
 //TODO: implement search
 bool processSearch()
@@ -10,13 +10,17 @@ bool processSearch()
     return true;
 }
 
-int get_proc_info(procinfo * pinfo)
+int get_proc_info(procinfo *pinfo)
 {
 #ifdef DEBUG
     print_string("In get_proc_info");
+    print_string("PID is: " + pid);
 #endif
     std::ifstream statFile;
-    std::string proc_fname = "/proc/22552/stat";
+    std::string proc_fname = "/proc/"+pid+"/stat";
+#ifdef DEBUG
+    print_string(proc_fname);
+#endif
     statFile.open(proc_fname.c_str());
     if(!statFile.is_open())
     {

@@ -17,6 +17,8 @@ Description : CPU and Memory Analyzer for KPI standards
 #include "print.h"
 #include "kpi.h"
 
+#define DEBUG
+
 using namespace std;
 
 //  Print Usage Message
@@ -76,6 +78,9 @@ int main(int argc, char *argv[])
 
 		    case 'i': //given the pid!
 			pid = argv[i+1];
+#ifdef DEBUG
+			print_string("PID Set: " + pid);
+#endif
 			break;
 
 		    case 'n': //process name, which will be used to find the pid
@@ -121,8 +126,7 @@ int main(int argc, char *argv[])
 
     procinfo pinfo;
     bool keepLogging = true;
-    //TODO repeat
-    //while (true)
+    while (keepLogging)
     {
 	switch(get_proc_info(&pinfo))
 	{
@@ -143,6 +147,10 @@ int main(int argc, char *argv[])
 		keepLogging = false;
 		print_string("Unkown exit condition");
 		break;
+	}
+	if(pinfo.state == "D") //D for DEAD
+	{
+	    keepLogging = false;
 	}
 	outputData(pinfo);
 	sleep (1);
