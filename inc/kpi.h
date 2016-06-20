@@ -7,6 +7,7 @@
 #include <string.h>
 #include <fstream>
 #include "kpi_consts.h"
+#include "print.h"
 
 /* The function to find the specified process - returns false if the process
  * could not be found, indicating that it is not currently running.

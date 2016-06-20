@@ -9,7 +9,9 @@
 
 /* Formats the message for printing
  */
-void format_message(const std::string rawData);
+void outputData(procinfo pinfo);
+
+std::string format_message(procinfo pinfo);
 
 /* Prints the formatted message using printf
  */

@@ -1,4 +1,5 @@
 #include "kpi.h"
+#define DEBUG
 
 //TODO: implement search
 bool processSearch()
@@ -11,61 +12,152 @@ bool processSearch()
 
 int get_proc_info(procinfo * pinfo)
 {
-    char *szStatStr; //buffer
-    char *s, *t;
-    FILE *fp;
-
-    if((fp = fopen(procFile.c_str(), "r")) == NULL) {
-	return(pinfo->pid = -1);
+#ifdef DEBUG
+    print_string("In get_proc_info");
+#endif
+    std::ifstream statFile;
+    std::string proc_fname = "/proc/"+pid+"/stat";
+    statFile.open(proc_fname.c_str());
+    if(!statFile.is_open())
+    {
+	print_string("Failed to open /proc/"+pid+"/stat");
+	return -1;
     }
 
-    if((s = fgets(szStatStr, 2048, fp)) == NULL) {
-	fclose(fp);
-	return(pinfo->pid = -1);
+    std::string currVal = "";
+    int currIndex = 0;
+    char currChar;
+
+    while(statFile.good())
+    {
+	statFile.get(currChar);
+	if(currChar==' ') //stat file values are space delimited
+	{
+	    //add to pinfo based on the index of the current value being read
+	    switch(currIndex) {
+		case 0:
+		    pinfo->pid = currVal;
+		    break;
+		case 1:
+		    pinfo->exName = currVal;
+		    break;
+		case 2:
+		    pinfo->state = currVal;
+		    break;
+		case 3:
+		    pinfo->euid = currVal;
+		    break;
+		case 4:
+		    pinfo->egid = currVal;
+		    break;
+		case 5:
+		    pinfo->ppid = currVal;
+		    break;
+		case 6:
+		    pinfo->pgrp = currVal;
+		    break;
+		case 7:
+		    pinfo->session = currVal;
+		    break;
+		case 8:
+		    pinfo->tty = currVal;
+		    break;
+		case 9:
+		    pinfo->tpgid = currVal;
+		    break;
+		case 10:
+		    pinfo->flags = currVal;
+		    break;
+		case 11:
+		    pinfo->minflt = currVal;
+		    break;
+		case 12:
+		    pinfo->cminflt = currVal;
+		    break;
+		case 13:
+		    pinfo->majflt = currVal;
+		    break;
+		case 14:
+		    pinfo->cmajflt = currVal;
+		    break;
+		case 15:
+		    pinfo->utime = currVal;
+		    break;
+		case 16:
+		    pinfo->cutime = currVal;
+		    break;
+		case 17:
+		    pinfo->cstime = currVal;
+		    break;
+		case 18:
+		    pinfo->counter = currVal;
+		    break;
+		case 19:
+		    pinfo->priority = currVal;
+		    break;
+		case 20:
+		    pinfo->timeout = currVal;
+		    break;
+		case 21:
+		    pinfo->itrealvalue = currVal;
+		    break;
+		case 22:
+		    pinfo->starttime = currVal;
+		    break;
+		case 23:
+		    pinfo->vsize = currVal;
+		    break;
+		case 24:
+		    pinfo->rss = currVal;
+		    break;
+		case 25:
+		    pinfo->rlim = currVal;
+		    break;
+		case 26:
+		    pinfo->startcode = currVal;
+		    break;
+		case 27:
+		    pinfo->endcode = currVal;
+		    break;
+		case 28:
+		    pinfo->startstack = currVal;
+		    break;
+		case 29:
+		    pinfo->kstkesp = currVal;
+		    break;
+		case 31:
+		    pinfo->kstkeip = currVal;
+		    break;
+		case 32:
+		    pinfo->blocked = currVal;
+		    break;
+		case 33:
+		    pinfo->sigignore = currVal;
+		    break;
+		case 34:
+		    pinfo->sigcatch = currVal;
+		    break;
+		case 35:
+		    pinfo->wchan = currVal;
+		    break;
+		case 36:
+		    pinfo->sched = currVal;
+		    break;
+		case 37:
+		    pinfo->sched_priority = currVal;
+		    break;
+		default: //out of range??
+		    return -1;
+	    }
+
+	    currIndex++;
+	    currVal = "";
+	}
+	else
+	{
+	    currVal += currChar;
+	}
+	statFile.close();
     }
-
-    /** pid **/
-    sscanf(szStatStr, "%u", &(pinfo->pid));
-    s = strchr(szStatStr, '(') + 1;
-    t = strchr(szStatStr, ')');
-    strncpy(pinfo->exName, s, t - s);
-    pinfo->exName [t - s] = '\0';
-
-    sscanf(t + 2, "%c %d %d %d %d %d %u %u %u %u %u %d %d %d %d %d %d %u %u %d %u %u %u %u %u %u %u %u %d %d %d %d %u",
-	    /*       1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33*/
-	    &(pinfo->state),
-	    &(pinfo->ppid),
-	    &(pinfo->pgrp),
-	    &(pinfo->session),
-	    &(pinfo->tty),
-	    &(pinfo->tpgid),
-	    &(pinfo->flags),
-	    &(pinfo->minflt),
-	    &(pinfo->cminflt),
-	    &(pinfo->majflt),
-	    &(pinfo->cmajflt),
-	    &(pinfo->utime),
-	    &(pinfo->stime),
-	    &(pinfo->cutime),
-	    &(pinfo->cstime),
-	    &(pinfo->counter),
-	    &(pinfo->priority),
-	    &(pinfo->timeout),
-	    &(pinfo->itrealvalue),
-	    &(pinfo->starttime),
-	    &(pinfo->vsize),
-	    &(pinfo->rss),
-	    &(pinfo->rlim),
-	    &(pinfo->startcode),
-	    &(pinfo->endcode),
-	    &(pinfo->startstack),
-	    &(pinfo->kstkesp),
-	    &(pinfo->kstkeip),
-	    &(pinfo->signal),
-	    &(pinfo->blocked),
-	    &(pinfo->sigignore),
-	    &(pinfo->sigcatch),
-	    &(pinfo->wchan));
-    fclose(fp);
     return 0;
 }

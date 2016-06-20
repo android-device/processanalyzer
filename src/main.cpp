@@ -30,7 +30,6 @@ int prtUsage ()
 //
 int main(int argc, char *argv[])
 {
-    procinfo pinfo;
     if(argv[0] != NULL)
     {
 	kpiProg = argv[0];
@@ -118,9 +117,25 @@ int main(int argc, char *argv[])
     print_string("Gathering Data");
     fflush(stdout);
 
+    procinfo pinfo;
+    bool keepLogging = true;
     while (true)
     {
-	get_proc_info(&pinfo);
+	switch(get_proc_info(&pinfo))
+	{
+	    case -1: //error condition
+		keepLogging = false;
+		print_string("Error while reading pid info");
+		break;
+	    case 0:
+		keepLogging = true;
+		break;
+	    default:
+		keepLogging = false;
+		print_string("Unkown exit condition");
+		break;
+	}
+	outputData(pinfo);
 	sleep (1);
     }
     return 0;
