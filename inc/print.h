@@ -5,6 +5,7 @@
 #include "kpi_consts.h"
 #include "stdio.h"
 #include <string>
+#include <iostream>
 
 /* Formats the message for printing
  */

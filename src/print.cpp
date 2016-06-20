@@ -1,11 +1,11 @@
 #include "print.h"
 
 //  Print message. Prepend with program name.
-void print_string(const std::string message)
+void print_string(std::string message)
 {
     if (message != "")
     {
-	printf ("%s: %s\n", kpiProg, message);
+	printf("%s: %s\n", kpiProg.c_str(), message.c_str());
     }
 }
 

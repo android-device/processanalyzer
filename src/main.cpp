@@ -30,8 +30,18 @@ int prtUsage ()
 //
 int main(int argc, char *argv[])
 {
-    procinfo* pinfo;
-    kpiProg = argv[0];
+    procinfo pinfo;
+    if(argv[0] != NULL)
+    {
+	kpiProg = argv[0];
+    }
+
+    //check for process name
+    if(argc < 2)
+    {
+	prtUsage();
+	return 1;
+    }
 
     /* Retreive Parameters.
      * Possible parameters:
@@ -90,20 +100,27 @@ int main(int argc, char *argv[])
 	}
     }
 
-    print_string("Initializing ....");
+    print_string("Searching for process");
     if (!processSearch()) //process not found
     {
 	print_string("Process not found");
 	return 1;
     }
+    if(pid == "")
+    {
+	print_string("Process not found");
+	return 1;
+    }
+
+    print_string("Logging " + pname + ", " + pid);
 
     //TODO: implement quit on state change
-    print_string("Entering wait loop. ctrl-c to abort ...");
+    print_string("Gathering Data");
     fflush(stdout);
 
     while (true)
     {
-	get_proc_info(pinfo);
+	get_proc_info(&pinfo);
 	sleep (1);
     }
     return 0;

@@ -17,11 +17,11 @@
  * o Output to terminal
  * h show Help
  */
-static const std::string helpMessage = "KPI Analyzer logs the cpu and memory usage of a process\n-i <pid>\n-n <process name>\tWill search in ps with grep to find the pid\n-f <filename>\n-p <path>\t Path to where the output log should be written\n-s\tDo no stop execution if the program is not found, keep searching for it until it starts - useful if running the analyzer before the process is started.\n-o\tOutput to terminal instead of file\n-h\tShow this message";
+static const std::string helpMessage = "KPI Analyzer logs the cpu and memory usage of a process\n-i <pid>\n-n <process name>\tWill search in ps with grep to find the pid\n-f <filename>\n-p <path>\t\tPath to where the output log should be written\n-s\t\t\tDo no stop execution if the program is not found, keep searching for it until it starts - useful if running the analyzer before the process is started.\n-o\t\t\tOutput to terminal instead of file\n-h\t\t\tShow this message";
 
 //process identifiers
-static std::string pid;
-static std::string pname;
+static std::string pid = "";
+static std::string pname = "";
 
 //log file information
 static std::string fpath = "/tmp"; //default location is /tmp
@@ -34,7 +34,7 @@ static bool terminalOutput = true; //default is to output to file
 static const std::string  logHeader = "state,utime,stime,cutime,cstime,priority,vsize,rss,rlim,starttime";
 
 // Pointer to program name
-static std::string kpiProg = NULL;
+static std::string kpiProg = "CPU/Mem Analyzer";
 
 //struct from: https://www.redhat.com/archives/axp-list/2001-January/msg00355.html
 typedef struct statstruct_proc {

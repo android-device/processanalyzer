@@ -19,6 +19,6 @@ bool processSearch();
 //based on: https://www.redhat.com/archives/axp-list/2001-January/msg00355.html
 int get_proc_info(procinfo *pinfo);
 
-static std::string procFile;
+static std::string procFile = "";
 
 #endif
