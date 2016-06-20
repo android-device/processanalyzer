@@ -3,12 +3,19 @@
 
 /* Formats the message for printing
  */
-void analyzer_format_message(const char *format);
+void format_message(const char *rawData);
 
 /* Prints the formatted message using printf
  */
-void analyzer_print_string(const char *s);
+void print_string(const char *message);
 
 /* Writes the formatted message to a file
  */
-void analyzer_write_string(const char *s);
+void write_string(const char *message);
+
+/* Functions for handling the file creation. If the user has specified a path,
+ * that is handled here.
+ */
+void openFile(const char *fname);
+void openFile(const char *fname, const char *path);
+void closeFile();
