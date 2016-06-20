@@ -1,0 +1,12 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+canDev	main.cpp	/^static char *canDev  = NULL;              \/\/  Pointer to device or file name.$/;"	v	file:
+canProg	main.cpp	/^static char *canProg = NULL;              \/\/  Pointer to program name$/;"	v	file:
+can_print_string	main.cpp	/^void can_print_string (const char *s)$/;"	f
+kpiAnalyzer_print_message	main.cpp	/^void kpiAnalyzer_print_message (const char *format, ... )$/;"	f
+main	main.cpp	/^int main(int argc, char *argv[])$/;"	f
+prtUsage	main.cpp	/^int prtUsage ()$/;"	f
