@@ -1,7 +1,6 @@
 #include "kpi.h"
 #define DEBUG
 
-//TODO: implement pname search
 /* Search for a process, using the pid or the pname version of this overloaded
  * function. Note that if search is true, this function will NOT return until a
  * matching process is found - leading to an infinite loop! Use it only on
