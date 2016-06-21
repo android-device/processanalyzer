@@ -2,7 +2,7 @@
 #define DEBUG
 
 //TODO: implement pname search
-bool processSearch(bool search, std::string id, bool pnameSearch)
+bool processSearch(bool search, int id) //overloaded
 {
 #ifdef DEBUG
     if(search)
@@ -10,13 +10,7 @@ bool processSearch(bool search, std::string id, bool pnameSearch)
 	print_string("Will Search");
     }
 #endif
-    if(pnameSearch)
-    {
-#ifdef DEBUG
-	print_string("pnameSearch");
-#endif
-    }
-    procFile = "/proc/" + id + "/stat";
+    procFile = "/proc/" + std::to_string(id) + "/stat";
 #ifdef DEBUG
     print_string(procFile);
 #endif
@@ -30,21 +24,26 @@ bool processSearch(bool search, std::string id, bool pnameSearch)
     return false;
 }
 
-int get_proc_info(procinfo *pinfo, std::string pid)
+bool processSearch(bool search, std::string pname) //overloaded
+{
+    return false;
+}
+
+int get_proc_info(procinfo *pinfo, int pid)
 {
 #ifdef DEBUG
     print_string("In get_proc_info");
-    print_string("PID is: " + pid);
+    print_string("PID is: " + std::to_string(pid));
 #endif
     std::ifstream statFile;
-    std::string proc_fname = "/proc/"+pid+"/stat";
+    std::string proc_fname = "/proc/"+std::to_string(pid)+"/stat";
 #ifdef DEBUG
     print_string(proc_fname);
 #endif
     statFile.open(proc_fname.c_str());
     if(!statFile.is_open())
     {
-	print_string("Failed to open /proc/"+pid+"/stat");
+	print_string("Failed to open /proc/"+std::to_string(pid)+"/stat");
 	return -1;
     }
 

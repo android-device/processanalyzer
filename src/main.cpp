@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
 
 
     //process identifiers
-    std::string pid = "";
+    int pid = 0;
     std::string pname = "";
 
     //log file information
@@ -88,9 +88,10 @@ int main(int argc, char *argv[])
 			break;
 
 		    case 'i': //given the pid!
-			pid = argv[i+1];
+			//TODO char* to int
+			pid = stoi(argv[i+1]);
 #ifdef DEBUG
-			print_string("PID Set: " + pid);
+			print_string("PID Set: " + std::to_string(pid));
 #endif
 			break;
 
@@ -120,13 +121,15 @@ int main(int argc, char *argv[])
 #endif
 
     //TODO implement pname search
-    if (!processSearch(search, ((pname!="") && (pid==""))?pname:pid, ((pname!="") && (pid=="")))) //process not found
+    if ( //process not found (searches with pname OR pid)
+	    !((pname!="") && (pid==0)) ? processSearch(search, pname) : processSearch(search, pid)
+	    ) 
     {
 	print_string("Process not found");
 	return 1;
     }
 
-    if(pid == "") //this should not be possible...
+    if(pid == 0) //this should not be possible...
     {
 	print_string("Process not found");
 	return 1;
