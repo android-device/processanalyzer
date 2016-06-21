@@ -84,7 +84,6 @@ int main(int argc, char *argv[])
 			break;
 
 		    case 's': //search parameter
-			//TODO: Implement search feature
 			search = true;
 			break;
 
