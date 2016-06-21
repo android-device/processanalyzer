@@ -6,6 +6,7 @@
 #define KPI_CONSTS
 
 #include <string>
+#include <fstream>
 
 /* Help message for -h, and bad input...
  * Possible parameters:

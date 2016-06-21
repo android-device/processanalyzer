@@ -1,11 +1,30 @@
 #include "print.h"
+#define DEBUG
 
-void outputData(procinfo pinfo, bool terminalOutput)
+void outputData(procinfo pinfo)
 {
     std::string formattedVal = format_message(pinfo);
-    if(terminalOutput) //don't save to file
-    {
-	print_string(formattedVal);
+    print_string(formattedVal);
+}
+
+void outputData(procinfo pinfo, std::string outputFileName, std::ofstream *outputFile)
+{
+    if(*outputFile.is_open()) {
+#ifdef DEBUG
+	print_string("File is open");
+#endif
+    } else {
+#ifdef DEBUG
+	print_string("File is not open");
+#endif
+	*outputFile.open(outputFileName);
+#ifdef DEBUG
+	if(*outputFile.is_open()) {
+	    print_string("File is open");
+	} else {
+	    print_string("File is not open");
+	}
+#endif
     }
 }
 
@@ -36,13 +55,8 @@ std::string format_message (procinfo pinfo)
     return formattedVal;
 }
 
-void openFile(const std::string  fname)
-{
-}
-
 void openFile(const std::string  fname, const std::string path)
 {
-    openFile(fname);
 }
 
 void closeFile()

@@ -12,12 +12,13 @@ Description : CPU and Memory Analyzer for KPI standards
 #include "stdarg.h"
 #include "unistd.h"
 #include "fcntl.h"
+#include <fstream>
 
 #include "kpi_consts.h"
 #include "print.h"
 #include "kpi.h"
 
-//#define DEBUG
+#define DEBUG
 
 using namespace std;
 
@@ -32,8 +33,10 @@ int prtUsage ()
 //
 int main(int argc, char *argv[])
 {
+    std::ofstream outputFile;
+
     bool search = false; //default is to quit immediately if process is not found
-    bool terminalOutput = true; //default is to output to file
+    bool terminalOutput = false; //default is to output to file
 
 
     //process identifiers
@@ -145,10 +148,14 @@ int main(int argc, char *argv[])
 	switch(get_proc_info(&pinfo, pid))
 	{
 	    case -3: //error condition
+#ifdef DEBUG
 		print_string("Not all pinfo values filled");
+#endif
 		break;
 	    case -2: //error condition
+#ifdef DEBUG
 		print_string("Extraneous values, some not read");
+#endif
 		break;
 	    case -1: //error condition
 		keepLogging = false;
@@ -162,11 +169,36 @@ int main(int argc, char *argv[])
 		print_string("Unkown exit condition");
 		break;
 	}
+
+	if(fname == "")
+	{
+	    if(pname == "")
+	    {
+		pname = pinfo.exName;
+		pname.erase(0,1);
+		pname.erase(pname.size() - 1);
+#ifdef DEBUG
+		print_string("pname is: " + pname);
+#endif
+	    }
+	    fname = pname + "." + pinfo.pid + ".log";
+#ifdef DEBUG
+	    print_string("Log File: " + fname);
+#endif
+	}
+
 	if(pinfo.state == "D") //D for DEAD
 	{
 	    keepLogging = false;
 	}
-	outputData(pinfo, terminalOutput);
+	//log file information
+	//std::string fpath = "/tmp"; //default location is /tmp
+	//std::string fname; //default file name is pname.log
+	if(terminalOutput) {
+	    outputData(pinfo);
+	} else {
+	    outputData(pinfo, fpath+fname, &outputFile);
+	}
 	sleep (1);
     }
     return 0;
