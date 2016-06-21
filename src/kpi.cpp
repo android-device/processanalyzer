@@ -1,5 +1,5 @@
 #include "kpi.h"
-#define DEBUG
+//#define DEBUG
 
 //TODO: implement search
 bool processSearch(bool search, std::string pid)
