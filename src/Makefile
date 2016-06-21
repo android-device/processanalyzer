@@ -10,6 +10,8 @@ RELDIR=../rel
 INCDIR=../inc
 ETCDIR=../etc
 
+CFLAGS += -std=c++11
+
 C_INCS += -I../inc/
 ARFLAGS  = -r -s
 

@@ -32,6 +32,18 @@ int prtUsage ()
 //
 int main(int argc, char *argv[])
 {
+    bool search = false; //default is to quit immediately if process is not found
+    bool terminalOutput = true; //default is to output to file
+
+
+    //process identifiers
+    std::string pid = "";
+    std::string pname = "";
+
+    //log file information
+    std::string fpath = "/tmp"; //default location is /tmp
+    std::string fname; //default file name is pname.log
+
     if(argv[0] != NULL)
     {
 	kpiProg = argv[0];
@@ -73,7 +85,7 @@ int main(int argc, char *argv[])
 
 		    case 's': //search parameter
 			//TODO: Implement search feature
-			//search = true;
+			search = true;
 			break;
 
 		    case 'i': //given the pid!
@@ -107,7 +119,7 @@ int main(int argc, char *argv[])
 #ifdef DEBUG
     print_string("Searching for process");
 #endif
-    if (!processSearch(pid)) //process not found
+    if (!processSearch(search, pid)) //process not found
     {
 	print_string("Process not found");
 	return 1;

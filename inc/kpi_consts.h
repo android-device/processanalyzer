@@ -19,17 +19,6 @@
  */
 static const std::string helpMessage = "KPI Analyzer logs the cpu and memory usage of a process\n-i <pid>\n-n <process name>\tWill search in ps with grep to find the pid\n-f <filename>\n-p <path>\t\tPath to where the output log should be written\n-s\t\t\tDo no stop execution if the program is not found, keep searching for it until it starts - useful if running the analyzer before the process is started.\n-o\t\t\tOutput to terminal instead of file\n-h\t\t\tShow this message";
 
-//process identifiers
-static std::string pid = "";
-static std::string pname = "";
-
-//log file information
-static std::string fpath = "/tmp"; //default location is /tmp
-static std::string fname; //default file name is pname.log
-
-static bool search = false; //default is to quit immediately if process is not found
-static bool terminalOutput = true; //default is to output to file
-
 //header to use for the log files, in csv format
 static const std::string  logHeader = "state,utime,stime,cutime,cstime,priority,vsize,rss,rlim,starttime";
 

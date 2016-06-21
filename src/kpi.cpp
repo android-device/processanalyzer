@@ -1,13 +1,40 @@
 #include "kpi.h"
-//#define DEBUG
+#define DEBUG
 
 //TODO: implement search
-bool processSearch(std::string pid)
+bool processSearch(bool search, std::string pid)
 {
     procFile = "/proc/";
     procFile += pid;
     procFile += "/stat";
-    return true;
+
+    //search for the process
+    do {
+	int statResult = stat(procFile.c_str(), NULL);
+#ifdef DEBUG
+	std::string statString = "Stat Result: " + std::to_string(statResult);
+	print_string(statString);
+#endif
+	switch(statResult) //success condition
+	{
+	    case 0:
+#ifdef DEBUG
+		print_string("Found Process");
+#endif
+		return true;
+		break;
+	    case -1:
+#ifdef DEBUG
+	    print_string("Process not Found");
+#endif
+	    return false;
+	    default:
+#ifdef DEBUG
+	    print_string("Process not Found - Unknown Code");
+#endif
+	    return false;
+	}
+    } while(search); //if search is set, loop until the process is found
 }
 
 int get_proc_info(procinfo *pinfo, std::string pid)
