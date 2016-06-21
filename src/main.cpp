@@ -88,7 +88,6 @@ int main(int argc, char *argv[])
 			break;
 
 		    case 'i': //given the pid!
-			//TODO char* to int
 			pid = stoi(argv[i+1]);
 #ifdef DEBUG
 			print_string("PID Set: " + std::to_string(pid));

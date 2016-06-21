@@ -1,4 +1,4 @@
-#include "file.h"
+#include "sys.h"
 #define DEBUG
 
 bool checkFile(std::string filename)

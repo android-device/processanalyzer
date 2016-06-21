@@ -2,20 +2,24 @@
 #define DEBUG
 
 //TODO: implement pname search
+/* Search for a process, using the pid or the pname version of this overloaded
+ * function. Note that if search is true, this function will NOT return until a
+ * matching process is found - leading to an infinite loop! Use it only on
+ * processes you know will eventually exist; this is very useful for measuring
+ * the startup usage of a process.
+ */
 bool processSearch(bool search, int id) //overloaded
 {
+    procFile = "/proc/" + std::to_string(id) + "/stat";
+
 #ifdef DEBUG
     if(search)
     {
 	print_string("Will Search");
     }
-#endif
-    procFile = "/proc/" + std::to_string(id) + "/stat";
-#ifdef DEBUG
     print_string(procFile);
 #endif
 
-    //search for the process
     do {
 	if(checkFile(procFile)) {
 	    return true;
@@ -24,20 +28,22 @@ bool processSearch(bool search, int id) //overloaded
     return false;
 }
 
+/* Overload for searching with pname instead of pid */
 bool processSearch(bool search, std::string pname) //overloaded
 {
+    do {
+    } while(search); //keep searching until process is found
     return false;
 }
 
 int get_proc_info(procinfo *pinfo, int pid)
 {
+    std::ifstream statFile;
+    std::string proc_fname = "/proc/"+std::to_string(pid)+"/stat";
+
 #ifdef DEBUG
     print_string("In get_proc_info");
     print_string("PID is: " + std::to_string(pid));
-#endif
-    std::ifstream statFile;
-    std::string proc_fname = "/proc/"+std::to_string(pid)+"/stat";
-#ifdef DEBUG
     print_string(proc_fname);
 #endif
     statFile.open(proc_fname.c_str());

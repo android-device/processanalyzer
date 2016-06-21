@@ -1,7 +1,7 @@
 /* Used to check whether a file exists
 */
-#ifndef FILECHECK
-#define FILECHECK
+#ifndef SYS
+#define SYS
 #include <string>
 #include "print.h"
 #include <unistd.h>
