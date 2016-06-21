@@ -4,9 +4,10 @@
 //TODO: implement search
 bool processSearch(bool search, std::string pid)
 {
-    procFile = "/proc/";
-    procFile += pid;
-    procFile += "/stat";
+    procFile = "/proc/" + pid + "/stat";
+#ifdef DEBUG
+    print_string(procFile);
+#endif
 
     //search for the process
     do {
@@ -27,6 +28,24 @@ bool processSearch(bool search, std::string pid)
 #ifdef DEBUG
 	    print_string("Process not Found");
 #endif
+	    switch(errno)
+	    {
+		case EACCES:
+		    print_string("Permission Denied for Proc File");
+		    break;
+		case EFAULT:
+		    print_string("Bad Address");
+		    break;
+		case ELOOP:
+		    print_string("Too many simlinks");
+		    break;
+		case ENAMETOOLONG:
+		    print_string("Path is too long");
+		    break;
+		default:
+		    print_string("Unknown error code");
+		    break;
+	    }
 	    return false;
 	    default:
 #ifdef DEBUG
