@@ -11,49 +11,11 @@ bool processSearch(bool search, std::string pid)
 
     //search for the process
     do {
-	int statResult = stat(procFile.c_str(), NULL);
-#ifdef DEBUG
-	std::string statString = "Stat Result: " + std::to_string(statResult);
-	print_string(statString);
-#endif
-	switch(statResult) //success condition
-	{
-	    case 0:
-#ifdef DEBUG
-		print_string("Found Process");
-#endif
-		return true;
-		break;
-	    case -1:
-#ifdef DEBUG
-	    print_string("Process not Found");
-#endif
-	    switch(errno)
-	    {
-		case EACCES:
-		    print_string("Permission Denied for Proc File");
-		    break;
-		case EFAULT:
-		    print_string("Bad Address");
-		    break;
-		case ELOOP:
-		    print_string("Too many simlinks");
-		    break;
-		case ENAMETOOLONG:
-		    print_string("Path is too long");
-		    break;
-		default:
-		    print_string("Unknown error code");
-		    break;
-	    }
-	    return false;
-	    default:
-#ifdef DEBUG
-	    print_string("Process not Found - Unknown Code");
-#endif
-	    return false;
+	if(access(procFile.c_str(), F_OK) != -1) {
+	    return true;
 	}
     } while(search); //if search is set, loop until the process is found
+    return false;
 }
 
 int get_proc_info(procinfo *pinfo, std::string pid)

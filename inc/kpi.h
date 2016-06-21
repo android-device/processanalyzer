@@ -6,8 +6,6 @@
 //strings and ints
 #include <string>
 #include <string.h>
-#include<stdio.h>
-#include<stdlib.h>
 
 #include <fstream>
 #include "kpi_consts.h"
