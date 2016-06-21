@@ -1,0 +1,91 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+ARFLAGS	etc/Makefile	/^ARFLAGS  = -r -s --target=elf64-x86-64 $/;"	m
+ARFLAGS	src/Makefile	/^ARFLAGS  = -r -s$/;"	m
+CC	etc/Makefile	/^CC = \/opt\/intel-fca-socp-distro\/2015.12\/sysroots\/i686-melsdk-linux\/usr\/bin\/x86_64-mel-linux\/x86_64-mel-linux-gcc$/;"	m
+CC	src/Makefile	/^CC = gcc$/;"	m
+DEBUG	src/file.cpp	2;"	d	file:
+DEBUG	src/kpi.cpp	2;"	d	file:
+ETCDIR	etc/Makefile	/^ETCDIR=..\/etc$/;"	m
+ETCDIR	src/Makefile	/^ETCDIR=..\/etc$/;"	m
+FILECHECK	inc/file.h	4;"	d
+INCDIR	etc/Makefile	/^INCDIR=..\/inc$/;"	m
+INCDIR	src/Makefile	/^INCDIR=..\/inc$/;"	m
+KPI	inc/kpi.h	4;"	d
+KPI_CONSTS	inc/kpi_consts.h	6;"	d
+LIB_OBJS	etc/Makefile	/^LIB_OBJS = $(addprefix $(OBJDIR), $(subst $(SRCDIR), , $(TMP_OBJS)))$/;"	m
+LIB_OBJS	src/Makefile	/^LIB_OBJS = $(addprefix $(OBJDIR), $(subst $(SRCDIR), , $(TMP_OBJS)))$/;"	m
+OBJDIR	etc/Makefile	/^OBJDIR=..\/obj$/;"	m
+OBJDIR	src/Makefile	/^OBJDIR=..\/obj$/;"	m
+PROG	etc/Makefile	/^PROG     = $(RELDIR)\/kpiAnalyzer$/;"	m
+PROG	src/Makefile	/^PROG     = $(RELDIR)\/kpiAnalyzer$/;"	m
+RELDIR	etc/Makefile	/^RELDIR=..\/rel$/;"	m
+RELDIR	src/Makefile	/^RELDIR=..\/rel$/;"	m
+SRCDIR	etc/Makefile	/^SRCDIR=..\/src$/;"	m
+SRCDIR	src/Makefile	/^SRCDIR=..\/src$/;"	m
+SRCS	etc/Makefile	/^SRCS     = $(wildcard $(SRCDIR)\/*.cpp)$/;"	m
+SRCS	src/Makefile	/^SRCS     = $(wildcard $(SRCDIR)\/*.cpp)$/;"	m
+TMP_OBJS	etc/Makefile	/^TMP_OBJS = $(subst .cpp,.o,$(filter %.cpp, $(SRCS)))$/;"	m
+TMP_OBJS	src/Makefile	/^TMP_OBJS = $(subst .cpp,.o,$(filter %.cpp, $(SRCS)))$/;"	m
+VPATH	etc/Makefile	/^VPATH    = $(SRCDIR)$/;"	m
+VPATH	src/Makefile	/^VPATH    = $(SRCDIR)$/;"	m
+blocked	inc/kpi_consts.h	/^	blocked,	\/** 30 **\/       \/** The bitmap of blocked signals **\/$/;"	m	struct:statstruct_proc
+checkFile	src/file.cpp	/^bool checkFile(std::string filename)$/;"	f
+closeFile	src/print.cpp	/^void closeFile()$/;"	f
+cmajflt	inc/kpi_consts.h	/^	cmajflt,	\/** The number of major faults with childs **\/$/;"	m	struct:statstruct_proc
+cminflt	inc/kpi_consts.h	/^	cminflt,	\/** The number of minor faults with childs **\/$/;"	m	struct:statstruct_proc
+counter	inc/kpi_consts.h	/^	counter,	\/** process's next timeslice **\/$/;"	m	struct:statstruct_proc
+cstime	inc/kpi_consts.h	/^	cstime,		\/** kernel mode jiffies with childs **\/$/;"	m	struct:statstruct_proc
+cutime	inc/kpi_consts.h	/^	cutime,		\/** user mode jiffies with childs **\/$/;"	m	struct:statstruct_proc
+egid	inc/kpi_consts.h	/^	egid,		\/** effective group id *\/$/;"	m	struct:statstruct_proc
+endcode	inc/kpi_consts.h	/^	endcode,	\/** The address below which program text can run **\/$/;"	m	struct:statstruct_proc
+euid	inc/kpi_consts.h	/^	euid,		\/** effective user id **\/$/;"	m	struct:statstruct_proc
+exName	inc/kpi_consts.h	/^	exName,		\/** The filename of the executable **\/$/;"	m	struct:statstruct_proc
+flags	inc/kpi_consts.h	/^	flags,		\/** The flags of the process. **\/$/;"	m	struct:statstruct_proc
+format_message	src/print.cpp	/^std::string format_message (procinfo pinfo)$/;"	f
+get_proc_info	src/kpi.cpp	/^int get_proc_info(procinfo *pinfo, std::string pid)$/;"	f
+helpMessage	inc/kpi_consts.h	/^static const std::string helpMessage = "KPI Analyzer logs the cpu and memory usage of a process\\n-i <pid>\\n-n <process name>\\tWill search in ps with grep to find the pid\\n-f <filename>\\n-p <path>\\t\\tPath to where the output log should be written\\n-s\\t\\t\\tDo no stop execution if the program is not found, keep searching for it until it starts - useful if running the analyzer before the process is started.\\n-o\\t\\t\\tOutput to terminal instead of file\\n-h\\t\\t\\tShow this message";$/;"	v
+itrealvalue	inc/kpi_consts.h	/^	itrealvalue,	\/** The time before the next SIGALRM is sent to the process **\/$/;"	m	struct:statstruct_proc
+kpiProg	inc/kpi_consts.h	/^static std::string kpiProg = "CPU\/Mem Analyzer";$/;"	v
+kstkeip	inc/kpi_consts.h	/^	kstkeip,	\/** The current value of EIP **\/$/;"	m	struct:statstruct_proc
+kstkesp	inc/kpi_consts.h	/^	kstkesp,	\/** The current value of ESP **\/$/;"	m	struct:statstruct_proc
+logHeader	inc/kpi_consts.h	/^static const std::string  logHeader = "state,utime,stime,cutime,cstime,priority,vsize,rss,rlim,starttime";$/;"	v
+main	src/main.cpp	/^int main(int argc, char *argv[])$/;"	f
+majflt	inc/kpi_consts.h	/^	majflt,		\/** The number of major faults **\/$/;"	m	struct:statstruct_proc
+minflt	inc/kpi_consts.h	/^	minflt,		\/** The number of minor faults **\/$/;"	m	struct:statstruct_proc
+openFile	src/print.cpp	/^void openFile(const std::string  fname)$/;"	f
+openFile	src/print.cpp	/^void openFile(const std::string  fname, const std::string path)$/;"	f
+outputData	src/print.cpp	/^void outputData(procinfo pinfo, bool terminalOutput)$/;"	f
+pgrp	inc/kpi_consts.h	/^	pgrp,		\/** The pgrp of the process. **\/$/;"	m	struct:statstruct_proc
+pid	inc/kpi_consts.h	/^    std::string pid,	\/** The process id. **\/$/;"	m	struct:statstruct_proc
+ppid	inc/kpi_consts.h	/^	ppid,		\/** The pid of the parent. **\/$/;"	m	struct:statstruct_proc
+print_string	src/print.cpp	/^void print_string(std::string message)$/;"	f
+priority	inc/kpi_consts.h	/^	priority,	\/** the standard nice value, plus fifteen **\/$/;"	m	struct:statstruct_proc
+procFile	inc/kpi.h	/^static std::string procFile = "";$/;"	v
+processSearch	src/kpi.cpp	/^bool processSearch(bool search, std::string id, bool pnameSearch)$/;"	f
+procinfo	inc/kpi_consts.h	/^} procinfo;$/;"	t	typeref:struct:statstruct_proc
+prtUsage	src/main.cpp	/^int prtUsage ()$/;"	f
+rlim	inc/kpi_consts.h	/^	rlim,		\/** Current limit in bytes on the rss **\/$/;"	m	struct:statstruct_proc
+rss	inc/kpi_consts.h	/^	rss,		\/** Resident Set Size **\/$/;"	m	struct:statstruct_proc
+sched	inc/kpi_consts.h	/^	sched,		\/** scheduler **\/$/;"	m	struct:statstruct_proc
+sched_priority	inc/kpi_consts.h	/^	sched_priority;	\/** scheduler priority **\/$/;"	m	struct:statstruct_proc
+session	inc/kpi_consts.h	/^	session,	\/** The session id of the process. **\/$/;"	m	struct:statstruct_proc
+sigcatch	inc/kpi_consts.h	/^	sigcatch,	\/** The bitmap of catched signals **\/$/;"	m	struct:statstruct_proc
+sigignore	inc/kpi_consts.h	/^	sigignore,	\/** The bitmap of ignored signals **\/$/;"	m	struct:statstruct_proc
+signal	inc/kpi_consts.h	/^	signal,		\/** The bitmap of pending signals **\/$/;"	m	struct:statstruct_proc
+startcode	inc/kpi_consts.h	/^	startcode,	\/** The address above which program text can run **\/$/;"	m	struct:statstruct_proc
+startstack	inc/kpi_consts.h	/^	startstack,	\/** The address of the start of the stack **\/$/;"	m	struct:statstruct_proc
+starttime	inc/kpi_consts.h	/^	starttime,	\/** 20 **\/     \/** Time the process started after system boot **\/$/;"	m	struct:statstruct_proc
+state	inc/kpi_consts.h	/^	state,		\/** R is running, S is sleeping, $/;"	m	struct:statstruct_proc
+statstruct_proc	inc/kpi_consts.h	/^typedef struct statstruct_proc {$/;"	s
+stime	inc/kpi_consts.h	/^	stime,		\/** kernel mode jiffies **\/$/;"	m	struct:statstruct_proc
+timeout	inc/kpi_consts.h	/^	timeout,	\/** The time in jiffies of the next timeout **\/$/;"	m	struct:statstruct_proc
+tpgid	inc/kpi_consts.h	/^	tpgid,		\/** (too long) **\/$/;"	m	struct:statstruct_proc
+tty	inc/kpi_consts.h	/^	tty,		\/** The tty the process uses **\/$/;"	m	struct:statstruct_proc
+utime	inc/kpi_consts.h	/^	utime,		\/** user mode jiffies **\/$/;"	m	struct:statstruct_proc
+vsize	inc/kpi_consts.h	/^	vsize,		\/** Virtual memory size **\/$/;"	m	struct:statstruct_proc
+wchan	inc/kpi_consts.h	/^	wchan,		\/** 33 **\/        \/** (too long) **\/$/;"	m	struct:statstruct_proc
