@@ -121,7 +121,7 @@ int main(int argc, char *argv[])
 
     //TODO implement pname search
     if ( //process not found (searches with pname OR pid)
-	    !((pname!="") && (pid==0)) ? processSearch(search, pname) : processSearch(search, pid)
+	    ((pname!="") && (pid==0)) ? !processSearch(search, pname) : !processSearch(search, pid)
 	    ) 
     {
 	print_string("Process not found");

@@ -1,7 +1,7 @@
 #include "sys.h"
 #define DEBUG
 
-bool checkFile(std::string filename)
+int checkFile(std::string filename)
 {
 #ifdef DEBUG
     print_string("Inside!");
@@ -9,7 +9,7 @@ bool checkFile(std::string filename)
     if(access(filename.c_str(), F_OK) == -1) //error
     {
 #ifdef DEBUG
-    print_string("Error!");
+    print_string("Read Error!");
 #endif
 	std::string errMsg = "";
 	switch(errno)
@@ -34,14 +34,36 @@ bool checkFile(std::string filename)
 		break;
 	}
 	print_string(errMsg);
+	return 0;
+    } else if(access(filename.c_str(), W_OK) == -1) { //read okay, check write
+	std::string errMsg = "";
+	switch(errno)
+	{
+	    case EACCES:
+		errMsg=filename + " write access denied";
+		break;
+	    case ELOOP:
+		errMsg=filename + " write too many simlinks";
+		break;
+	    case ENAMETOOLONG:
+		errMsg=filename + " write path too long";
+		break;
+	    case ENOENT:
+		errMsg=filename + " write component of path doesn't exist";
+		break;
+	    case ENOTDIR:
+		errMsg=filename + " write component of path isn't directory";
+		break;
+	    default:
+		errMsg=filename + " write unknown error";
+		break;
+	}
+	print_string(errMsg);
+	return 1; //1 means read only
+    } else { //read AND write
 #ifdef DEBUG
-    print_string("Printing!");
+    print_string(filename + ", r/w");
 #endif
-	return false;
-    } else {
-#ifdef DEBUG
-    print_string("no error!");
-#endif
-	return true;
+	return 2;
     }
 }

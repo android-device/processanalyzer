@@ -21,7 +21,7 @@ bool processSearch(bool search, int id) //overloaded
 #endif
 
     do {
-	if(checkFile(procFile)) {
+	if(checkFile(procFile) != 0) { //read OR write, doesn't matter
 	    return true;
 	}
     } while(search); //if search is set, loop until the process is found
@@ -31,6 +31,10 @@ bool processSearch(bool search, int id) //overloaded
 /* Overload for searching with pname instead of pid */
 bool processSearch(bool search, std::string pname) //overloaded
 {
+    if(pname == "")
+    {
+	print_string("Something terrible has happened.");
+    }
     do {
     } while(search); //keep searching until process is found
     return false;
