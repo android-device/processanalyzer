@@ -9,7 +9,7 @@
 
 /* Formats the message for printing
  */
-void outputData(procinfo pinfo);
+void outputData(procinfo pinfo, bool terminalOutput);
 
 std::string format_message(procinfo pinfo);
 

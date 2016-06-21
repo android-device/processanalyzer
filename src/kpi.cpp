@@ -1,17 +1,29 @@
 #include "kpi.h"
-//#define DEBUG
+#define DEBUG
 
 //TODO: implement pname search
-bool processSearch(bool search, std::string pid)
+bool processSearch(bool search, std::string id, bool pnameSearch)
 {
-    procFile = "/proc/" + pid + "/stat";
+#ifdef DEBUG
+    if(search)
+    {
+	print_string("Will Search");
+    }
+#endif
+    if(pnameSearch)
+    {
+#ifdef DEBUG
+	print_string("pnameSearch");
+#endif
+    }
+    procFile = "/proc/" + id + "/stat";
 #ifdef DEBUG
     print_string(procFile);
 #endif
 
     //search for the process
     do {
-	if(access(procFile.c_str(), F_OK) != -1) {
+	if(checkFile(procFile)) {
 	    return true;
 	}
     } while(search); //if search is set, loop until the process is found

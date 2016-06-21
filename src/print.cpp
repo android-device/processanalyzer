@@ -1,6 +1,6 @@
 #include "print.h"
 
-void outputData(procinfo pinfo)
+void outputData(procinfo pinfo, bool terminalOutput)
 {
     std::string formattedVal = format_message(pinfo);
     if(terminalOutput) //don't save to file

@@ -118,13 +118,15 @@ int main(int argc, char *argv[])
 #ifdef DEBUG
     print_string("Searching for process");
 #endif
+
     //TODO implement pname search
-    if (!processSearch(search, pid)) //process not found
+    if (!processSearch(search, ((pname!="") && (pid==""))?pname:pid, ((pname!="") && (pid=="")))) //process not found
     {
 	print_string("Process not found");
 	return 1;
     }
-    if(pid == "")
+
+    if(pid == "") //this should not be possible...
     {
 	print_string("Process not found");
 	return 1;
@@ -163,7 +165,7 @@ int main(int argc, char *argv[])
 	{
 	    keepLogging = false;
 	}
-	outputData(pinfo);
+	outputData(pinfo, terminalOutput);
 	sleep (1);
     }
     return 0;
