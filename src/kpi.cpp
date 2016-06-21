@@ -1,8 +1,8 @@
 #include "kpi.h"
-#define DEBUG
+//#define DEBUG
 
 //TODO: implement search
-bool processSearch()
+bool processSearch(std::string pid)
 {
     procFile = "/proc/";
     procFile += pid;
@@ -10,7 +10,7 @@ bool processSearch()
     return true;
 }
 
-int get_proc_info(procinfo *pinfo)
+int get_proc_info(procinfo *pinfo, std::string pid)
 {
 #ifdef DEBUG
     print_string("In get_proc_info");

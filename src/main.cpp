@@ -17,7 +17,7 @@ Description : CPU and Memory Analyzer for KPI standards
 #include "print.h"
 #include "kpi.h"
 
-#define DEBUG
+//#define DEBUG
 
 using namespace std;
 
@@ -107,7 +107,7 @@ int main(int argc, char *argv[])
 #ifdef DEBUG
     print_string("Searching for process");
 #endif
-    if (!processSearch()) //process not found
+    if (!processSearch(pid)) //process not found
     {
 	print_string("Process not found");
 	return 1;
@@ -128,7 +128,7 @@ int main(int argc, char *argv[])
     bool keepLogging = true;
     while (keepLogging)
     {
-	switch(get_proc_info(&pinfo))
+	switch(get_proc_info(&pinfo, pid))
 	{
 	    case -3: //error condition
 		print_string("Not all pinfo values filled");

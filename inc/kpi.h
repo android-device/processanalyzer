@@ -14,11 +14,11 @@
  *
  * Searches using the pname or pid - preference is given to the pid
  */
-bool processSearch();
+bool processSearch(std::string pid);
 
 //get the process info, using the pid, and put it in a pinfo
 //based on: https://www.redhat.com/archives/axp-list/2001-January/msg00355.html
-int get_proc_info(procinfo *pinfo);
+int get_proc_info(procinfo *pinfo, std::string pid);
 
 static std::string procFile = "";
 
