@@ -24,7 +24,7 @@
  * exit until a process with a matching PID is found.
  */
 bool processSearch(bool search, int id);
-bool processSearch(bool search, std::string pname);
+bool processSearch(bool search, std::string pname, int *pid);
 
 //get the process info, using the pid, and put it in a pinfo
 //based on: https://www.redhat.com/archives/axp-list/2001-January/msg00355.html

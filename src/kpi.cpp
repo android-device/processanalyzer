@@ -21,7 +21,7 @@ bool processSearch(bool search, int id) //overloaded
 #endif
 
     do {
-	if(checkFile(procFile) != 0) { //read OR write, doesn't matter
+	if(checkFile(procFile) != 0) { //read OR write, doesn't matter for the process
 	    return true;
 	}
     } while(search); //if search is set, loop until the process is found
@@ -29,13 +29,21 @@ bool processSearch(bool search, int id) //overloaded
 }
 
 /* Overload for searching with pname instead of pid */
-bool processSearch(bool search, std::string pname) //overloaded
+bool processSearch(bool search, std::string pname, int *pid) //overloaded
 {
     if(pname == "")
     {
 	print_string("Something terrible has happened.");
+	return false;
     }
     do {
+	//TODO multiple PIDs
+	std::string pidofCmd = "pidof " + pname;
+	std::string result = exec(pidofCmd.c_str());
+	if(result != "") {
+	    *pid = stoi(result);
+	    return true;
+	}
     } while(search); //keep searching until process is found
     return false;
 }

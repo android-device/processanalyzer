@@ -5,6 +5,11 @@
 #include <string>
 #include "print.h"
 #include <unistd.h>
+#include <cstdio>
+#include <iostream>
+#include <memory>
+#include <stdexcept>
+#include <string>
 
 /* Checks whether the file is correctly available to the program and handles
  * any error messages. Does not open any files...
