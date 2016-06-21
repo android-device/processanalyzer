@@ -1,7 +1,7 @@
 #include "kpi.h"
 //#define DEBUG
 
-//TODO: implement search
+//TODO: implement pname search
 bool processSearch(bool search, std::string pid)
 {
     procFile = "/proc/" + pid + "/stat";

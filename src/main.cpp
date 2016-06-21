@@ -118,6 +118,7 @@ int main(int argc, char *argv[])
 #ifdef DEBUG
     print_string("Searching for process");
 #endif
+    //TODO implement pname search
     if (!processSearch(search, pid)) //process not found
     {
 	print_string("Process not found");
@@ -129,7 +130,6 @@ int main(int argc, char *argv[])
 	return 1;
     }
 
-    //TODO: implement quit on state change
 #ifdef DEBUG
     print_string("Gathering Data");
 #endif
