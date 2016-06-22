@@ -23,8 +23,3 @@ void print_string(const std::string message);
 /* Writes the formatted message to a file
  */
 void write_string(const std::string message);
-
-//TODO: Implement custom path
-/* Functions for handling the file creation. If the user has specified a path,
- * that is handled here.
- */

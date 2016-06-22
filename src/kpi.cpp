@@ -1,5 +1,5 @@
 #include "kpi.h"
-//#define DEBUG
+#define DEBUG
 
 /* Search for a process, using the pid or the pname version of this overloaded
  * function. Note that if search is true, this function will NOT return until a
@@ -80,94 +80,268 @@ int get_proc_info(procinfo *pinfo, int pid)
 	switch(currIndex)
 	{
 	    case 0:
+#ifdef DEBUG
+		if(pinfo->pid != currVal)
+		{
+		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
+		}
+#endif
 		pinfo->pid = currVal;
 		break;
 	    case 1:
+#ifdef DEBUG
+		if(pinfo->exName != currVal)
+		{
+		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
+		}
+#endif
 		pinfo->exName = currVal;
 		break;
 	    case 2:
+#ifdef DEBUG
+		if(pinfo->state != currVal)
+		{
+		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
+		}
+#endif
 		pinfo->state = currVal;
 		break;
 	    case 3:
+#ifdef DEBUG
+		if(pinfo->ppid != currVal)
+		{
+		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
+		}
+#endif
 		pinfo->ppid = currVal; //parent pid
 		break;
 	    case 4:
+#ifdef DEBUG
+		if(pinfo->egid != currVal)
+		{
+		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
+		}
+#endif
 		pinfo->egid = currVal; //groud id
 		break;
 	    case 5:
+#ifdef DEBUG
+		if(pinfo->session != currVal)
+		{
+		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
+		}
+#endif
 		pinfo->session = currVal; //session id
 		break;
 	    case 6:
+#ifdef DEBUG
+		if(pinfo->tty != currVal)
+		{
+		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
+		}
+#endif
 		pinfo->tty = currVal;
 		break;
 	    case 7:
-		//euid??
+#ifdef DEBUG
+		if(pinfo->euid != currVal)
+		{
+		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
+		}
+#endif
 		pinfo->euid = currVal; //foreground process group id
+		//euid??
 		break;
 	    case 8:
+#ifdef DEBUG
+		if(pinfo->flags != currVal)
+		{
+		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
+		}
+#endif
 		pinfo->flags = currVal;
 		break;
 	    case 9:
+#ifdef DEBUG
+		if(pinfo->minflt != currVal)
+		{
+		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
+		}
+#endif
 		pinfo->minflt = currVal; //minor faults
 		break;
 	    case 10:
+#ifdef DEBUG
+		if(pinfo->cminflt != currVal)
+		{
+		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
+		}
+#endif
 		pinfo->cminflt = currVal; //minor faults with children
 		break;
 	    case 11:
+#ifdef DEBUG
+		if(pinfo->majflt != currVal)
+		{
+		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
+		}
+#endif
 		pinfo->majflt = currVal;
 		break;
 	    case 12:
+#ifdef DEBUG
+		if(pinfo->cmajflt != currVal)
+		{
+		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
+		}
+#endif
 		pinfo->cmajflt = currVal;
 		break;
 	    case 13:
+#ifdef DEBUG
+		if(pinfo->utime != currVal)
+		{
+		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
+		}
+#endif
 		pinfo->utime = currVal; //Time process spent in user mode (clock ticks)
 		break;
 	    case 14:
+#ifdef DEBUG
+		if(pinfo->stime != currVal)
+		{
+		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
+		}
+#endif
 		pinfo->stime = currVal; //Time spent in kernel mode
 		break;
 	    case 15:
+#ifdef DEBUG
+		if(pinfo->cutime != currVal)
+		{
+		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
+		}
+#endif
 		pinfo->cutime = currVal; //Child time in user mode
 		break;
 	    case 16:
+#ifdef DEBUG
+		if(pinfo->cstime != currVal)
+		{
+		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
+		}
+#endif
 		pinfo->cstime = currVal; //Child time in kernel mode
 		break;
 	    case 17:
+#ifdef DEBUG
+		if(pinfo->priority != currVal)
+		{
+		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
+		}
+#endif
 		pinfo->priority = currVal; //nice value + 15 (?)
 		break;
 	    case 18:
 		//the nice value
 		break;
 	    case 19:
+#ifdef DEBUG
+		if(pinfo->numThreads != currVal)
+		{
+		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
+		}
+#endif
 		pinfo->numThreads = currVal;
 		break;
 	    case 20:
+#ifdef DEBUG
+		if(pinfo->itrealvalue != currVal)
+		{
+		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
+		}
+#endif
 		pinfo->itrealvalue = currVal; //time before sigalarm is sent
 		break;
 	    case 21:
+#ifdef DEBUG
+		if(pinfo->starttime != currVal)
+		{
+		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
+		}
+#endif
 		pinfo->starttime = currVal;
 		break;
 	    case 22:
+#ifdef DEBUG
+		if(pinfo->vsize != currVal)
+		{
+		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
+		}
+#endif
 		pinfo->vsize = currVal; //virtual memory size
 		break;
 	    case 23:
+#ifdef DEBUG
+		if(pinfo->rss != currVal)
+		{
+		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
+		}
+#endif
 		pinfo->rss = currVal;
 		break;
 	    case 24:
+#ifdef DEBUG
+		if(pinfo->rlim != currVal)
+		{
+		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
+		}
+#endif
 		pinfo->rlim = currVal;
 		break;
 	    case 25:
+#ifdef DEBUG
+		if(pinfo->startcode != currVal)
+		{
+		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
+		}
+#endif
 		pinfo->startcode = currVal;
 		break;
 	    case 26:
+#ifdef DEBUG
+		if(pinfo->endcode != currVal)
+		{
+		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
+		}
+#endif
 		pinfo->endcode = currVal;
 		break;
 	    case 27:
+#ifdef DEBUG
+		if(pinfo->startstack != currVal)
+		{
+		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
+		}
+#endif
 		pinfo->startstack = currVal;
 		break;
 	    case 28:
+#ifdef DEBUG
+		if(pinfo->kstkesp != currVal)
+		{
+		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
+		}
+#endif
 		pinfo->kstkesp = currVal; //current ESP (stack pointer)
 		break;
 	    case 29:
+#ifdef DEBUG
+		if(pinfo->kstkeip != currVal)
+		{
+		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
+		}
+#endif
 		pinfo->kstkeip = currVal; //current EIP (instruction pointer)
 		break;
 	    case 30:
@@ -183,6 +357,12 @@ int get_proc_info(procinfo *pinfo, int pid)
 		//OBSOLETE INFO - sigcatch
 		break;
 	    case 34:
+#ifdef DEBUG
+		if(pinfo->wchan != currVal)
+		{
+		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
+		}
+#endif
 		pinfo->wchan = currVal; //channel in which the process is waiting
 		break;
 	    case 35:

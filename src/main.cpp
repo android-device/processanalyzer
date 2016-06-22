@@ -200,6 +200,7 @@ int main(int argc, char *argv[])
 	{
 	    keepLogging = false;
 	}
+	//TODO: Implement custom path
 	//log file information
 	//std::string fpath = "/tmp"; //default location is /tmp
 	//std::string fname; //default file name is pname.log
