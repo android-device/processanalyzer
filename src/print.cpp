@@ -1,5 +1,5 @@
 #include "print.h"
-#define DEBUG
+//#define DEBUG
 
 void outputData(procinfo pinfo)
 {
@@ -7,25 +7,9 @@ void outputData(procinfo pinfo)
     print_string(formattedVal);
 }
 
-void outputData(procinfo pinfo, std::string outputFileName, std::ofstream *outputFile)
+void outputData(procinfo pinfo, std::ofstream *outputFile)
 {
-    if(*outputFile.is_open()) {
-#ifdef DEBUG
-	print_string("File is open");
-#endif
-    } else {
-#ifdef DEBUG
-	print_string("File is not open");
-#endif
-	*outputFile.open(outputFileName);
-#ifdef DEBUG
-	if(*outputFile.is_open()) {
-	    print_string("File is open");
-	} else {
-	    print_string("File is not open");
-	}
-#endif
-    }
+    *outputFile << format_message(pinfo) << std::endl;
 }
 
 // Print message. Prepend with program name.
@@ -42,7 +26,7 @@ std::string format_message (procinfo pinfo)
 {
     std::string formattedVal = "";
     formattedVal += pinfo.state + ',' +
-	pinfo.exName + ',' +
+	//pinfo.exName + ',' +
 	pinfo.utime + ',' +
 	pinfo.stime + ',' +
 	pinfo.cutime + ',' +

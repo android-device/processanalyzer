@@ -13,12 +13,13 @@ Description : CPU and Memory Analyzer for KPI standards
 #include "unistd.h"
 #include "fcntl.h"
 #include <fstream>
+#include <iosfwd>
 
 #include "kpi_consts.h"
 #include "print.h"
 #include "kpi.h"
 
-#define DEBUG
+//#define DEBUG
 
 using namespace std;
 
@@ -44,7 +45,7 @@ int main(int argc, char *argv[])
     std::string pname = "";
 
     //log file information
-    std::string fpath = "/tmp"; //default location is /tmp
+    std::string fpath = "/tmp/"; //default location is /tmp
     std::string fname; //default file name is pname.log
 
     if(argv[0] != NULL)
@@ -144,6 +145,7 @@ int main(int argc, char *argv[])
     procinfo pinfo;
     bool keepLogging = true;
     while (keepLogging)
+    //for(int i = 0; i < 10; i++)
     {
 	switch(get_proc_info(&pinfo, pid))
 	{
@@ -182,9 +184,7 @@ int main(int argc, char *argv[])
 #endif
 	    }
 	    fname = pname + "." + pinfo.pid + ".log";
-#ifdef DEBUG
-	    print_string("Log File: " + fname);
-#endif
+	    print_string("Log File: " + fpath + fname);
 	}
 
 	if(pinfo.state == "D") //D for DEAD
@@ -197,9 +197,16 @@ int main(int argc, char *argv[])
 	if(terminalOutput) {
 	    outputData(pinfo);
 	} else {
-	    outputData(pinfo, fpath+fname, &outputFile);
+	    if(!outputFile.is_open())
+	    {
+		std::string outfname = fpath + fname;
+		outputFile.open(outfname);
+		outputFile << logHeader << std::endl;
+	    }
+	    outputData(pinfo, &outputFile);
 	}
 	sleep (1);
     }
+    outputFile.close();
     return 0;
 }

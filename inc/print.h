@@ -7,11 +7,12 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <iosfwd>
 
 /* Formats the message for printing
  */
 void outputData(procinfo pinfo);
-void outputData(procinfo pinfo, std::string outputFileName, std::ofstream *outputFile);
+void outputData(procinfo pinfo, std::ofstream *outputFile);
 
 std::string format_message(procinfo pinfo);
 
@@ -23,11 +24,7 @@ void print_string(const std::string message);
  */
 void write_string(const std::string message);
 
-//TODO: implement file output
 //TODO: Implement custom path
 /* Functions for handling the file creation. If the user has specified a path,
  * that is handled here.
  */
-void openFile(const std::string fname);
-//TODO implement file closing
-void closeFile();
