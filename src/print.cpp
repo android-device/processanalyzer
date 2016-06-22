@@ -25,16 +25,16 @@ void print_string(std::string message)
 std::string format_message (procinfo pinfo)
 {
     std::string formattedVal = "";
-    formattedVal += pinfo.state + ',' +
-	//pinfo.exName + ',' +
-	pinfo.utime + ',' +
-	pinfo.stime + ',' +
-	pinfo.cutime + ',' +
-	pinfo.cstime + ',' +
-	pinfo.priority + ',' +
-	pinfo.vsize + ',' +
-	pinfo.rss + ',' +
-	pinfo.rlim + ',' +
+    formattedVal += pinfo.state + ",\t" +
+	//pinfo.exName + "," +
+	pinfo.utime + ",\t" +
+	pinfo.stime + ",\t" +
+	pinfo.cutime + ",\t" +
+	pinfo.cstime + ",\t" +
+	pinfo.priority + ",\t" +
+	pinfo.vsize + ",\t" +
+	pinfo.rss + ",\t" +
+	pinfo.rlim + ",\t" +
 	pinfo.starttime;
     return formattedVal;
 }

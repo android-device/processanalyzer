@@ -70,234 +70,138 @@ int get_proc_info(procinfo *pinfo, int pid)
     while(statFile.good())
     {
 	statFile >> currVal;
-	//add to pinfo based on the index of the current value being read
+	/* add to pinfo based on the index of the current value being read. If
+	 * reordering, refer to kpi_consts.h for the names of each.
+	 * Based on: http://linux.die.net/man/5/proc
+	 */
+#ifdef DEBUG
+		print_string(std::to_string(currIndex) + ", " + currVal);
+#endif
 	switch(currIndex)
 	{
 	    case 0:
 		pinfo->pid = currVal;
-#ifdef DEBUG
-		print_string(currVal);
-#endif
 		break;
 	    case 1:
 		pinfo->exName = currVal;
-#ifdef DEBUG
-		print_string(currVal);
-#endif
 		break;
 	    case 2:
 		pinfo->state = currVal;
-#ifdef DEBUG
-		print_string(currVal);
-#endif
 		break;
 	    case 3:
-		pinfo->euid = currVal;
-#ifdef DEBUG
-		print_string(currVal);
-#endif
+		pinfo->ppid = currVal; //parent pid
 		break;
 	    case 4:
-		pinfo->egid = currVal;
-#ifdef DEBUG
-		print_string(currVal);
-#endif
+		pinfo->egid = currVal; //groud id
 		break;
 	    case 5:
-		pinfo->ppid = currVal;
-#ifdef DEBUG
-		print_string(currVal);
-#endif
+		pinfo->session = currVal; //session id
 		break;
 	    case 6:
-		pinfo->pgrp = currVal;
-#ifdef DEBUG
-		print_string(currVal);
-#endif
+		pinfo->tty = currVal;
 		break;
 	    case 7:
-		pinfo->session = currVal;
-#ifdef DEBUG
-		print_string(currVal);
-#endif
+		//euid??
+		pinfo->euid = currVal; //foreground process group id
 		break;
 	    case 8:
-		pinfo->tty = currVal;
-#ifdef DEBUG
-		print_string(currVal);
-#endif
+		pinfo->flags = currVal;
 		break;
 	    case 9:
-		pinfo->tpgid = currVal;
-#ifdef DEBUG
-		print_string(currVal);
-#endif
+		pinfo->minflt = currVal; //minor faults
 		break;
 	    case 10:
-		pinfo->flags = currVal;
-#ifdef DEBUG
-		print_string(currVal);
-#endif
+		pinfo->cminflt = currVal; //minor faults with children
 		break;
 	    case 11:
-		pinfo->minflt = currVal;
-#ifdef DEBUG
-		print_string(currVal);
-#endif
+		pinfo->majflt = currVal;
 		break;
 	    case 12:
-		pinfo->cminflt = currVal;
-#ifdef DEBUG
-		print_string(currVal);
-#endif
+		pinfo->cmajflt = currVal;
 		break;
 	    case 13:
-		pinfo->majflt = currVal;
-#ifdef DEBUG
-		print_string(currVal);
-#endif
+		pinfo->utime = currVal; //Time process spent in user mode (clock ticks)
 		break;
 	    case 14:
-		pinfo->cmajflt = currVal;
-#ifdef DEBUG
-		print_string(currVal);
-#endif
+		pinfo->stime = currVal; //Time spent in kernel mode
 		break;
 	    case 15:
-		pinfo->utime = currVal;
-#ifdef DEBUG
-		print_string(currVal);
-#endif
+		pinfo->cutime = currVal; //Child time in user mode
 		break;
 	    case 16:
-		pinfo->cutime = currVal;
-#ifdef DEBUG
-		print_string(currVal);
-#endif
+		pinfo->cstime = currVal; //Child time in kernel mode
 		break;
 	    case 17:
-		pinfo->cstime = currVal;
-#ifdef DEBUG
-		print_string(currVal);
-#endif
+		pinfo->priority = currVal; //nice value + 15 (?)
 		break;
 	    case 18:
-		pinfo->counter = currVal;
-#ifdef DEBUG
-		print_string(currVal);
-#endif
+		//the nice value
 		break;
 	    case 19:
-		pinfo->priority = currVal;
-#ifdef DEBUG
-		print_string(currVal);
-#endif
+		pinfo->numThreads = currVal;
 		break;
 	    case 20:
-		pinfo->timeout = currVal;
-#ifdef DEBUG
-		print_string(currVal);
-#endif
+		pinfo->itrealvalue = currVal; //time before sigalarm is sent
 		break;
 	    case 21:
-		pinfo->itrealvalue = currVal;
-#ifdef DEBUG
-		print_string(currVal);
-#endif
+		pinfo->starttime = currVal;
 		break;
 	    case 22:
-		pinfo->starttime = currVal;
-#ifdef DEBUG
-		print_string(currVal);
-#endif
+		pinfo->vsize = currVal; //virtual memory size
 		break;
 	    case 23:
-		pinfo->vsize = currVal;
-#ifdef DEBUG
-		print_string(currVal);
-#endif
+		pinfo->rss = currVal;
 		break;
 	    case 24:
-		pinfo->rss = currVal;
-#ifdef DEBUG
-		print_string(currVal);
-#endif
+		pinfo->rlim = currVal;
 		break;
 	    case 25:
-		pinfo->rlim = currVal;
-#ifdef DEBUG
-		print_string(currVal);
-#endif
+		pinfo->startcode = currVal;
 		break;
 	    case 26:
-		pinfo->startcode = currVal;
-#ifdef DEBUG
-		print_string(currVal);
-#endif
+		pinfo->endcode = currVal;
 		break;
 	    case 27:
-		pinfo->endcode = currVal;
-#ifdef DEBUG
-		print_string(currVal);
-#endif
+		pinfo->startstack = currVal;
 		break;
 	    case 28:
-		pinfo->startstack = currVal;
-#ifdef DEBUG
-		print_string(currVal);
-#endif
+		pinfo->kstkesp = currVal; //current ESP (stack pointer)
 		break;
 	    case 29:
-		pinfo->kstkesp = currVal;
-#ifdef DEBUG
-		print_string(currVal);
-#endif
+		pinfo->kstkeip = currVal; //current EIP (instruction pointer)
+		break;
+	    case 30:
+		//OBSOLETE INFO - signal
 		break;
 	    case 31:
-		pinfo->kstkeip = currVal;
-#ifdef DEBUG
-		print_string(currVal);
-#endif
+		//OBSOLETE INFO - blocked
 		break;
 	    case 32:
-		pinfo->blocked = currVal;
-#ifdef DEBUG
-		print_string(currVal);
-#endif
+		//OBSOLETE INFO - sigignore
 		break;
 	    case 33:
-		pinfo->sigignore = currVal;
-#ifdef DEBUG
-		print_string(currVal);
-#endif
+		//OBSOLETE INFO - sigcatch
 		break;
 	    case 34:
-		pinfo->sigcatch = currVal;
-#ifdef DEBUG
-		print_string(currVal);
-#endif
+		pinfo->wchan = currVal; //channel in which the process is waiting
 		break;
 	    case 35:
-		pinfo->wchan = currVal;
-#ifdef DEBUG
-		print_string(currVal);
-#endif
+		//number of pages swapped
 		break;
 	    case 36:
-		pinfo->sched = currVal;
-#ifdef DEBUG
-		print_string(currVal);
-#endif
+		//number of pages swapped for child processes
 		break;
 	    case 37:
-		pinfo->sched_priority = currVal;
-#ifdef DEBUG
-		print_string(currVal);
-#endif
+		//signal sent to parent when process dies
 		break;
-	    default: //More values available than are being used.
-		statFile.close();
-		return -2;
+	    default: 
+		if(currIndex > 37) //More values available than are being used.
+		{
+		    statFile.close();
+		    return -2;
+		} else { //Missed a value!
+		    print_string("Skipped " + std::to_string(currIndex));
+		}
 	}
 	currIndex++;
 	currVal = "";
