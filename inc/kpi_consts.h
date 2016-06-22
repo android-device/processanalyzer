@@ -21,7 +21,7 @@
 static const std::string helpMessage = "KPI Analyzer logs the cpu and memory usage of a process\n-i <pid>\n-n <process name>\tWill search in ps with grep to find the pid\n-f <filename>\n-p <path>\t\tPath to where the output log should be written\n-s\t\t\tDo no stop execution if the program is not found, keep searching for it until it starts - useful if running the analyzer before the process is started.\n-o\t\t\tOutput to terminal instead of file\n-h\t\t\tShow this message";
 
 //header to use for the log files, in csv format
-static const std::string  logHeader = "state,utime,stime,cutime,cstime,priority,vsize,rss,rlim,starttime";
+static const std::string  logHeader = "state,\tutime,\tstime,\tcutime,\tcstime,\tpriority,\tvsize,\trss,\trlim,\tstarttime";
 
 // Pointer to program name
 static std::string kpiProg = "CPU/Mem Analyzer";
@@ -53,6 +53,7 @@ typedef struct statstruct_proc {
 	cstime,		/** kernel mode jiffies with childs **/
 	counter,	/** process's next timeslice **/
 	priority,	/** the standard nice value, plus fifteen **/
+	numThreads,	/** the number of threads **/
 	timeout,	/** The time in jiffies of the next timeout **/
 	itrealvalue,	/** The time before the next SIGALRM is sent to the process **/
 	starttime,	/** 20 **/     /** Time the process started after system boot **/
