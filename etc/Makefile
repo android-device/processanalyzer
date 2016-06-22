@@ -3,7 +3,7 @@
 #
 
 CC = /opt/intel-fca-socp-distro/2015.12/sysroots/i686-melsdk-linux/usr/bin/x86_64-mel-linux/x86_64-mel-linux-gcc
-CFLAGS +=  --sysroot=/opt/intel-fca-socp-distro/2015.12/sysroots/corei7-64-mel-linux
+CFLAGS +=  --sysroot=/opt/intel-fca-socp-distro/2015.12/sysroots/corei7-64-mel-linux -std=c++11
 
 LDFLAGS +=  --target=elf64-x86-64 --sysroot=/opt/intel-fca-socp-distro/2015.12/sysroots/corei7-64-mel-linux -lpthread
 
@@ -13,7 +13,7 @@ RELDIR=../rel
 INCDIR=../inc
 ETCDIR=../etc
 
-C_INCS += -Lcstddef -I../inc/
+C_INCS += -I../inc/
 ARFLAGS  = -r -s --target=elf64-x86-64 
 
 PROG     = $(RELDIR)/kpiAnalyzer
