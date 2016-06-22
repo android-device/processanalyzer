@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 
     bool search = false; //default is to quit immediately if process is not found
     bool terminalOutput = false; //default is to output to file
-
+    int logTimes = 0;
 
     //process identifiers
     int pid = 0;
@@ -68,6 +68,7 @@ int main(int argc, char *argv[])
      * f File name
      * s keep Searching
      * o Output to terminal
+     * c number of times to log
      * h show Help
      * anything else: show help
      */
@@ -100,6 +101,10 @@ int main(int argc, char *argv[])
 
 		    case 'n': //process name, which will be used to find the pid
 			pname = argv[i+1];
+			break;
+
+		    case 'c':
+			logTimes = stoi(argv[i+1]);
 			break;
 
 		    case 'o': //output to terminal instead of file - file name and path do nothing
@@ -143,9 +148,8 @@ int main(int argc, char *argv[])
     fflush(stdout);
 
     procinfo pinfo;
-    bool keepLogging = true;
-    while (keepLogging)
-    //for(int i = 0; i < 10; i++)
+    bool keepLogging = (logTimes==0); //if logTimes is zero, keep logging until the process dies
+    for(int currLogTime = 0; (currLogTime < logTimes) || keepLogging; currLogTime++)
     {
 	switch(get_proc_info(&pinfo, pid))
 	{
@@ -179,12 +183,13 @@ int main(int argc, char *argv[])
 		pname = pinfo.exName;
 		pname.erase(0,1);
 		pname.erase(pname.size() - 1);
-#ifdef DEBUG
 		print_string("pname is: " + pname);
-#endif
 	    }
-	    fname = pname + "." + pinfo.pid + ".log";
-	    print_string("Log File: " + fpath + fname);
+	    if(!terminalOutput) //don't care about the log file if not logging....
+	    {
+		fname = pname + "." + pinfo.pid + ".log";
+		print_string("Log File: " + fpath + fname);
+	    }
 	}
 
 	if(pinfo.state == "D") //D for DEAD
