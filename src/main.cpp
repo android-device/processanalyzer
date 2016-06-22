@@ -148,6 +148,10 @@ int main(int argc, char *argv[])
     fflush(stdout);
 
     procinfo pinfo;
+    if(logTimes < 0) //negative numbers make no sense
+    {
+	logTimes = 0;
+    }
     bool keepLogging = (logTimes==0); //if logTimes is zero, keep logging until the process dies
     for(int currLogTime = 0; (currLogTime < logTimes) || keepLogging; currLogTime++)
     {
