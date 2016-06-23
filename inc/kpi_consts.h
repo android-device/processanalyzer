@@ -10,7 +10,7 @@
 
 /* This separator is used for both the file output and the terminal output. Using only a comma for the file output means it can be imported as a csv - useful for having another program interpret this data. Using a comma followed by a tab makes it much easier to manually interpret, imo.
  */
-static const std::string outputSeparator = ",\t";
+static const std::string outputSeparator = ",";
 
 /* Help message for -h, and bad input...
  * Possible parameters:

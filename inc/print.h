@@ -33,7 +33,6 @@ void write_string(const std::string message);
  * that is handled here.
  */
 
-//TODO cpu load
 /* Using the utime, stime, cutime, and sutime, the actual cpu load is
  * calculated as a percent.
  */
