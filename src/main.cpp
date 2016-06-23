@@ -192,18 +192,16 @@ int main(int argc, char *argv[])
 	    if(!terminalOutput) //don't care about the log file if not logging....
 	    {
 		fname = pname + "." + pinfo.values[cpu_pid] + ".log";
-		print_string("Log File: " + fpath + fname);
 	    }
 	}
+
+	print_string("Log File: " + fpath + fname);
 
 	if(pinfo.values[cpu_state] == "D") //D for DEAD
 	{
 	    keepLogging = false;
 	}
-	//TODO: Implement custom path
-	//log file information
-	//std::string fpath = "/tmp"; //default location is /tmp
-	//std::string fname; //default file name is pname.log
+
 	if(terminalOutput) {
 	    outputData(pinfo);
 	} else {

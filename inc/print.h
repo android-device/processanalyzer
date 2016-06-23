@@ -28,11 +28,6 @@ void print_string(const std::string message);
  */
 void write_string(const std::string message);
 
-//TODO Implement custom path
-/* Functions for handling the file creation. If the user has specified a path,
- * that is handled here.
- */
-
 /* Using the utime, stime, cutime, and sutime, the actual cpu load is
  * calculated as a percent.
  */
