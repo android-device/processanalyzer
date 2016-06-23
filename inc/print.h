@@ -8,6 +8,7 @@
 #include <iostream>
 #include <fstream>
 #include <iosfwd>
+#include <unistd.h>
 
 /* Formats the message for printing
  */

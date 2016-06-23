@@ -1,5 +1,5 @@
 #include "print.h"
-#define DEBUG
+//#define DEBUG
 
 void outputData(procinfo pinfo)
 {
@@ -40,16 +40,18 @@ std::string format_message (procinfo pinfo)
     return formattedVal;
 }
 
+//Refer to:
+//http://stackoverflow.com/questions/16726779/how-do-i-get-the-total-cpu-usage-of-an-application-from-proc-pid-stat
 std::string get_cpuLoad(procinfo pinfo)
 {
     std::ifstream uptimeFile(uptimeFname.c_str());
     int uptime = 0;
     std::string temp = "";
-    //uptimeFile >> temp; //ignore the first value...
-//#ifdef DEBUG
-    //print_string("uptime val1: " + temp);
-//#endif
-    //temp = "";
+    uptimeFile >> temp; //ignore the first value...
+#ifdef DEBUG
+    print_string("uptime val1: " + temp);
+#endif
+    temp = "";
     uptimeFile >> temp;
 #ifdef DEBUG
     print_string("uptime val2: " + temp);
@@ -57,23 +59,20 @@ std::string get_cpuLoad(procinfo pinfo)
     uptime = std::stoi(temp);
 
     double totalTime = std::stoi(pinfo.values[cpu_utime]) + std::stoi(pinfo.values[cpu_stime]);
-#ifdef DEBUG
-    print_string("CPU totalTime: " + std::to_string(totalTime));
-#endif
     double ctotalTime = totalTime + std::stoi(pinfo.values[cpu_cutime]) + std::stoi(pinfo.values[cpu_cstime]);
-#ifdef DEBUG
-    print_string("CPU ctotalTime: " + std::to_string(ctotalTime));
-#endif
 
-    double totalTime_seconds = uptime - (std::stoi(pinfo.values[cpu_starttime]) / cpu_speed);
-#ifdef DEBUG
-    print_string("CPU totalTime_seconds: " + std::to_string(totalTime_seconds));
-#endif
-    double cpuUsage = 100 * ((totalTime / cpu_speed) / totalTime_seconds);
-#ifdef DEBUG
-    print_string("CPU cpuUsage: " + std::to_string(cpuUsage));
-#endif
+    double totalTime_seconds = uptime - (std::stoi(pinfo.values[cpu_starttime]) / sysconf(_SC_CLK_TCK));
+    double cpuUsage = 100 * ((totalTime / sysconf(_SC_CLK_TCK)) / totalTime_seconds);
 
     temp = std::to_string(totalTime_seconds) + outputSeparator + std::to_string(totalTime) + outputSeparator + std::to_string(cpuUsage) + "%";
+
+#ifdef DEBUG
+    print_string("CPU totalTime: " + std::to_string(totalTime));
+    print_string("CPU ctotalTime: " + std::to_string(ctotalTime));
+    print_string("CPU totalTime_seconds: " + std::to_string(totalTime_seconds));
+    print_string("CPU cpuUsage: " + std::to_string(cpuUsage));
+    print_string("CPU cpuUsage: " + temp);
+#endif
+
     return temp;
 }
