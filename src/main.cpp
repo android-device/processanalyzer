@@ -153,6 +153,7 @@ int main(int argc, char *argv[])
 	logTimes = 0;
     }
     bool keepLogging = (logTimes==0); //if logTimes is zero, keep logging until the process dies
+    bool showLogName = true;
     for(int currLogTime = 0; (currLogTime < logTimes) || keepLogging; currLogTime++)
     {
 	switch(get_proc_info(&pinfo, pid))
@@ -195,7 +196,11 @@ int main(int argc, char *argv[])
 	    }
 	}
 
-	print_string("Log File: " + fpath + fname);
+	if(showLogName && !terminalOutput)
+	{
+	    print_string("Log File: " + fpath + fname);
+	    showLogName = false;
+	}
 
 	if(pinfo.values[cpu_state] == "D") //D for DEAD
 	{
