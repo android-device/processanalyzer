@@ -153,7 +153,7 @@ int main(int argc, char *argv[])
 	logTimes = 0;
     }
     bool keepLogging = (logTimes==0); //if logTimes is zero, keep logging until the process dies
-    bool showLogName = true;
+    bool showOnce = true;
     for(int currLogTime = 0; (currLogTime < logTimes) || keepLogging; currLogTime++)
     {
 	switch(get_proc_info(&pinfo, pid))
@@ -181,14 +181,17 @@ int main(int argc, char *argv[])
 		break;
 	}
 
-	if(fname == "")
+	if(fname == "") //using the pid
 	{
-	    if(pname == "")
+	    if(pname == "") //set the pname for the log file.
 	    {
 		pname = pinfo.values[cpu_comm];
+		//The pname, when read from the stat file, is formatted as: (pname)
 		pname.erase(0,1);
 		pname.erase(pname.size() - 1);
+#ifdef DEBUG //assuming that you know the process you're looking at if you're using the pid...
 		print_string("pname is: " + pname);
+#endif
 	    }
 	    if(!terminalOutput) //don't care about the log file if not logging....
 	    {
@@ -196,10 +199,10 @@ int main(int argc, char *argv[])
 	    }
 	}
 
-	if(showLogName && !terminalOutput)
+	//only show logname once, and only if outputting to a log
+	if(showOnce && !terminalOutput)
 	{
 	    print_string("Log File: " + fpath + fname);
-	    showLogName = false;
 	}
 
 	if(pinfo.values[cpu_state] == "D") //D for DEAD
@@ -207,7 +210,24 @@ int main(int argc, char *argv[])
 	    keepLogging = false;
 	}
 
+	//header to use for the log files, in csv format
+	std::string  logHeader =
+	    //"state" + (terminalOutput ? outputSeparatorTerminal:outputSeparatorFile) +
+	    //"utime" + (terminalOutput ? outputSeparatorTerminal:outputSeparatorFile) +
+	    //"stime" + (terminalOutput ? outputSeparatorTerminal:outputSeparatorFile) +
+	    //"cutime" + (terminalOutput ? outputSeparatorTerminal:outputSeparatorFile) +
+	    //"cstime" + (terminalOutput ? outputSeparatorTerminal:outputSeparatorFile) +
+	    //"priority" + (terminalOutput ? outputSeparatorTerminal:outputSeparatorFile) +
+	    //"vsize" + (terminalOutput ? outputSeparatorTerminal:outputSeparatorFile) +
+	    "rss" + (terminalOutput ? outputSeparatorTerminal:outputSeparatorFile) +
+	    //"rlim" + (terminalOutput ? outputSeparatorTerminal:outputSeparatorFile) +
+	    //"starttime" + (terminalOutput ? outputSeparatorTerminal:outputSeparatorFile) +
+	    //"cputime seconds" + (terminalOutput ? outputSeparatorTerminal:outputSeparatorFile) +
+	    //"cputime" + (terminalOutput ? outputSeparatorTerminal:outputSeparatorFile) +
+	    "cpu usage";
+
 	if(terminalOutput) {
+	    print_string(logHeader);
 	    outputData(pinfo);
 	} else {
 	    if(!outputFile.is_open())
@@ -219,6 +239,7 @@ int main(int argc, char *argv[])
 	    outputData(pinfo, &outputFile);
 	}
 	sleep (1);
+	showOnce = false;
     }
     outputFile.close();
     return 0;

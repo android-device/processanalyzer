@@ -10,7 +10,8 @@
 
 /* This separator is used for both the file output and the terminal output. Using only a comma for the file output means it can be imported as a csv - useful for having another program interpret this data. Using a comma followed by a tab makes it much easier to manually interpret, imo.
  */
-static const std::string outputSeparator = ",";
+static const std::string outputSeparatorFile = ",";
+static const std::string outputSeparatorTerminal = ",\t";
 
 /* Help message for -h, and bad input...
  * Possible parameters:
@@ -23,10 +24,6 @@ static const std::string outputSeparator = ",";
  * h show Help
  */
 static const std::string helpMessage = "KPI Analyzer logs the cpu and memory usage of a process\n-i <pid>\n-n <process name>\tWill search in ps with grep to find the pid\n-f <filename>\n-p <path>\t\tPath to where the output log should be written\n-s\t\t\tDo no stop execution if the program is not found, keep searching for it until it starts - useful if running the analyzer before the process is started.\n-o\t\t\tOutput to terminal instead of file\n-h\t\t\tShow this message";
-
-//header to use for the log files, in csv format
-    //temp = std::to_string(totalTime_seconds) + outputSeparator + std::to_string(totalTime) + outputSeparator + std::to_string(cpuUsage) + "%";
-static const std::string  logHeader = "state" + outputSeparator + "utime" + outputSeparator + "stime" + outputSeparator + "cutime" + outputSeparator + "cstime" + outputSeparator + "priority" + outputSeparator + "vsize" + outputSeparator + "rss" + outputSeparator + "rlim" + outputSeparator + "starttime" + outputSeparator + "cputime seconds" + outputSeparator + "cputime" + outputSeparator + "cpu usage";
 
 /* The name of this exectuble. This is changed to the first argument in argv -
  * unless the first argument is null. If the first argument is null, the

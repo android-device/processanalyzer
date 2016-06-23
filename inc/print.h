@@ -18,7 +18,7 @@ void outputData(procinfo pinfo, std::ofstream *outputFile);
 /* Formats the message for printing - is called by the print function, rather
  * than calling it.
  */
-std::string format_message(procinfo pinfo);
+std::string format_message(procinfo pinfo, std::string outputSeparator);
 
 /* Prints the formatted message to the console
  */

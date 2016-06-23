@@ -3,13 +3,13 @@
 
 void outputData(procinfo pinfo)
 {
-    std::string formattedVal = format_message(pinfo);
+    std::string formattedVal = format_message(pinfo, outputSeparatorTerminal);
     print_string(formattedVal);
 }
 
 void outputData(procinfo pinfo, std::ofstream *outputFile)
 {
-    *outputFile << format_message(pinfo) << std::endl;
+    *outputFile << format_message(pinfo, outputSeparatorFile) << std::endl;
 }
 
 // Print message. Prepend with program name.
@@ -21,27 +21,26 @@ void print_string(std::string message)
     }
 }
 
-//  Format message for printing, then print it.
-std::string format_message (procinfo pinfo)
+/* Format message for printing, then print it. To add or remove values from the
+ * output, add or remove them here. The available values can be found under the
+ * pinfoval enum in kpi_consts.h
+ * 
+ * The exception is CPU usage. Because that has to be calculated using utime,
+ * stime, cutime, and cstime, it cannot simply be added - use the
+ * get_cpuLoad(pinfo) function made available in print.h/cpp
+ */
+std::string format_message (procinfo pinfo, std::string outputSeparator)
 {
     std::string formattedVal = "";
-    formattedVal += pinfo.values[cpu_state] + outputSeparator +
-	//pinfo.values[cpu_comm] + "," +
-	pinfo.values[cpu_utime] + outputSeparator +
-	pinfo.values[cpu_stime] + outputSeparator +
-	pinfo.values[cpu_cutime] + outputSeparator +
-	pinfo.values[cpu_cstime] + outputSeparator +
-	pinfo.values[cpu_priority] + outputSeparator +
-	pinfo.values[cpu_vsize] + outputSeparator +
+    formattedVal +=
 	pinfo.values[cpu_rss] + outputSeparator +
-	pinfo.values[cpu_rlim] + outputSeparator +
-	pinfo.values[cpu_starttime] + outputSeparator +
 	get_cpuLoad(pinfo);
     return formattedVal;
 }
 
-//Refer to:
-//http://stackoverflow.com/questions/16726779/how-do-i-get-the-total-cpu-usage-of-an-application-from-proc-pid-stat
+/* Refer to:
+ * http://stackoverflow.com/questions/16726779/how-do-i-get-the-total-cpu-usage-of-an-application-from-proc-pid-stat
+ */
 std::string get_cpuLoad(procinfo pinfo)
 {
     std::ifstream uptimeFile(uptimeFname.c_str());
@@ -59,7 +58,8 @@ std::string get_cpuLoad(procinfo pinfo)
     double totalTime_seconds = uptime - (std::stoi(pinfo.values[cpu_starttime]) / sysconf(_SC_CLK_TCK));
     double cpuUsage = 100 * ((ctotalTime / sysconf(_SC_CLK_TCK)) / totalTime_seconds);
 
-    temp = std::to_string(totalTime_seconds) + outputSeparator + std::to_string(totalTime) + outputSeparator + std::to_string(cpuUsage) + "%";
+    //temp = std::to_string(totalTime_seconds) + outputSeparator + std::to_string(totalTime) + outputSeparator + std::to_string(cpuUsage) + "%";
+    temp = std::to_string(cpuUsage) + "%";
 
 #ifdef DEBUG
     print_string("CPU totalTime: " + std::to_string(totalTime));
