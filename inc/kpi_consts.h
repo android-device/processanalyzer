@@ -8,6 +8,8 @@
 #include <string>
 #include <fstream>
 
+/* This separator is used for both the file output and the terminal output. Using only a comma for the file output means it can be imported as a csv - useful for having another program interpret this data. Using a comma followed by a tab makes it much easier to manually interpret, imo.
+ */
 static const std::string outputSeparator = ",\t";
 
 /* Help message for -h, and bad input...
@@ -34,6 +36,10 @@ static std::string kpiProg = "CPU/Mem Analyzer";
 
 /* Refer to http://man7.org/linux/man-pages/man5/proc.5.html for the
  * explanation of each value.
+ *
+ * These should be ordered in the same way the /proc/[pid]/stat file is ordered
+ * this is the order in which they are read! Rather than changing anythin else,
+ * just move these around.
  * 
  * When modifying, change the order here to change the order in the output.
  * 
@@ -99,8 +105,6 @@ enum pinfoVal {
  * the process being analyzed.
  */
 static const std::string uptimeFname = "/proc/uptime";
-
-static const int cpu_speed = 4000000; //4GHz
 
 //struct from: https://www.redhat.com/archives/axp-list/2001-January/msg00355.html
 // NOTE: Every value has been changed to a string to facilitate reading/writing
