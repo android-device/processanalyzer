@@ -97,7 +97,7 @@ enum pinfoVal {
  */
 static const std::string uptimeFname = "/proc/uptime";
 
-static const int 4000000 //4GHz
+static const int cpu_speed = 4000000; //4GHz
 
 static const std::string outputSeparator = ",\t";
 
