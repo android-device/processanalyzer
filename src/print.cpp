@@ -39,10 +39,22 @@ std::string format_message (procinfo pinfo)
     return formattedVal;
 }
 
-void openFile(const std::string  fname, const std::string path)
+std::string get_cpuLoad(procinfo pinfo)
 {
-}
+    ifstream uptimeFile(uptimeFname.c_str());
+    int uptime = 0;
+    std::string temp = "";
+    std::string temp << uptimeFile; //ignore the first value...
+    temp = "";
+    temp << uptimeFile;
+    uptime = std::stoi(temp);
 
-void closeFile()
-{
+    int totalTime = std::stoi(pinfo.utime) + std::stoi(pinfo.stime);
+    int ctotalTime = totalTime + std::stoi(pinfo.cutime) + std::stoi(pinfo.cstime);
+
+    double totalTime_seconds = uptime - (std::stoi(pinfo.starttime) / CPUSPEED);
+    double cpuUsage = 100 * ((totalTime / CPUSPEED) / totalTime_seconds);
+
+    temp = std::to_string(totalTime_seconds) + outputSeparator + std::to_string(totalTime);
+    return temp;
 }

@@ -23,8 +23,20 @@ static const std::string helpMessage = "KPI Analyzer logs the cpu and memory usa
 //header to use for the log files, in csv format
 static const std::string  logHeader = "state,utime,stime,cutime,cstime,priority,vsize,rss,rlim,starttime";
 
-// Pointer to program name
+/* The name of this exectuble. This is changed to the first argument in argv -
+ * unless the first argument is null. If the first argument is null, the
+ * default value (see below) is used.
+ */
 static std::string kpiProg = "CPU/Mem Analyzer";
+
+/* The uptime file. This is used to determine the cpu percentage load used by
+ * the process being analyzed.
+ */
+static const std::string uptimeFname = "/proc/uptime";
+
+static const int 4000000 //4GHz
+
+static const std::string outputSeparator = ",\t";
 
 //struct from: https://www.redhat.com/archives/axp-list/2001-January/msg00355.html
 // NOTE: Every value has been changed to a string to facilitate reading/writing
