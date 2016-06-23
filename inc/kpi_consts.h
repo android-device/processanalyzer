@@ -32,7 +32,7 @@ static const std::string helpMessage = "KPI Analyzer logs the cpu and memory usa
 static std::string kpiProg = "CPU/Mem Analyzer";
 
 /* Refer to http://man7.org/linux/man-pages/man5/proc.5.html for the
- * explanation of each value.
+ * explanation of each value. That is also from where their order was obtained.
  *
  * These should be ordered in the same way the /proc/[pid]/stat file is ordered
  * this is the order in which they are read! Rather than changing anythin else,
@@ -42,9 +42,14 @@ static std::string kpiProg = "CPU/Mem Analyzer";
  * 
  * If adding or removing values, remember to change NUMVALUES.
  *
- * While saving every value does not mean they ever have to be used, skipping
- * values requires skipping that many indices - remember to update those if
- * specific values are removed.
+ * VALUES CANNOT BE SKIPPED. Every value must be read in. The values are stored
+ * in an array, which cannot have non-existent sequential members! This enum is
+ * now only used to read in the specific values. Still, you can re-order them
+ * here to change the order in which they are read from the proc/[pid]/stat
+ * file without needing to change the way in which they are accessed later!
+ * They are still read sequential, from top to bottom, from the proc/[pid]/stat
+ * file, which is why changing their order here will change what the read value
+ * corresponds to.
  */
 #define NUMVALUES 52
 enum pinfoVal {
