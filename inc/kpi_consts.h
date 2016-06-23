@@ -40,7 +40,11 @@ static std::string kpiProg = "CPU/Mem Analyzer";
  * 
  * When modifying, change the order here to change the order in the output.
  * 
- * If adding or removing values, remember to change NUMVALUES
+ * If adding or removing values, remember to change NUMVALUES.
+ *
+ * While saving every value does not mean they ever have to be used, skipping
+ * values requires skipping that many indices - remember to update those if
+ * specific values are removed.
  */
 #define NUMVALUES 52
 enum pinfoVal {
