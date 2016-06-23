@@ -14,12 +14,26 @@
 void outputData(procinfo pinfo);
 void outputData(procinfo pinfo, std::ofstream *outputFile);
 
+/* Formats the message for printing - is called by the print function, rather
+ * than calling it.
+ */
 std::string format_message(procinfo pinfo);
 
-/* Prints the formatted message using printf
+/* Prints the formatted message to the console
  */
 void print_string(const std::string message);
 
 /* Writes the formatted message to a file
  */
 void write_string(const std::string message);
+
+//TODO Implement custom path
+/* Functions for handling the file creation. If the user has specified a path,
+ * that is handled here.
+ */
+
+//TODO cpu load
+/* Using the utime, stime, cutime, and sutime, the actual cpu load is
+ * calculated as a percent.
+ */
+std::string get_cpuLoad(procinfo pinfo);
