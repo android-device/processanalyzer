@@ -51,18 +51,13 @@ std::string get_cpuLoad(procinfo pinfo)
 #ifdef DEBUG
     print_string("uptime val1: " + temp);
 #endif
-    temp = "";
-    uptimeFile >> temp;
-#ifdef DEBUG
-    print_string("uptime val2: " + temp);
-#endif
     uptime = std::stoi(temp);
 
     double totalTime = std::stoi(pinfo.values[cpu_utime]) + std::stoi(pinfo.values[cpu_stime]);
     double ctotalTime = totalTime + std::stoi(pinfo.values[cpu_cutime]) + std::stoi(pinfo.values[cpu_cstime]);
 
     double totalTime_seconds = uptime - (std::stoi(pinfo.values[cpu_starttime]) / sysconf(_SC_CLK_TCK));
-    double cpuUsage = 100 * ((totalTime / sysconf(_SC_CLK_TCK)) / totalTime_seconds);
+    double cpuUsage = 100 * ((ctotalTime / sysconf(_SC_CLK_TCK)) / totalTime_seconds);
 
     temp = std::to_string(totalTime_seconds) + outputSeparator + std::to_string(totalTime) + outputSeparator + std::to_string(cpuUsage) + "%";
 
