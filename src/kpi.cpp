@@ -75,313 +75,163 @@ int get_proc_info(procinfo *pinfo, int pid)
 	 * Based on: http://linux.die.net/man/5/proc
 	 */
 #ifdef DEBUG
-		print_string(std::to_string(currIndex) + ", " + currVal);
+	print_string(std::to_string(currIndex) + ", " + currVal);
 #endif
 	switch(currIndex)
 	{
-	    case 0:
-#ifdef DEBUG
-		if((pinfo->pid != "") && (pinfo->pid != currVal))
-		{
-		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
-		}
-#endif
-		pinfo->pid = currVal;
+	    case cpu_pid:
+		pinfo->values[cpu_pid] = currVal;
 		break;
-	    case 1:
-#ifdef DEBUG
-		if((pinfo->exName != "") && (pinfo->exName != currVal))
-		{
-		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
-		}
-#endif
-		pinfo->exName = currVal;
+	    case cpu_comm:
+		pinfo->values[cpu_comm] = currVal;
 		break;
-	    case 2:
-#ifdef DEBUG
-		if((pinfo->state != "") && (pinfo->state != currVal))
-		{
-		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
-		}
-#endif
-		pinfo->state = currVal;
+	    case cpu_state:
+		pinfo->values[cpu_state] = currVal;
 		break;
-	    case 3:
-#ifdef DEBUG
-		if((pinfo->ppid != "") && (pinfo->ppid != currVal))
-		{
-		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
-		}
-#endif
-		pinfo->ppid = currVal; //parent pid
+	    case cpu_ppid:
+		pinfo->values[cpu_ppid] = currVal;
 		break;
-	    case 4:
-#ifdef DEBUG
-		if((pinfo->egid != "") && (pinfo->egid != currVal))
-		{
-		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
-		}
-#endif
-		pinfo->egid = currVal; //groud id
+	    case cpu_pgrp:
+		pinfo->values[cpu_pgrp] = currVal;
 		break;
-	    case 5:
-#ifdef DEBUG
-		if((pinfo->session != "") && (pinfo->session != currVal))
-		{
-		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
-		}
-#endif
-		pinfo->session = currVal; //session id
+	    case cpu_session:
+		pinfo->values[cpu_session] = currVal;
 		break;
-	    case 6:
-#ifdef DEBUG
-		if((pinfo->tty != "") && (pinfo->tty != currVal))
-		{
-		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
-		}
-#endif
-		pinfo->tty = currVal;
+	    case cpu_tty_nr:
+		pinfo->values[cpu_tty_nr] = currVal;
 		break;
-	    case 7:
-#ifdef DEBUG
-		if((pinfo->euid != "") && (pinfo->euid != currVal))
-		{
-		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
-		}
-#endif
-		pinfo->euid = currVal; //foreground process group id
-		//euid??
+	    case cpu_tpgid:
+		pinfo->values[cpu_tpgid] = currVal;
 		break;
-	    case 8:
-#ifdef DEBUG
-		if((pinfo->flags != "") && (pinfo->flags != currVal))
-		{
-		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
-		}
-#endif
-		pinfo->flags = currVal;
+	    case cpu_flags:
+		pinfo->values[cpu_flags] = currVal;
 		break;
-	    case 9:
-#ifdef DEBUG
-		if((pinfo->minflt != "") && (pinfo->minflt != currVal))
-		{
-		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
-		}
-#endif
-		pinfo->minflt = currVal; //minor faults
+	    case cpu_minflt:
+		pinfo->values[cpu_minflt] = currVal;
 		break;
-	    case 10:
-#ifdef DEBUG
-		if((pinfo->cminflt != "") && (pinfo->cminflt != currVal))
-		{
-		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
-		}
-#endif
-		pinfo->cminflt = currVal; //minor faults with children
+	    case cpu_cminflt:
+		pinfo->values[cpu_cminflt] = currVal;
 		break;
-	    case 11:
-#ifdef DEBUG
-		if((pinfo->majflt != "") && (pinfo->majflt != currVal))
-		{
-		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
-		}
-#endif
-		pinfo->majflt = currVal;
+	    case cpu_majflt:
+		pinfo->values[cpu_majflt] = currVal;
 		break;
-	    case 12:
-#ifdef DEBUG
-		if((pinfo->cmajflt != "") && (pinfo->cmajflt != currVal))
-		{
-		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
-		}
-#endif
-		pinfo->cmajflt = currVal;
+	    case cpu_cmajflt:
+		pinfo->values[cpu_cmajflt] = currVal;
 		break;
-	    case 13:
-#ifdef DEBUG
-		if((pinfo->utime != "") && (pinfo->utime != currVal))
-		{
-		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
-		}
-#endif
-		pinfo->utime = currVal; //Time process spent in user mode (clock ticks)
+	    case cpu_utime:
+		pinfo->values[cpu_utime] = currVal;
 		break;
-	    case 14:
-#ifdef DEBUG
-		if((pinfo->stime != "") && (pinfo->stime != currVal))
-		{
-		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
-		}
-#endif
-		pinfo->stime = currVal; //Time spent in kernel mode
+	    case cpu_stime:
+		pinfo->values[cpu_stime] = currVal;
 		break;
-	    case 15:
-#ifdef DEBUG
-		if((pinfo->cutime != "") && (pinfo->cutime != currVal))
-		{
-		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
-		}
-#endif
-		pinfo->cutime = currVal; //Child time in user mode
+	    case cpu_cutime:
+		pinfo->values[cpu_cutime] = currVal;
 		break;
-	    case 16:
-#ifdef DEBUG
-		if((pinfo->cstime != "") && (pinfo->cstime != currVal))
-		{
-		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
-		}
-#endif
-		pinfo->cstime = currVal; //Child time in kernel mode
+	    case cpu_cstime:
+		pinfo->values[cpu_cstime] = currVal;
 		break;
-	    case 17:
-#ifdef DEBUG
-		if((pinfo->priority != "") && (pinfo->priority != currVal))
-		{
-		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
-		}
-#endif
-		pinfo->priority = currVal; //nice value + 15 (?)
+	    case cpu_priority:
+		pinfo->values[cpu_priority] = currVal;
 		break;
-	    case 18:
-		//the nice value
+	    case cpu_nice:
+		pinfo->values[cpu_nice] = currVal;
 		break;
-	    case 19:
-#ifdef DEBUG
-		if((pinfo->numThreads != "") && (pinfo->numThreads != currVal))
-		{
-		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
-		}
-#endif
-		pinfo->numThreads = currVal;
+	    case cpu_numThreads:
+		pinfo->values[cpu_numThreads] = currVal;
 		break;
-	    case 20:
-#ifdef DEBUG
-		if((pinfo->itrealvalue != "") && (pinfo->itrealvalue != currVal))
-		{
-		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
-		}
-#endif
-		pinfo->itrealvalue = currVal; //time before sigalarm is sent
+	    case cpu_itrealvalue:
+		pinfo->values[cpu_itrealvalue] = currVal;
 		break;
-	    case 21:
-#ifdef DEBUG
-		if((pinfo->starttime != "") && (pinfo->starttime != currVal))
-		{
-		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
-		}
-#endif
-		pinfo->starttime = currVal;
+	    case cpu_starttime:
+		pinfo->values[cpu_starttime] = currVal;
 		break;
-	    case 22:
-#ifdef DEBUG
-		if((pinfo->vsize != "") && (pinfo->vsize != currVal))
-		{
-		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
-		}
-#endif
-		pinfo->vsize = currVal; //virtual memory size
+	    case cpu_vsize:
+		pinfo->values[cpu_vsize] = currVal;
 		break;
-	    case 23:
-#ifdef DEBUG
-		if((pinfo->rss != "") && (pinfo->rss != currVal))
-		{
-		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
-		}
-#endif
-		pinfo->rss = currVal;
+	    case cpu_rss:
+		pinfo->values[cpu_rss] = currVal;
 		break;
-	    case 24:
-#ifdef DEBUG
-		if((pinfo->rlim != "") && (pinfo->rlim != currVal))
-		{
-		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
-		}
-#endif
-		pinfo->rlim = currVal;
+	    case cpu_startcode:
+		pinfo->values[cpu_startcode] = currVal;
 		break;
-	    case 25:
-#ifdef DEBUG
-		if((pinfo->startcode != "") && (pinfo->startcode != currVal))
-		{
-		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
-		}
-#endif
-		pinfo->startcode = currVal;
+	    case cpu_endcode:
+		pinfo->values[cpu_endcode] = currVal;
 		break;
-	    case 26:
-#ifdef DEBUG
-		if((pinfo->endcode != "") && (pinfo->endcode != currVal))
-		{
-		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
-		}
-#endif
-		pinfo->endcode = currVal;
+	    case cpu_startstack:
+		pinfo->values[cpu_startstack] = currVal;
 		break;
-	    case 27:
-#ifdef DEBUG
-		if((pinfo->startstack != "") && (pinfo->startstack != currVal))
-		{
-		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
-		}
-#endif
-		pinfo->startstack = currVal;
+	    case cpu_kstkesp:
+		pinfo->values[cpu_kstkesp] = currVal;
 		break;
-	    case 28:
-#ifdef DEBUG
-		if((pinfo->kstkesp != "") && (pinfo->kstkesp != currVal))
-		{
-		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
-		}
-#endif
-		pinfo->kstkesp = currVal; //current ESP (stack pointer)
+	    case cpu_kstkeip:
+		pinfo->values[cpu_kstkeip] = currVal;
 		break;
-	    case 29:
-#ifdef DEBUG
-		if((pinfo->kstkeip != "") && (pinfo->kstkeip != currVal))
-		{
-		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
-		}
-#endif
-		pinfo->kstkeip = currVal; //current EIP (instruction pointer)
+	    case cpu_signal:
+		pinfo->values[cpu_signal] = currVal;
 		break;
-	    case 30:
-		//OBSOLETE INFO - signal
+	    case cpu_blocked:
+		pinfo->values[cpu_blocked] = currVal;
 		break;
-	    case 31:
-		//OBSOLETE INFO - blocked
+	    case cpu_sigignore:
+		pinfo->values[cpu_sigignore] = currVal;
 		break;
-	    case 32:
-		//OBSOLETE INFO - sigignore
+	    case cpu_sigcatch:
+		pinfo->values[cpu_sigcatch] = currVal;
 		break;
-	    case 33:
-		//OBSOLETE INFO - sigcatch
+	    case cpu_wchan:
+		pinfo->values[cpu_wchan] = currVal;
 		break;
-	    case 34:
-#ifdef DEBUG
-		if((pinfo->wchan != "") && (pinfo->wchan != currVal))
-		{
-		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
-		}
-#endif
-		pinfo->wchan = currVal; //channel in which the process is waiting
+	    case cpu_nswap:
+		pinfo->values[cpu_nswap] = currVal;
 		break;
-	    case 35:
-		//number of pages swapped
+	    case cpu_cnswap:
+		pinfo->values[cpu_cnswap] = currVal;
 		break;
-	    case 36:
-		//number of pages swapped for child processes
+	    case cpu_exit_signal:
+		pinfo->values[cpu_exit_signal] = currVal;
 		break;
-	    case 37:
-		//signal sent to parent when process dies
+	    case cpu_processor:
+		pinfo->values[cpu_processor] = currVal;
 		break;
-	    default: 
-		if(currIndex > 37) //More values available than are being used.
-		{
-		    statFile.close();
-		    return -2;
-		} else { //Missed a value!
-		    print_string("Skipped " + std::to_string(currIndex));
-		}
+	    case cpu_rt_priority:
+		pinfo->values[cpu_rt_priority] = currVal;
+		break;
+	    case cpu_policy:
+		pinfo->values[cpu_policy] = currVal;
+		break;
+	    case cpu_delayacct_blkio_ticks:
+		pinfo->values[cpu_delayacct_blkio_ticks] = currVal;
+		break;
+	    case cpu_guest_time:
+		pinfo->values[cpu_guest_time] = currVal;
+		break;
+	    case cpu_cguest_time:
+		pinfo->values[cpu_cguest_time] = currVal;
+		break;
+	    case cpu_start_data:
+		pinfo->values[cpu_start_data] = currVal;
+		break;
+	    case cpu_end_data:
+		pinfo->values[cpu_end_data] = currVal;
+		break;
+	    case cpu_start_brk:
+		pinfo->values[cpu_start_brk] = currVal;
+		break;
+	    case cpu_arg_start:
+		pinfo->values[cpu_arg_start] = currVal;
+		break;
+	    case cpu_arg_end:
+		pinfo->values[cpu_arg_end] = currVal;
+		break;
+	    case cpu_env_start:
+		pinfo->values[cpu_env_start] = currVal;
+		break;
+	    case cpu_env_end:
+		pinfo->values[cpu_env_end] = currVal;
+		break;
+	    case cpu_exit_code:
+		pinfo->values[cpu_exit_code] = currVal;
+		break;
 	}
 	currIndex++;
 	currVal = "";

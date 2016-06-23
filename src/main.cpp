@@ -184,19 +184,19 @@ int main(int argc, char *argv[])
 	{
 	    if(pname == "")
 	    {
-		pname = pinfo.exName;
+		pname = pinfo.values[cpu_comm];
 		pname.erase(0,1);
 		pname.erase(pname.size() - 1);
 		print_string("pname is: " + pname);
 	    }
 	    if(!terminalOutput) //don't care about the log file if not logging....
 	    {
-		fname = pname + "." + pinfo.pid + ".log";
+		fname = pname + "." + pinfo.values[cpu_pid] + ".log";
 		print_string("Log File: " + fpath + fname);
 	    }
 	}
 
-	if(pinfo.state == "D") //D for DEAD
+	if(pinfo.values[cpu_state] == "D") //D for DEAD
 	{
 	    keepLogging = false;
 	}

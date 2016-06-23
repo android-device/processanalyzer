@@ -26,52 +26,71 @@ static const std::string  logHeader = "state,\tutime,\tstime,\tcutime,\tcstime,\
 // Pointer to program name
 static std::string kpiProg = "CPU/Mem Analyzer";
 
-//struct from: https://www.redhat.com/archives/axp-list/2001-January/msg00355.html
-// NOTE: Every value has been changed to a string to facilitate reading/writing
-// in files
+/* Refer to http://man7.org/linux/man-pages/man5/proc.5.html for the
+ * explanation of each value.
+ * 
+ * When modifying, change the order here to change the order in the output.
+ * 
+ * If adding or removing values, remember to change NUMVALUES
+ */
+#define NUMVALUES 52
+enum pinfoVal {
+    cpu_pid,
+    cpu_comm,
+    cpu_state,
+    cpu_ppid,
+    cpu_pgrp,
+    cpu_session,
+    cpu_tty_nr,
+    cpu_tpgid,
+    cpu_flags,
+    cpu_minflt,
+    cpu_cminflt,
+    cpu_majflt,
+    cpu_cmajflt,
+    cpu_utime,
+    cpu_stime,
+    cpu_cutime,
+    cpu_cstime,
+    cpu_priority,
+    cpu_nice,
+    cpu_numThreads,
+    cpu_itrealvalue,
+    cpu_starttime,
+    cpu_vsize,
+    cpu_rss,
+    cpu_rlim,
+    cpu_startcode,
+    cpu_endcode,
+    cpu_startstack,
+    cpu_kstkesp,
+    cpu_kstkeip,
+    cpu_signal,
+    cpu_blocked,
+    cpu_sigignore,
+    cpu_sigcatch,
+    cpu_wchan,
+    cpu_nswap,
+    cpu_cnswap,
+    cpu_exit_signal,
+    cpu_processor,
+    cpu_rt_priority,
+    cpu_policy,
+    cpu_delayacct_blkio_ticks,
+    cpu_guest_time,
+    cpu_cguest_time,
+    cpu_start_data,
+    cpu_end_data,
+    cpu_start_brk,
+    cpu_arg_start,
+    cpu_arg_end,
+    cpu_env_start,
+    cpu_env_end,
+    cpu_exit_code
+};
+
 typedef struct statstruct_proc {
-    std::string pid,	/** The process id. **/
-	exName,		/** The filename of the executable **/
-	state,		/** R is running, S is sleeping, 
-				D is sleeping in an uninterruptible wait,
-				Z is zombie, T is traced or stopped **/
-	euid,		/** effective user id **/
-	egid,		/** effective group id */
-	ppid,		/** The pid of the parent. **/
-	pgrp,		/** The pgrp of the process. **/
-	session,	/** The session id of the process. **/
-	tty,		/** The tty the process uses **/
-	tpgid,		/** (too long) **/
-	flags,		/** The flags of the process. **/
-	minflt,		/** The number of minor faults **/
-	cminflt,	/** The number of minor faults with childs **/
-	majflt,		/** The number of major faults **/
-	cmajflt,	/** The number of major faults with childs **/
-	utime,		/** user mode jiffies **/
-	stime,		/** kernel mode jiffies **/
-	cutime,		/** user mode jiffies with childs **/
-	cstime,		/** kernel mode jiffies with childs **/
-	counter,	/** process's next timeslice **/
-	priority,	/** the standard nice value, plus fifteen **/
-	numThreads,	/** the number of threads **/
-	timeout,	/** The time in jiffies of the next timeout **/
-	itrealvalue,	/** The time before the next SIGALRM is sent to the process **/
-	starttime,	/** 20 **/     /** Time the process started after system boot **/
-	vsize,		/** Virtual memory size **/
-	rss,		/** Resident Set Size **/
-	rlim,		/** Current limit in bytes on the rss **/
-	startcode,	/** The address above which program text can run **/
-	endcode,	/** The address below which program text can run **/
-	startstack,	/** The address of the start of the stack **/
-	kstkesp,	/** The current value of ESP **/
-	kstkeip,	/** The current value of EIP **/
-	signal,		/** The bitmap of pending signals **/
-	blocked,	/** 30 **/       /** The bitmap of blocked signals **/
-	sigignore,	/** The bitmap of ignored signals **/
-	sigcatch,	/** The bitmap of catched signals **/
-	wchan,		/** 33 **/        /** (too long) **/
-	sched,		/** scheduler **/
-	sched_priority;	/** scheduler priority **/
+    std::string values[NUMVALUES];
 } procinfo;
 
 #endif

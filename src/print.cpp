@@ -26,17 +26,17 @@ std::string format_message (procinfo pinfo)
 {
     std::string outputSeparator = ",\t"; //TEMPORARY
     std::string formattedVal = "";
-    formattedVal += pinfo.state + outputSeparator +
-	//pinfo.exName + "," +
-	pinfo.utime + outputSeparator +
-	pinfo.stime + outputSeparator +
-	pinfo.cutime + outputSeparator +
-	pinfo.cstime + outputSeparator +
-	pinfo.priority + outputSeparator +
-	pinfo.vsize + outputSeparator +
-	pinfo.rss + outputSeparator +
-	pinfo.rlim + outputSeparator +
-	pinfo.starttime;
+    formattedVal += pinfo.values[state] + outputSeparator +
+	//pinfo.values[exName] + "," +
+	pinfo.values[utime] + outputSeparator +
+	pinfo.values[cpu_stime] + outputSeparator +
+	pinfo.values[cutime] + outputSeparator +
+	pinfo.values[cstime] + outputSeparator +
+	pinfo.values[priority] + outputSeparator +
+	pinfo.values[vsize] + outputSeparator +
+	pinfo.values[rss] + outputSeparator +
+	pinfo.values[rlim] + outputSeparator +
+	pinfo.values[starttime];
     return formattedVal;
 }
 
