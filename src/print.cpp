@@ -24,17 +24,18 @@ void print_string(std::string message)
 //  Format message for printing, then print it.
 std::string format_message (procinfo pinfo)
 {
+    std::string outputSeparator = ",\t"; //TEMPORARY
     std::string formattedVal = "";
-    formattedVal += pinfo.state + ",\t" +
+    formattedVal += pinfo.state + outputSeparator +
 	//pinfo.exName + "," +
-	pinfo.utime + ",\t" +
-	pinfo.stime + ",\t" +
-	pinfo.cutime + ",\t" +
-	pinfo.cstime + ",\t" +
-	pinfo.priority + ",\t" +
-	pinfo.vsize + ",\t" +
-	pinfo.rss + ",\t" +
-	pinfo.rlim + ",\t" +
+	pinfo.utime + outputSeparator +
+	pinfo.stime + outputSeparator +
+	pinfo.cutime + outputSeparator +
+	pinfo.cstime + outputSeparator +
+	pinfo.priority + outputSeparator +
+	pinfo.vsize + outputSeparator +
+	pinfo.rss + outputSeparator +
+	pinfo.rlim + outputSeparator +
 	pinfo.starttime;
     return formattedVal;
 }

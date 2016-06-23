@@ -81,7 +81,7 @@ int get_proc_info(procinfo *pinfo, int pid)
 	{
 	    case 0:
 #ifdef DEBUG
-		if(pinfo->pid != currVal)
+		if((pinfo->pid != "") && (pinfo->pid != currVal))
 		{
 		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
 		}
@@ -90,7 +90,7 @@ int get_proc_info(procinfo *pinfo, int pid)
 		break;
 	    case 1:
 #ifdef DEBUG
-		if(pinfo->exName != currVal)
+		if((pinfo->exName != "") && (pinfo->exName != currVal))
 		{
 		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
 		}
@@ -99,7 +99,7 @@ int get_proc_info(procinfo *pinfo, int pid)
 		break;
 	    case 2:
 #ifdef DEBUG
-		if(pinfo->state != currVal)
+		if((pinfo->state != "") && (pinfo->state != currVal))
 		{
 		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
 		}
@@ -108,7 +108,7 @@ int get_proc_info(procinfo *pinfo, int pid)
 		break;
 	    case 3:
 #ifdef DEBUG
-		if(pinfo->ppid != currVal)
+		if((pinfo->ppid != "") && (pinfo->ppid != currVal))
 		{
 		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
 		}
@@ -117,7 +117,7 @@ int get_proc_info(procinfo *pinfo, int pid)
 		break;
 	    case 4:
 #ifdef DEBUG
-		if(pinfo->egid != currVal)
+		if((pinfo->egid != "") && (pinfo->egid != currVal))
 		{
 		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
 		}
@@ -126,7 +126,7 @@ int get_proc_info(procinfo *pinfo, int pid)
 		break;
 	    case 5:
 #ifdef DEBUG
-		if(pinfo->session != currVal)
+		if((pinfo->session != "") && (pinfo->session != currVal))
 		{
 		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
 		}
@@ -135,7 +135,7 @@ int get_proc_info(procinfo *pinfo, int pid)
 		break;
 	    case 6:
 #ifdef DEBUG
-		if(pinfo->tty != currVal)
+		if((pinfo->tty != "") && (pinfo->tty != currVal))
 		{
 		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
 		}
@@ -144,7 +144,7 @@ int get_proc_info(procinfo *pinfo, int pid)
 		break;
 	    case 7:
 #ifdef DEBUG
-		if(pinfo->euid != currVal)
+		if((pinfo->euid != "") && (pinfo->euid != currVal))
 		{
 		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
 		}
@@ -154,7 +154,7 @@ int get_proc_info(procinfo *pinfo, int pid)
 		break;
 	    case 8:
 #ifdef DEBUG
-		if(pinfo->flags != currVal)
+		if((pinfo->flags != "") && (pinfo->flags != currVal))
 		{
 		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
 		}
@@ -163,7 +163,7 @@ int get_proc_info(procinfo *pinfo, int pid)
 		break;
 	    case 9:
 #ifdef DEBUG
-		if(pinfo->minflt != currVal)
+		if((pinfo->minflt != "") && (pinfo->minflt != currVal))
 		{
 		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
 		}
@@ -172,7 +172,7 @@ int get_proc_info(procinfo *pinfo, int pid)
 		break;
 	    case 10:
 #ifdef DEBUG
-		if(pinfo->cminflt != currVal)
+		if((pinfo->cminflt != "") && (pinfo->cminflt != currVal))
 		{
 		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
 		}
@@ -181,7 +181,7 @@ int get_proc_info(procinfo *pinfo, int pid)
 		break;
 	    case 11:
 #ifdef DEBUG
-		if(pinfo->majflt != currVal)
+		if((pinfo->majflt != "") && (pinfo->majflt != currVal))
 		{
 		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
 		}
@@ -190,7 +190,7 @@ int get_proc_info(procinfo *pinfo, int pid)
 		break;
 	    case 12:
 #ifdef DEBUG
-		if(pinfo->cmajflt != currVal)
+		if((pinfo->cmajflt != "") && (pinfo->cmajflt != currVal))
 		{
 		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
 		}
@@ -199,7 +199,7 @@ int get_proc_info(procinfo *pinfo, int pid)
 		break;
 	    case 13:
 #ifdef DEBUG
-		if(pinfo->utime != currVal)
+		if((pinfo->utime != "") && (pinfo->utime != currVal))
 		{
 		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
 		}
@@ -208,7 +208,7 @@ int get_proc_info(procinfo *pinfo, int pid)
 		break;
 	    case 14:
 #ifdef DEBUG
-		if(pinfo->stime != currVal)
+		if((pinfo->stime != "") && (pinfo->stime != currVal))
 		{
 		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
 		}
@@ -217,7 +217,7 @@ int get_proc_info(procinfo *pinfo, int pid)
 		break;
 	    case 15:
 #ifdef DEBUG
-		if(pinfo->cutime != currVal)
+		if((pinfo->cutime != "") && (pinfo->cutime != currVal))
 		{
 		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
 		}
@@ -226,7 +226,7 @@ int get_proc_info(procinfo *pinfo, int pid)
 		break;
 	    case 16:
 #ifdef DEBUG
-		if(pinfo->cstime != currVal)
+		if((pinfo->cstime != "") && (pinfo->cstime != currVal))
 		{
 		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
 		}
@@ -235,7 +235,7 @@ int get_proc_info(procinfo *pinfo, int pid)
 		break;
 	    case 17:
 #ifdef DEBUG
-		if(pinfo->priority != currVal)
+		if((pinfo->priority != "") && (pinfo->priority != currVal))
 		{
 		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
 		}
@@ -247,7 +247,7 @@ int get_proc_info(procinfo *pinfo, int pid)
 		break;
 	    case 19:
 #ifdef DEBUG
-		if(pinfo->numThreads != currVal)
+		if((pinfo->numThreads != "") && (pinfo->numThreads != currVal))
 		{
 		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
 		}
@@ -256,7 +256,7 @@ int get_proc_info(procinfo *pinfo, int pid)
 		break;
 	    case 20:
 #ifdef DEBUG
-		if(pinfo->itrealvalue != currVal)
+		if((pinfo->itrealvalue != "") && (pinfo->itrealvalue != currVal))
 		{
 		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
 		}
@@ -265,7 +265,7 @@ int get_proc_info(procinfo *pinfo, int pid)
 		break;
 	    case 21:
 #ifdef DEBUG
-		if(pinfo->starttime != currVal)
+		if((pinfo->starttime != "") && (pinfo->starttime != currVal))
 		{
 		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
 		}
@@ -274,7 +274,7 @@ int get_proc_info(procinfo *pinfo, int pid)
 		break;
 	    case 22:
 #ifdef DEBUG
-		if(pinfo->vsize != currVal)
+		if((pinfo->vsize != "") && (pinfo->vsize != currVal))
 		{
 		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
 		}
@@ -283,7 +283,7 @@ int get_proc_info(procinfo *pinfo, int pid)
 		break;
 	    case 23:
 #ifdef DEBUG
-		if(pinfo->rss != currVal)
+		if((pinfo->rss != "") && (pinfo->rss != currVal))
 		{
 		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
 		}
@@ -292,7 +292,7 @@ int get_proc_info(procinfo *pinfo, int pid)
 		break;
 	    case 24:
 #ifdef DEBUG
-		if(pinfo->rlim != currVal)
+		if((pinfo->rlim != "") && (pinfo->rlim != currVal))
 		{
 		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
 		}
@@ -301,7 +301,7 @@ int get_proc_info(procinfo *pinfo, int pid)
 		break;
 	    case 25:
 #ifdef DEBUG
-		if(pinfo->startcode != currVal)
+		if((pinfo->startcode != "") && (pinfo->startcode != currVal))
 		{
 		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
 		}
@@ -310,7 +310,7 @@ int get_proc_info(procinfo *pinfo, int pid)
 		break;
 	    case 26:
 #ifdef DEBUG
-		if(pinfo->endcode != currVal)
+		if((pinfo->endcode != "") && (pinfo->endcode != currVal))
 		{
 		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
 		}
@@ -319,7 +319,7 @@ int get_proc_info(procinfo *pinfo, int pid)
 		break;
 	    case 27:
 #ifdef DEBUG
-		if(pinfo->startstack != currVal)
+		if((pinfo->startstack != "") && (pinfo->startstack != currVal))
 		{
 		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
 		}
@@ -328,7 +328,7 @@ int get_proc_info(procinfo *pinfo, int pid)
 		break;
 	    case 28:
 #ifdef DEBUG
-		if(pinfo->kstkesp != currVal)
+		if((pinfo->kstkesp != "") && (pinfo->kstkesp != currVal))
 		{
 		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
 		}
@@ -337,7 +337,7 @@ int get_proc_info(procinfo *pinfo, int pid)
 		break;
 	    case 29:
 #ifdef DEBUG
-		if(pinfo->kstkeip != currVal)
+		if((pinfo->kstkeip != "") && (pinfo->kstkeip != currVal))
 		{
 		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
 		}
@@ -358,7 +358,7 @@ int get_proc_info(procinfo *pinfo, int pid)
 		break;
 	    case 34:
 #ifdef DEBUG
-		if(pinfo->wchan != currVal)
+		if((pinfo->wchan != "") && (pinfo->wchan != currVal))
 		{
 		    print_string("Changed: " + currVal + ": " + std::to_string(currIndex));
 		}
