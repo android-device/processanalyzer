@@ -210,21 +210,14 @@ int main(int argc, char *argv[])
 	    keepLogging = false;
 	}
 
-	//header to use for the log files, in csv format
+	/* The headers for the outputs are already created. Simply put them in
+	 * the same order here as they are in format_output under print.h/cpp.
+	 * Note that, similar to within format_output, cpu usage is a
+	 * calculated value and is therefore not a predefined header.
+	 */
 	std::string  logHeader =
-	    //"state" + (terminalOutput ? outputSeparatorTerminal:outputSeparatorFile) +
-	    //"utime" + (terminalOutput ? outputSeparatorTerminal:outputSeparatorFile) +
-	    //"stime" + (terminalOutput ? outputSeparatorTerminal:outputSeparatorFile) +
-	    //"cutime" + (terminalOutput ? outputSeparatorTerminal:outputSeparatorFile) +
-	    //"cstime" + (terminalOutput ? outputSeparatorTerminal:outputSeparatorFile) +
-	    //"priority" + (terminalOutput ? outputSeparatorTerminal:outputSeparatorFile) +
-	    //"vsize" + (terminalOutput ? outputSeparatorTerminal:outputSeparatorFile) +
-	    "rss" + (terminalOutput ? outputSeparatorTerminal:outputSeparatorFile) +
-	    //"rlim" + (terminalOutput ? outputSeparatorTerminal:outputSeparatorFile) +
-	    //"starttime" + (terminalOutput ? outputSeparatorTerminal:outputSeparatorFile) +
-	    //"cputime seconds" + (terminalOutput ? outputSeparatorTerminal:outputSeparatorFile) +
-	    //"cputime" + (terminalOutput ? outputSeparatorTerminal:outputSeparatorFile) +
-	    "cpu usage";
+	    pinfo.headers[cpu_rss] + (terminalOutput ? outputSeparatorTerminal:outputSeparatorFile) +
+	    "cpu_usage";
 
 	if(terminalOutput) {
 	    print_string(logHeader);
