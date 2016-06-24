@@ -1,3 +1,6 @@
+#ifndef PROCESS
+#define PROCESS
+
 #include "kpi_consts.h"
 #include <fstream>
 #include <string>
@@ -25,7 +28,8 @@ class process {
 
     public:
 	process();
-	process& operator=(process nprocess);
+	process& operator=(process);
+	process(const process&);
 
 	void set_pid(int npid) { this->pid = npid; }
 	void set_pname(std::string npname) { this->pname = npname; }
@@ -53,3 +57,5 @@ class process {
 
 	void outputData();
 };
+
+#endif

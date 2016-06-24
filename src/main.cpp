@@ -133,7 +133,8 @@ int main(int argc, char *argv[])
     for(std::vector<process>::iterator currProcess=processes.begin(); currProcess!=processes.end(); ++currProcess)
     {
 	if ( //process not found (searches with pname OR pid based on which is set)
-		((currProcess->pname!="") && (currProcess->pid==0)) ? !processSearch(currProcess->search, currProcess->pname, &currProcess->pid) : !processSearch(currProcess->search, currProcess->pid)
+		processSearch(*currProcess)
+		//((currProcess->pname!="") && (currProcess->pid==0)) ? !processSearch(currProcess->search, currProcess->pname, &currProcess->pid) : !processSearch(currProcess->search, currProcess->pid)
 	   ) 
 	{
 	    print_string("Process not found");

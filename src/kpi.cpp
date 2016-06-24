@@ -47,6 +47,20 @@ bool processSearch(bool search, std::string pname, int *pid) //overloaded
     return false;
 }
 
+bool processSearch(process currProcess)
+{
+    bool result = false;;
+    if((currProcess.get_pname() != "") && (currProcess.get_pid() == 0)) //pname set, pid not set, search with pname
+    {
+	int pid = 0; //will be set in currprocess, can't be done by called function
+	result = processSearch(currProcess.get_search(), currProcess.get_pname(), &pid);
+	currProcess.set_pid(pid);
+    } else {
+	result = processSearch(currProcess.get_search(), currProcess.get_pid());
+    }
+    return result;
+}
+
 int get_proc_info(procinfo *pinfo, int pid)
 {
     std::ifstream statFile;
