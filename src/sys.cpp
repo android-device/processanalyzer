@@ -3,14 +3,15 @@
 
 int checkFile(std::string filename)
 {
-#ifdef DEBUG
-    print_string("Inside!");
-#endif
+    /* Determine the permissions available on the file. When executing
+     * normally, only care about access - the caller would use the error code
+     * returned if they cared about a specific permission. We only care about
+     * the specific error message when in debug mode.
+     */
     if(access(filename.c_str(), F_OK) == -1) //error
     {
 #ifdef DEBUG
-    print_string("Read Error!");
-#endif
+	print_string("Read Error!");
 	std::string errMsg = "";
 	switch(errno)
 	{
@@ -34,8 +35,12 @@ int checkFile(std::string filename)
 		break;
 	}
 	print_string(errMsg);
+#endif
+
 	return 0;
+
     } else if(access(filename.c_str(), W_OK) == -1) { //read okay, check write
+#ifdef DEBUG
 	std::string errMsg = "";
 	switch(errno)
 	{
@@ -59,6 +64,7 @@ int checkFile(std::string filename)
 		break;
 	}
 	print_string(errMsg);
+#endif
 	return 1; //1 means read only
     } else { //read AND write
 #ifdef DEBUG
