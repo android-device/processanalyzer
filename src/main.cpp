@@ -21,7 +21,7 @@ Description : CPU and Memory Analyzer for KPI standards
 #include "print.h"
 #include "kpi.h"
 
-#define DEBUG
+//#define DEBUG
 
 //  Print Usage Message
 int prtUsage ()
@@ -186,15 +186,17 @@ int main(int argc, char *argv[])
 	    }
 	    switch(get_proc_info(&pinfo, currProcess->get_pid()))
 	    {
-#ifdef DEBUG
 		case -3: //error condition
 		    //TODO error handling
+#ifdef DEBUG
 		    print_string("Not all pinfo values filled");
+#endif
 		    break;
 		case -2: //error condition
+#ifdef DEBUG
 		    print_string("Extraneous values, some not read");
-		    break;
 #endif
+		    break;
 		case -1: //error condition
 		    currProcess->set_keepLogging();
 		    print_string("Error while opening stat file");
@@ -206,6 +208,8 @@ int main(int argc, char *argv[])
 		    print_string("Unkown exit condition");
 		    break;
 	    }
+
+	    currProcess->set_pinfo(pinfo);
 
 	    if(currProcess->get_fname() == "") //use the pid
 	    {

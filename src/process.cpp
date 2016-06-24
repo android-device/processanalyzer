@@ -1,5 +1,5 @@
 #include "process.h"
-#define DEBUG
+//#define DEBUG
 
 process::process() {
     //log file information
@@ -71,10 +71,10 @@ void process::outputData()
     }
 }
 
-void process::set_pinfo(procinfo pinfo) {
+void process::set_pinfo(const procinfo npinfo) {
     for(int currIndex=0; currIndex<NUMVALUES; currIndex++)
     {
-	pinfo.values[currIndex] = pinfo.values[currIndex];
+	pinfo.values[currIndex] = npinfo.values[currIndex];
     }
 }
 

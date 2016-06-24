@@ -1,5 +1,5 @@
 #include "print.h"
-#define DEBUG
+//#define DEBUG
 
 // Print message. Prepend with program name.
 void print_string(std::string message)
