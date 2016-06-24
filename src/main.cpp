@@ -119,7 +119,9 @@ int main(int argc, char *argv[])
 		prtUsage();
 		return 1;
 	    }
+
 	    processes.push_back(currProcess);
+
 	    else //is not correctly formatted
 	    {
 		prtUsage();
@@ -129,110 +131,113 @@ int main(int argc, char *argv[])
     }
 
 #ifdef DEBUG
-    print_string("Searching for process");
+    print_string("Searching for processes");
 #endif
 
-    if ( //process not found (searches with pname OR pid)
-	    ((pname!="") && (pid==0)) ? !processSearch(search, pname, &pid) : !processSearch(search, pid)
-	    ) 
+    for(std::vector<process>::iterator currProcess=processes.begin(); it!=processes.end(); ++currProcess)
     {
-	print_string("Process not found");
-	return 1;
-    }
-
-    if(pid == 0) //this should not be possible...
-    {
-	print_string("Process not found");
-	return 1;
-    }
-
-#ifdef DEBUG
-    print_string("Gathering Data");
-#endif
-    fflush(stdout);
-
-    procinfo pinfo;
-    if(logTimes < 0) //negative numbers make no sense
-    {
-	logTimes = 0;
-    }
-    for(int currLogTime = 0; (currLogTime < logTimes) || keepLogging; currLogTime++)
-    {
-	switch(get_proc_info(&pinfo, pid))
+	if ( //process not found (searches with pname OR pid based on which is set)
+		((currProcess.pname!="") && (pid==0)) ? !processSearch(search, currProcess.pname, &pid) : !processSearch(search, pid)
+	   ) 
 	{
-	    case -3: //error condition
+	    print_string("Process not found");
+	    return 1;
+	}
+
+	if(pid == 0) //this should not be possible...
+	{
+	    print_string("Process not found");
+	    return 1;
+	}
+
 #ifdef DEBUG
-		print_string("Not all pinfo values filled");
+	print_string("Gathering Data");
 #endif
-		break;
-	    case -2: //error condition
+	fflush(stdout);
+
+	procinfo pinfo;
+	if(logTimes < 0) //negative numbers make no sense
+	{
+	    logTimes = 0;
+	}
+	for(int currLogTime = 0; (currLogTime < logTimes) || keepLogging; currLogTime++)
+	{
+	    switch(get_proc_info(&pinfo, pid))
+	    {
+		case -3: //error condition
 #ifdef DEBUG
-		print_string("Extraneous values, some not read");
+		    print_string("Not all pinfo values filled");
 #endif
-		break;
-	    case -1: //error condition
+		    break;
+		case -2: //error condition
+#ifdef DEBUG
+		    print_string("Extraneous values, some not read");
+#endif
+		    break;
+		case -1: //error condition
+		    keepLogging = false;
+		    print_string("Error while opening stat file");
+		    break;
+		case 0:
+		    keepLogging = true;
+		    break;
+		default:
+		    keepLogging = false;
+		    print_string("Unkown exit condition");
+		    break;
+	    }
+
+	    if(fname == "") //using the pid
+	    {
+		if(currProcess.pname == "") //set the pname for the log file.
+		{
+		    currProcess.pname = pinfo.values[cpu_comm];
+		    //The pname, when read from the stat file, is formatted as: (pname)
+		    currProcess.pname.erase(0,1);
+		    currProcess.pname.erase(currProcess.pname.size() - 1);
+		    if(terminalOutput) { print_string("pname is: " + currProcess.pname); }
+		}
+		if(!terminalOutput) //don't care about the log file if not logging....
+		{
+		    fname = currProcess.pname + "." + pinfo.values[cpu_pid] + ".log";
+		}
+	    }
+
+	    //only show logname once, and only if outputting to a log
+	    if(showOnce && !terminalOutput)
+	    {
+		print_string("Log File: " + fpath + fname);
+	    }
+
+	    if(pinfo.values[cpu_state] == "D") //D for DEAD
+	    {
 		keepLogging = false;
-		print_string("Error while opening stat file");
-		break;
-	    case 0:
-		keepLogging = true;
-		break;
-	    default:
-		keepLogging = false;
-		print_string("Unkown exit condition");
-		break;
-	}
-
-	if(fname == "") //using the pid
-	{
-	    if(pname == "") //set the pname for the log file.
-	    {
-		pname = pinfo.values[cpu_comm];
-		//The pname, when read from the stat file, is formatted as: (pname)
-		pname.erase(0,1);
-		pname.erase(pname.size() - 1);
-		if(terminalOutput) { print_string("pname is: " + pname); }
 	    }
-	    if(!terminalOutput) //don't care about the log file if not logging....
-	    {
-		fname = pname + "." + pinfo.values[cpu_pid] + ".log";
+
+	    /* The headers for the outputs are already created. Simply put them in
+	     * the same order here as they are in format_output under print.h/cpp.
+	     * Note that, similar to within format_output, cpu usage is a
+	     * calculated value and is therefore not a predefined header.
+	     */
+	    std::string logHeader =
+		pinfo.headers[cpu_rss] + (terminalOutput ? outputSeparatorTerminal:outputSeparatorFile) +
+		"cpu_usage";
+
+	    if(terminalOutput) {
+		if(showOnce) { print_string(logHeader); }
+		outputData(pinfo);
+	    } else {
+		if(!outputFile.is_open())
+		{
+		    std::string outfname = fpath + fname;
+		    outputFile.open(outfname);
+		    outputFile << logHeader << std::endl;
+		}
+		outputData(pinfo, &outputFile);
 	    }
+	    showOnce = false;
 	}
-
-	//only show logname once, and only if outputting to a log
-	if(showOnce && !terminalOutput)
-	{
-	    print_string("Log File: " + fpath + fname);
-	}
-
-	if(pinfo.values[cpu_state] == "D") //D for DEAD
-	{
-	    keepLogging = false;
-	}
-
-	/* The headers for the outputs are already created. Simply put them in
-	 * the same order here as they are in format_output under print.h/cpp.
-	 * Note that, similar to within format_output, cpu usage is a
-	 * calculated value and is therefore not a predefined header.
-	 */
-	std::string logHeader =
-	    pinfo.headers[cpu_rss] + (terminalOutput ? outputSeparatorTerminal:outputSeparatorFile) +
-	    "cpu_usage";
-
-	if(terminalOutput) {
-	    if(showOnce) { print_string(logHeader); }
-	    outputData(pinfo);
-	} else {
-	    if(!outputFile.is_open())
-	    {
-		std::string outfname = fpath + fname;
-		outputFile.open(outfname);
-		outputFile << logHeader << std::endl;
-	    }
-	    outputData(pinfo, &outputFile);
-	}
-	showOnce = false;
+	outputFile.close();
     }
-    outputFile.close();
     return 0;
 }
