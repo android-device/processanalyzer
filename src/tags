@@ -1,0 +1,31 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+ARFLAGS	Makefile	/^ARFLAGS  = -r -s$/;"	m
+CC	Makefile	/^CC = gcc$/;"	m
+ETCDIR	Makefile	/^ETCDIR=..\/etc$/;"	m
+INCDIR	Makefile	/^INCDIR=..\/inc$/;"	m
+LIB_OBJS	Makefile	/^LIB_OBJS = $(addprefix $(OBJDIR), $(subst $(SRCDIR), , $(TMP_OBJS)))$/;"	m
+OBJDIR	Makefile	/^OBJDIR=..\/obj$/;"	m
+PROG	Makefile	/^PROG     = $(RELDIR)\/kpiAnalyzer$/;"	m
+RELDIR	Makefile	/^RELDIR=..\/rel$/;"	m
+SRCDIR	Makefile	/^SRCDIR=..\/src$/;"	m
+SRCS	Makefile	/^SRCS     = $(wildcard $(SRCDIR)\/*.cpp)$/;"	m
+TMP_OBJS	Makefile	/^TMP_OBJS = $(subst .cpp,.o,$(filter %.cpp, $(SRCS)))$/;"	m
+VPATH	Makefile	/^VPATH    = $(SRCDIR)$/;"	m
+checkFile	sys.cpp	/^int checkFile(std::string filename)$/;"	f
+exec	sys.cpp	/^std::string exec(const char* cmd)$/;"	f
+format_message	print.cpp	/^std::string format_message (procinfo pinfo, std::string outputSeparator)$/;"	f
+get_cpuLoad	print.cpp	/^std::string get_cpuLoad(procinfo pinfo)$/;"	f
+get_proc_info	kpi.cpp	/^int get_proc_info(procinfo *pinfo, int pid)$/;"	f
+main	main.cpp	/^int main(int argc, char *argv[])$/;"	f
+outputData	print.cpp	/^void outputData(procinfo pinfo)$/;"	f
+outputData	print.cpp	/^void outputData(procinfo pinfo, std::ofstream *outputFile)$/;"	f
+print_string	print.cpp	/^void print_string(std::string message)$/;"	f
+processSearch	kpi.cpp	/^bool processSearch(bool search, int id) \/\/overloaded$/;"	f
+processSearch	kpi.cpp	/^bool processSearch(bool search, std::string pname, int *pid) \/\/overloaded$/;"	f
+prtUsage	main.cpp	/^int prtUsage ()$/;"	f
+roundVal	print.cpp	/^std::string roundVal(double d)$/;"	f
