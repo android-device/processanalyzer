@@ -10,13 +10,7 @@
 #include <iosfwd>
 #include <unistd.h>
 
-/* Formats the message for printing
- */
-void outputData(procinfo pinfo);
-void outputData(procinfo pinfo, std::ofstream *outputFile);
-
-/* Formats the message for printing - is called by the print function, rather
- * than calling it.
+/* Formats the message for printing - is called by the print function
  */
 std::string format_message(procinfo pinfo, std::string outputSeparator);
 
