@@ -17,6 +17,7 @@ Description : CPU and Memory Analyzer for KPI standards
 #include <vector>
 
 #include "kpi_consts.h"
+#include "process.h"
 #include "print.h"
 #include "kpi.h"
 
@@ -74,36 +75,36 @@ int main(int argc, char *argv[])
 		switch(argv[i][currParam])
 		{
 		    case 'p': //file path parameter
-			currProcess.fpath = argv[i+currParam];
+			currProcess.set_fpath(argv[i+currParam]);
 			skipParams++; //path is separate param
 			break;
 
 		    case 'f': //file name parameter
-			currProcess.fname = argv[i+currParam];
+			currProcess.set_fname(argv[i+currParam]);
 			skipParams++; //fname is separate param
 			break;
 
 		    case 's': //search parameter
-			currProcess.search = true;
+			currProcess.set_search(true);
 			break;
 
 		    case 'i': //given the pid!
-			currProcess.pid = stoi(argv[i+currParam]);
+			currProcess.set_pid(stoi(argv[i+currParam]));
 			skipParams++; //pid is separate
 			break;
 
 		    case 'n': //process name, which will be used to find the pid
-			currProcess.pname = argv[i+currParam];
+			currProcess.set_pname(argv[i+currParam]);
 			skipParams++; //pname is separate
 			break;
 
 		    case 'c':
-			currProcess.logTimes = stoi(argv[i+currParam]);
+			currProcess.set_logTimes(stoi(argv[i+currParam]));
 			skipParams++; //count is separate
 			break;
 
 		    case 'o': //output to terminal instead of file - file name and path do nothing
-			currProcess.terminalOutput = true;
+			currProcess.set_terminalOutput(true);
 			break;
 
 		    default: //includes help parameter...
@@ -112,15 +113,15 @@ int main(int argc, char *argv[])
 		}
 	    }
 
-	    i += skipParams; //skip over separate params
-
 	    //neither pid nor name is set
-	    if((currProcess.pid == 0) && (currProcess.pname==""))
+	    if((currProcess.get_pid() == 0) && (currProcess.get_pname()==""))
 	    {
+		print_string("Check parameter number " + std::to_string(i));
 		prtUsage();
 		return 1;
 	    }
-
+	    
+	    i += skipParams; //skip over separate params
 	    processes.push_back(currProcess);
 	}
     }
