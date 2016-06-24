@@ -32,3 +32,6 @@ void write_string(const std::string message);
  * calculated as a percent.
  */
 std::string get_cpuLoad(procinfo pinfo);
+
+/* Used to round the cpu usage to two significant figures */
+std::string roundVal(double d);

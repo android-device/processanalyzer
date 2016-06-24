@@ -59,7 +59,7 @@ std::string get_cpuLoad(procinfo pinfo)
     double cpuUsage = 100 * ((ctotalTime / sysconf(_SC_CLK_TCK)) / totalTime_seconds);
 
     //temp = std::to_string(totalTime_seconds) + outputSeparator + std::to_string(totalTime) + outputSeparator + std::to_string(cpuUsage) + "%";
-    temp = std::to_string(cpuUsage) + "%";
+    temp = roundVal(cpuUsage) + "%";
 
 #ifdef DEBUG
     print_string("CPU totalTime: " + std::to_string(totalTime));
@@ -69,5 +69,13 @@ std::string get_cpuLoad(procinfo pinfo)
     print_string("CPU cpuUsage: " + temp);
 #endif
 
+    return temp;
+}
+
+std::string roundVal(double d)
+{
+    std::string temp = std::to_string(d);
+    std::size_t pos = temp.find('.');
+    temp = temp.substr(0,pos+3);
     return temp;
 }

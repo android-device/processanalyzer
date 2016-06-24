@@ -189,9 +189,7 @@ int main(int argc, char *argv[])
 		//The pname, when read from the stat file, is formatted as: (pname)
 		pname.erase(0,1);
 		pname.erase(pname.size() - 1);
-#ifdef DEBUG //assuming that you know the process you're looking at if you're using the pid...
-		print_string("pname is: " + pname);
-#endif
+		if(terminalOutput) { print_string("pname is: " + pname); }
 	    }
 	    if(!terminalOutput) //don't care about the log file if not logging....
 	    {
@@ -215,12 +213,12 @@ int main(int argc, char *argv[])
 	 * Note that, similar to within format_output, cpu usage is a
 	 * calculated value and is therefore not a predefined header.
 	 */
-	std::string  logHeader =
+	std::string logHeader =
 	    pinfo.headers[cpu_rss] + (terminalOutput ? outputSeparatorTerminal:outputSeparatorFile) +
 	    "cpu_usage";
 
 	if(terminalOutput) {
-	    print_string(logHeader);
+	    if(showOnce) { print_string(logHeader); }
 	    outputData(pinfo);
 	} else {
 	    if(!outputFile.is_open())
