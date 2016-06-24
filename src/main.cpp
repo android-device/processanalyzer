@@ -29,24 +29,11 @@ int prtUsage ()
     print_string(helpMessage);
 }
 
-//
-//  Main Function. Expects file name as argument.
-//
+/* Main Function. Expects file name as argument.
+*/
 int main(int argc, char *argv[])
 {
-    std::ofstream outputFile;
-
-    bool search = false; //default is to quit immediately if process is not found
-    bool terminalOutput = false; //default is to output to file
-    int logTimes = 0;
-
-    //process identifiers
-    int pid = 0;
-    std::string pname = "";
-
-    //log file information
-    std::string fpath = "/tmp/"; //default location is /tmp
-    std::string fname; //default file name is pname.log
+    vector<process> processes;
 
     if(argv[0] != NULL)
     {
@@ -76,39 +63,46 @@ int main(int argc, char *argv[])
     {
 	if(argv[i][0]=='-') //is a parameter
 	{
-	    if(strlen(argv[i]) == 2) //is correctly formatted, eg -n <name>
+	    /* Each process' parameters are grouped, such as:
+	     * -inco <pid> <pname> <count>
+	     */
+	    process currProcess; //to put into vector
+	    int skipParams = 0;
+	    for(int currParam = 1; currParam < strlen(argv[i]); currParam++)
 	    {
-		switch(argv[i][1])
+		switch(argv[i][currParam])
 		{
 		    case 'p': //file path parameter
-			fpath = argv[i+1];
+			currProcess.fpath = argv[i+currParam];
+			skipParams++; //path is separate param
 			break;
 
 		    case 'f': //file name parameter
-			fname = argv[i+1];
+			currProcess.fname = argv[i+currParam];
+			skipParams++; //fname is separate param
 			break;
 
 		    case 's': //search parameter
-			search = true;
+			currProcess.search = true;
 			break;
 
 		    case 'i': //given the pid!
-			pid = stoi(argv[i+1]);
-#ifdef DEBUG
-			print_string("PID Set: " + std::to_string(pid));
-#endif
+			currProcess.pid = stoi(argv[i+currParam]);
+			skipParams++; //pid is separate
 			break;
 
 		    case 'n': //process name, which will be used to find the pid
-			pname = argv[i+1];
+			currProcess.pname = argv[i+currParam];
+			skipParams++; //pname is separate
 			break;
 
 		    case 'c':
-			logTimes = stoi(argv[i+1]);
+			currProcess.logTimes = stoi(argv[i+currParam]);
+			skipParams++; //count is separate
 			break;
 
 		    case 'o': //output to terminal instead of file - file name and path do nothing
-			terminalOutput = true;
+			currProcess.terminalOutput = true;
 			break;
 
 		    default: //includes help parameter...
@@ -116,6 +110,16 @@ int main(int argc, char *argv[])
 			return 1;
 		}
 	    }
+
+	    i += skipParams; //skip over separate params
+
+	    //neither pid nor name is set
+	    if((currProcess.pid == "") && (currProcess.pname=""))
+	    {
+		prtUsage();
+		return 1;
+	    }
+	    processes.push_back(currProcess);
 	    else //is not correctly formatted
 	    {
 		prtUsage();
@@ -152,8 +156,6 @@ int main(int argc, char *argv[])
     {
 	logTimes = 0;
     }
-    bool keepLogging = (logTimes==0); //if logTimes is zero, keep logging until the process dies
-    bool showOnce = true;
     for(int currLogTime = 0; (currLogTime < logTimes) || keepLogging; currLogTime++)
     {
 	switch(get_proc_info(&pinfo, pid))
@@ -229,7 +231,6 @@ int main(int argc, char *argv[])
 	    }
 	    outputData(pinfo, &outputFile);
 	}
-	sleep (1);
 	showOnce = false;
     }
     outputFile.close();
