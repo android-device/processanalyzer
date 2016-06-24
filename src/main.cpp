@@ -134,14 +134,13 @@ int main(int argc, char *argv[])
     {
 	if ( //process not found (searches with pname OR pid based on which is set)
 		processSearch(*currProcess)
-		//((currProcess->pname!="") && (currProcess->pid==0)) ? !processSearch(currProcess->search, currProcess->pname, &currProcess->pid) : !processSearch(currProcess->search, currProcess->pid)
 	   ) 
 	{
 	    print_string("Process not found");
 	    return 1;
 	}
 
-	if(currProcess->pid == 0) //this should not be possible...
+	if(currProcess->get_pid() == 0) //this should not be possible...
 	{
 	    print_string("Process not found");
 	    return 1;
@@ -153,62 +152,59 @@ int main(int argc, char *argv[])
 	fflush(stdout);
 
 	procinfo pinfo;
-	for(int currLogTime = 0; (currLogTime < currProcess->logTimes) || currProcess->keepLogging; currLogTime++)
+
+	//loop until logtimes is up, or keeploogging stops.
+	for(int currLogTime = 0; (currLogTime < currProcess->get_logTimes()) || currProcess->get_keepLogging(); currLogTime++)
 	{
-	    if(currProcess->logTimes < 0) //negative numbers make no sense
+	    if(currProcess->get_logTimes()< 0) //negative numbers make no sense
 	    {
-		currProcess->logTimes = 0;
+		currProcess->set_logTimes(0);
 	    }
-	    switch(get_proc_info(&pinfo, currProcess->pid))
+	    switch(get_proc_info(&pinfo, currProcess->get_pid()))
 	    {
-		case -3: //error condition
 #ifdef DEBUG
+		case -3: //error condition
+		    //TODO error handling
 		    print_string("Not all pinfo values filled");
-#endif
 		    break;
 		case -2: //error condition
-#ifdef DEBUG
 		    print_string("Extraneous values, some not read");
-#endif
 		    break;
+#endif
 		case -1: //error condition
-		    currProcess->keepLogging = false;
+		    currProcess->set_keepLogging();
 		    print_string("Error while opening stat file");
 		    break;
-		case 0:
-		    currProcess->keepLogging = true;
+		case 0: //do nothing
 		    break;
 		default:
-		    currProcess->keepLogging = false;
+		    currProcess->set_keepLogging();
 		    print_string("Unkown exit condition");
 		    break;
 	    }
 
-	    if(currProcess->fname == "") //using the pid
+	    if(currProcess->get_fname() == "") //use the pid
 	    {
-		if(currProcess->pname == "") //set the pname for the log file.
+		if(currProcess->get_pname() == "") //set the pname for the log file.
 		{
-		    currProcess->pname = pinfo.values[cpu_comm];
-		    //The pname, when read from the stat file, is formatted as: (pname)
-		    currProcess->pname.erase(0,1);
-		    currProcess->pname.erase(currProcess->pname.size() - 1);
-		    if(currProcess->terminalOutput) { print_string("pname is: " + currProcess->pname); }
+		    currProcess->set_pname(pinfo.values[cpu_comm]);
+		    if(currProcess->get_terminalOutput()) { print_string("pname is: " + currProcess->get_pname()); }
 		}
-		if(!currProcess->terminalOutput) //don't care about the log file if not logging....
+		if(!currProcess->get_terminalOutput()) //don't care about the log file if not logging....
 		{
-		    currProcess->fname = currProcess->pname + "." + pinfo.values[cpu_pid] + ".log";
+		    currProcess->set_fname(currProcess->get_pname()+ "." + pinfo.values[cpu_pid] + ".log");
 		}
 	    }
 
 	    //only show logname once, and only if outputting to a log
-	    if(currProcess->showOnce && !currProcess->terminalOutput)
+	    if(currProcess->get_showOnce() && !currProcess->get_terminalOutput())
 	    {
-		print_string("Log File: " + currProcess->fpath + currProcess->fname);
+		print_string("Log File: " + currProcess->get_fpath() + currProcess->get_fname());
 	    }
 
 	    if(pinfo.values[cpu_state] == "D") //D for DEAD
 	    {
-		currProcess->keepLogging = false;
+		currProcess->set_keepLogging();
 	    }
 
 	    /* The headers for the outputs are already created. Simply put them in
@@ -217,24 +213,12 @@ int main(int argc, char *argv[])
 	     * calculated value and is therefore not a predefined header.
 	     */
 	    std::string logHeader =
-		pinfo.headers[cpu_rss] + (currProcess->terminalOutput ? outputSeparatorTerminal:outputSeparatorFile) +
+		pinfo.headers[cpu_rss] + (currProcess->get_terminalOutput() ? outputSeparatorTerminal:outputSeparatorFile) +
 		"cpu_usage";
 
-	    if(currProcess->terminalOutput) {
-		if(currProcess->showOnce) { print_string(logHeader); }
-		outputData(pinfo);
-	    } else {
-		if(!currProcess->outputFile.is_open())
-		{
-		    std::string outfname = currProcess->fpath + currProcess->fname;
-		    currProcess->outputFile.open(outfname);
-		    currProcess->outputFile << logHeader << std::endl;
-		}
-		outputData(pinfo, &currProcess->outputFile);
-	    }
-	    currProcess->showOnce = false;
+	    currProcess->set_showOnce();
 	}
-	currProcess->outputFile.close();
+	currProcess->outputData();
     }
     return 0;
 }

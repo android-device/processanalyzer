@@ -15,43 +15,61 @@ process::process() {
 
 process& process::operator=(process nprocess)
 {
-    this->pid = nprocess.get_pid();
-    this->pname = nprocess.get_pname();
-    this->fpath = nprocess.get_fpath();
-    this->fname = nprocess.get_fname();
-    this->search = nprocess.get_search();
-    this->terminalOutput = nprocess.get_terminalOutput();
-    this->logTimes = nprocess.get_logTimes();
-    this->keepLogging = nprocess.get_keepLogging();
-    this->showOnce = nprocess.get_showOnce();
+    pid = nprocess.pid;
+    pname = nprocess.pname;
+    fpath = nprocess.fpath;
+    fname = nprocess.fname;
+    search = nprocess.search;
+    terminalOutput = nprocess.terminalOutput;
+    logTimes = nprocess.logTimes;
+    keepLogging = nprocess.keepLogging;
+    showOnce = nprocess.showOnce;
 }
 process::process(const process &nprocess)
 {
-    this->pid = nprocess.get_pid();
-    this->pname = nprocess.get_pname();
-    this->fpath = nprocess.get_fpath();
-    this->fname = nprocess.get_fname();
-    this->search = nprocess.get_search();
-    this->terminalOutput = nprocess.get_terminalOutput();
-    this->logTimes = nprocess.get_logTimes();
-    this->keepLogging = nprocess.get_keepLogging();
-    this->showOnce = nprocess.get_showOnce();
+    pid = nprocess.pid;
+    pname = nprocess.pname;
+    fpath = nprocess.fpath;
+    fname = nprocess.fname;
+    search = nprocess.search;
+    terminalOutput = nprocess.terminalOutput;
+    logTimes = nprocess.logTimes;
+    keepLogging = nprocess.keepLogging;
+    showOnce = nprocess.showOnce;
 }
 
 void process::outputData()
 {
-    if(this.terminalOutput)
+    if(terminalOutput)
     {
 	std::string formattedVal = format_message(pinfo, outputSeparatorTerminal);
 	print_string(formattedVal);
     } else {
-	this.outputFile << format_message(this.pinfo, outputSeparatorFile) << std::endl;
+	if(!outputFile.is_open())
+	{
+	    std::string outfname = fpath + fname;
+	    outputFile.open(outfname);
+	    outputFile << logHeader << std::endl;
+	}
+	outputFile << format_message(pinfo, outputSeparatorFile) << std::endl;
     }
 }
 
 void process::set_pinfo(procinfo pinfo) {
     for(int currIndex=0; currIndex<NUMVALUES; currIndex++)
     {
-	this->pinfo[currIndex] = pinfo[currIndex];
+	pinfo[currIndex] = pinfo[currIndex];
     }
+}
+
+void process::set_pname(std::string npname)
+{
+    std::string temp = npname;
+    if(npname.at(0) == '(')
+    {
+	//The pname, when read from the stat file, is formatted as: (pname)
+	temp.erase(0,1);
+	temp.erase(temp.size() - 1);
+    }
+    pname = temp;
 }

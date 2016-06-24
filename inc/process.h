@@ -31,29 +31,29 @@ class process {
 	process& operator=(process);
 	process(const process&);
 
-	void set_pid(int npid) { this->pid = npid; }
-	void set_pname(std::string npname) { this->pname = npname; }
-	void set_fpath(std::string nfpath) { this->fpath = nfpath; }
-	void set_fname(std::string nfname) { this->fname = nfname; }
-	void set_search(bool nsearch) { this->search = nsearch; }
-	void set_terminalOutput(bool nterminalOutput) { this->terminalOutput = nterminalOutput; }
-	void set_logTimes(int nlogTimes) { this->logTimes = nlogTimes; }
+	void set_pid(int npid) { pid = npid; }
+	void set_pname(std::string);
+	void set_fpath(std::string nfpath) { fpath = nfpath; }
+	void set_fname(std::string nfname) { fname = nfname; }
+	void set_search(bool nsearch) { search = nsearch; }
+	void set_terminalOutput(bool nterminalOutput) { terminalOutput = nterminalOutput; }
+	void set_logTimes(int nlogTimes) { logTimes = nlogTimes; }
 
 	void set_pinfo(procinfo npinfo);
 
 	//only ever cleared, start set and are cleared once shown
-	void set_keepLogging(bool nkeepLogging) { this->keepLogging = false; } 
-	void set_showOnce() { this->showOnce = false; }
+	void set_keepLogging() { keepLogging = false; } 
+	void set_showOnce() { showOnce = false; }
 
-	int get_pid() { return this->pid; }
-	std::string get_pname() { return this->pname; }
-	std::string get_fpath() { return this->fpath; }
-	std::string get_fname() { return this->fname; }
-	bool get_search() { return this->search; }
-	bool get_terminalOutput() { return this->terminalOutput; }
-	int get_logTimes() { return this->logTimes; }
-	bool get_keepLogging() { return this->keepLogging; }
-	bool get_showOnce() { return this->showOnce; }
+	int get_pid() { return pid; }
+	std::string get_pname() { return pname; }
+	std::string get_fpath() { return fpath; }
+	std::string get_fname() { return fname; }
+	bool get_search() { return search; }
+	bool get_terminalOutput() { return terminalOutput; }
+	int get_logTimes() { return logTimes; }
+	bool get_keepLogging() { return keepLogging; }
+	bool get_showOnce() { return showOnce; }
 
 	void outputData();
 };
