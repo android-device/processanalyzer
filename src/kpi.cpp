@@ -97,7 +97,7 @@ int get_proc_info(procinfo *pinfo, int pid)
 #ifdef DEBUG
 	    if((pinfo->values[currIndex] != "") && (pinfo->values[currIndex] != currVal))
 	    {
-		print_string("Changed: " + pinfo.headers[currIndex] + " : " + pinfo->values[currIndex] + "->" + currVal);
+		print_string("Changed: " + headers[currIndex] + " : " + pinfo->values[currIndex] + "->" + currVal);
 	    }
 #endif
 	    pinfo->values[currIndex] = currVal;

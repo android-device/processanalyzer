@@ -47,6 +47,15 @@ void process::outputData()
     } else {
 	if(!outputFile.is_open())
 	{
+	    /* The headers for the outputs are already created. Simply put them in
+	     * the same order here as they are in format_output under print.h/cpp.
+	     * Note that, similar to within format_output, cpu usage is a
+	     * calculated value and is therefore not a predefined header.
+	     */
+	    static const std::string logHeader =
+		headers[cpu_rss] + (terminalOutput ? outputSeparatorTerminal:outputSeparatorFile) +
+		"cpu_usage";
+
 	    std::string outfname = fpath + fname;
 	    outputFile.open(outfname);
 	    outputFile << logHeader << std::endl;
@@ -58,7 +67,7 @@ void process::outputData()
 void process::set_pinfo(procinfo pinfo) {
     for(int currIndex=0; currIndex<NUMVALUES; currIndex++)
     {
-	pinfo[currIndex] = pinfo[currIndex];
+	pinfo.values[currIndex] = pinfo.values[currIndex];
     }
 }
 

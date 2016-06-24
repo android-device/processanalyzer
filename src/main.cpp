@@ -23,8 +23,6 @@ Description : CPU and Memory Analyzer for KPI standards
 
 //#define DEBUG
 
-using namespace std;
-
 //  Print Usage Message
 int prtUsage ()
 {
@@ -89,7 +87,7 @@ int main(int argc, char *argv[])
 			break;
 
 		    case 'i': //given the pid!
-			currProcess.set_pid(stoi(argv[i+currParam]));
+			currProcess.set_pid(std::stoi(argv[i+currParam]));
 			skipParams++; //pid is separate
 			break;
 
@@ -99,7 +97,7 @@ int main(int argc, char *argv[])
 			break;
 
 		    case 'c':
-			currProcess.set_logTimes(stoi(argv[i+currParam]));
+			currProcess.set_logTimes(std::stoi(argv[i+currParam]));
 			skipParams++; //count is separate
 			break;
 
@@ -206,15 +204,6 @@ int main(int argc, char *argv[])
 	    {
 		currProcess->set_keepLogging();
 	    }
-
-	    /* The headers for the outputs are already created. Simply put them in
-	     * the same order here as they are in format_output under print.h/cpp.
-	     * Note that, similar to within format_output, cpu usage is a
-	     * calculated value and is therefore not a predefined header.
-	     */
-	    std::string logHeader =
-		pinfo.headers[cpu_rss] + (currProcess->get_terminalOutput() ? outputSeparatorTerminal:outputSeparatorFile) +
-		"cpu_usage";
 
 	    currProcess->set_showOnce();
 	}
