@@ -35,6 +35,7 @@ int checkFile(std::string filename)
 		break;
 	}
 	print_string(errMsg);
+	print_string("Return Value: 0");
 #endif
 
 	return 0;
@@ -64,11 +65,13 @@ int checkFile(std::string filename)
 		break;
 	}
 	print_string(errMsg);
+	print_string("Return Value: 1");
 #endif
 	return 1; //1 means read only
     } else { //read AND write
 #ifdef DEBUG
     print_string(filename + ", r/w");
+    print_string("Return Value: 2");
 #endif
 	return 2;
     }

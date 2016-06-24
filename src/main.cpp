@@ -21,7 +21,7 @@ Description : CPU and Memory Analyzer for KPI standards
 #include "print.h"
 #include "kpi.h"
 
-//#define DEBUG
+#define DEBUG
 
 //  Print Usage Message
 int prtUsage ()
@@ -40,8 +40,8 @@ int main(int argc, char *argv[])
 	kpiProg = argv[0];
     }
 
-    //check for process name
-    if(argc < 2)
+    //at least: <option> <name>
+    if(argc <= 2)
     {
 	prtUsage();
 	return 1;
@@ -75,34 +75,60 @@ int main(int argc, char *argv[])
 		    case 'p': //file path parameter
 			currProcess.set_fpath(argv[i+currParam]);
 			skipParams++; //path is separate param
+#ifdef DEBUG
+			print_string("p");
+			print_string(currProcess.get_fpath());
+#endif
 			break;
 
 		    case 'f': //file name parameter
 			currProcess.set_fname(argv[i+currParam]);
 			skipParams++; //fname is separate param
+#ifdef DEBUG
+			print_string("f");
+			print_string(currProcess.get_fname());
+#endif
 			break;
 
 		    case 's': //search parameter
 			currProcess.set_search(true);
+#ifdef DEBUG
+			print_string("s");
+#endif
 			break;
 
 		    case 'i': //given the pid!
 			currProcess.set_pid(std::stoi(argv[i+currParam]));
 			skipParams++; //pid is separate
+#ifdef DEBUG
+			print_string("i");
+			print_string(std::to_string(currProcess.get_pid()));
+#endif
 			break;
 
 		    case 'n': //process name, which will be used to find the pid
 			currProcess.set_pname(argv[i+currParam]);
 			skipParams++; //pname is separate
+#ifdef DEBUG
+			print_string("n");
+			print_string(currProcess.get_pname());
+#endif
 			break;
 
 		    case 'c':
 			currProcess.set_logTimes(std::stoi(argv[i+currParam]));
 			skipParams++; //count is separate
+#ifdef DEBUG
+			print_string("c");
+			print_string(std::to_string(currProcess.get_logTimes()));
+#endif
 			break;
 
 		    case 'o': //output to terminal instead of file - file name and path do nothing
 			currProcess.set_terminalOutput(true);
+#ifdef DEBUG
+			print_string("o");
+#endif
 			break;
 
 		    default: //includes help parameter...
@@ -131,7 +157,7 @@ int main(int argc, char *argv[])
     for(std::vector<process>::iterator currProcess=processes.begin(); currProcess!=processes.end(); ++currProcess)
     {
 	if ( //process not found (searches with pname OR pid based on which is set)
-		processSearch(*currProcess)
+		!processSearch(*currProcess)
 	   ) 
 	{
 	    print_string("Process not found");
