@@ -172,23 +172,4 @@ typedef struct statstruct_proc {
 	"cpu_exit_code" };
 } procinfo;
 
-struct process {
-    //process identifiers
-    int pid;
-    std::string pname;
-
-    std::ofstream outputFile;
-
-    //log file information
-    std::string fpath = "/tmp/"; //default location is /tmp
-    std::string fname; //default file name is pname.log
-
-    bool search = false; //default is to quit immediately if process is not found
-    bool terminalOutput = false; //default is to output to file
-    int logTimes = 0;
-
-    bool keepLogging = true; //if logTimes is zero, keep logging until the process dies
-    bool showOnce = true;
-};
-
 #endif

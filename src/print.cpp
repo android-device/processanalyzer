@@ -1,17 +1,6 @@
 #include "print.h"
 //#define DEBUG
 
-void outputData(procinfo pinfo)
-{
-    std::string formattedVal = format_message(pinfo, outputSeparatorTerminal);
-    print_string(formattedVal);
-}
-
-void outputData(procinfo pinfo, std::ofstream *outputFile)
-{
-    *outputFile << format_message(pinfo, outputSeparatorFile) << std::endl;
-}
-
 // Print message. Prepend with program name.
 void print_string(std::string message)
 {

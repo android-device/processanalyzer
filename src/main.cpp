@@ -151,12 +151,12 @@ int main(int argc, char *argv[])
 	fflush(stdout);
 
 	procinfo pinfo;
-	if(currProcess->logTimes < 0) //negative numbers make no sense
-	{
-	    currProcess->logTimes = 0;
-	}
 	for(int currLogTime = 0; (currLogTime < currProcess->logTimes) || currProcess->keepLogging; currLogTime++)
 	{
+	    if(currProcess->logTimes < 0) //negative numbers make no sense
+	    {
+		currProcess->logTimes = 0;
+	    }
 	    switch(get_proc_info(&pinfo, currProcess->pid))
 	    {
 		case -3: //error condition
