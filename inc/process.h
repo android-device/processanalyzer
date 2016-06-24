@@ -36,7 +36,7 @@ class process {
 	void set_fpath(std::string nfpath) { fpath = nfpath; }
 	void set_fname(std::string nfname) { fname = nfname; }
 	void set_search(bool nsearch) { search = nsearch; }
-	void set_terminalOutput(bool nterminalOutput) { terminalOutput = nterminalOutput; }
+	void set_terminalOutput() { terminalOutput = true; } //defaults to false, only ever set
 	void set_logTimes(int nlogTimes) { logTimes = nlogTimes; }
 
 	void set_pinfo(procinfo npinfo);

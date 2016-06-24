@@ -1,4 +1,5 @@
 #include "process.h"
+#define DEBUG
 
 process::process() {
     //log file information
@@ -42,9 +43,15 @@ void process::outputData()
 {
     if(terminalOutput)
     {
+#ifdef DEBUG
+	print_string("Output is Terminal");
+#endif
 	std::string formattedVal = format_message(pinfo, outputSeparatorTerminal);
 	print_string(formattedVal);
     } else {
+#ifdef DEBUG
+	print_string("Output is File");
+#endif
 	if(!outputFile.is_open())
 	{
 	    /* The headers for the outputs are already created. Simply put them in

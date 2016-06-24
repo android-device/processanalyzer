@@ -1,13 +1,10 @@
 #include "print.h"
-//#define DEBUG
+#define DEBUG
 
 // Print message. Prepend with program name.
 void print_string(std::string message)
 {
-    if (message != "")
-    {
-	printf("%s: %s\n", kpiProg.c_str(), message.c_str());
-    }
+    printf("%s: %s\n", kpiProg.c_str(), message.c_str());
 }
 
 /* Format message for printing, then print it. To add or remove values from the
@@ -36,18 +33,18 @@ std::string get_cpuLoad(procinfo pinfo)
     int uptime = 0;
     std::string temp = "";
     uptimeFile >> temp; //ignore the first value...
-#ifdef DEBUG
-    print_string("uptime val1: " + temp);
-#endif
     uptime = std::stoi(temp);
 
+#ifdef DEBUG
+    print_string(pinfo.values[cpu_utime]);
+    print_string(pinfo.values[cpu_stime]);
+#endif
     double totalTime = std::stoi(pinfo.values[cpu_utime]) + std::stoi(pinfo.values[cpu_stime]);
     double ctotalTime = totalTime + std::stoi(pinfo.values[cpu_cutime]) + std::stoi(pinfo.values[cpu_cstime]);
 
     double totalTime_seconds = uptime - (std::stoi(pinfo.values[cpu_starttime]) / sysconf(_SC_CLK_TCK));
     double cpuUsage = 100 * ((ctotalTime / sysconf(_SC_CLK_TCK)) / totalTime_seconds);
 
-    //temp = std::to_string(totalTime_seconds) + outputSeparator + std::to_string(totalTime) + outputSeparator + std::to_string(cpuUsage) + "%";
     temp = roundVal(cpuUsage) + "%";
 
 #ifdef DEBUG

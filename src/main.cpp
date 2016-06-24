@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
 			break;
 
 		    case 'o': //output to terminal instead of file - file name and path do nothing
-			currProcess.set_terminalOutput(true);
+			currProcess.set_terminalOutput();
 #ifdef DEBUG
 			print_string("o");
 #endif
@@ -144,7 +144,7 @@ int main(int argc, char *argv[])
 		prtUsage();
 		return 1;
 	    }
-	    
+
 	    i += skipParams; //skip over separate params
 	    processes.push_back(currProcess);
 	}
@@ -209,13 +209,25 @@ int main(int argc, char *argv[])
 
 	    if(currProcess->get_fname() == "") //use the pid
 	    {
+#ifdef DEBUG
+		print_string("Using PID");
+#endif
 		if(currProcess->get_pname() == "") //set the pname for the log file.
 		{
+#ifdef DEBUG
+		    print_string("Setting pname");
+#endif
 		    currProcess->set_pname(pinfo.values[cpu_comm]);
-		    if(currProcess->get_terminalOutput()) { print_string("pname is: " + currProcess->get_pname()); }
+		    if(currProcess->get_terminalOutput())
+		    {
+			print_string("pname is: " + currProcess->get_pname());
+		    }
 		}
 		if(!currProcess->get_terminalOutput()) //don't care about the log file if not logging....
 		{
+#ifdef DEBUG
+		    print_string("Setting logname");
+#endif
 		    currProcess->set_fname(currProcess->get_pname()+ "." + pinfo.values[cpu_pid] + ".log");
 		}
 	    }
@@ -223,17 +235,29 @@ int main(int argc, char *argv[])
 	    //only show logname once, and only if outputting to a log
 	    if(currProcess->get_showOnce() && !currProcess->get_terminalOutput())
 	    {
+#ifdef DEBUG
+		print_string("Show Once, not terminalOutput");
+#endif
 		print_string("Log File: " + currProcess->get_fpath() + currProcess->get_fname());
 	    }
 
 	    if(pinfo.values[cpu_state] == "D") //D for DEAD
 	    {
+#ifdef DEBUG
+		print_string("DEAD");
+#endif
 		currProcess->set_keepLogging();
 	    }
 
+#ifdef DEBUG
+	    print_string("Clearing show once");
+#endif
 	    currProcess->set_showOnce();
+#ifdef DEBUG
+	    print_string("Outputting Data");
+#endif
+	    currProcess->outputData();
 	}
-	currProcess->outputData();
     }
     return 0;
 }

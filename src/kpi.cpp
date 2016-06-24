@@ -1,5 +1,5 @@
 #include "kpi.h"
-//#define DEBUG
+#define DEBUG
 
 /* Search for a process, using the pid or the pname version of this overloaded
  * function. Note that if search is true, this function will NOT return until a
