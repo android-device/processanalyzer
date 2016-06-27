@@ -250,8 +250,8 @@ int main(int argc, char *argv[])
 		    }
 		}
 	    }
-	    currLogTime++;
 	}
+	currLogTime++;
 	//TODO remove finished processes from list.
 #ifdef DEBUG
 	print_string("Log Time: " + std::to_string(currLogTime));
