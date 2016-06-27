@@ -47,7 +47,7 @@ void process::outputData()
 	print_string("Output is Terminal");
 #endif
 	std::string formattedVal = format_message(pinfo, outputSeparatorTerminal);
-	print_string(formattedVal);
+	print_string(pname+"."+std::to_string(pid) + ":\t" + formattedVal);
     } else {
 #ifdef DEBUG
 	print_string("Output is File");

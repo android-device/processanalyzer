@@ -176,6 +176,7 @@ int main(int argc, char *argv[])
     }
 
     int currLogTime = 0; //increased once after iterating through every process
+    int finishedProcesses = 0;
     bool finished = false;
     while(!finished) //TODO stop after every process stops
     {
@@ -239,7 +240,7 @@ int main(int argc, char *argv[])
 			currProcess->set_pname(pinfo.values[cpu_comm]);
 			if(currProcess->get_terminalOutput())
 			{
-			    print_string("pname is: " + currProcess->get_pname());
+			    print_string(std::to_string(currProcess->get_pid()) + " pname is: " + currProcess->get_pname());
 			}
 		    }
 		    if(!currProcess->get_terminalOutput()) //don't care about the log file if not logging....
@@ -276,9 +277,12 @@ int main(int argc, char *argv[])
 		print_string("Outputting Data");
 #endif
 		currProcess->outputData();
+	    } else { //process keepLogging is false and count is exceeded
+		finishedProcesses++;
 	    }
 	}
 	currLogTime++;
+	finished = (finishedProcesses == processes.size());
 #ifdef DEBUG
 	print_string("Log Time: " + std::to_string(currLogTime));
 #endif
