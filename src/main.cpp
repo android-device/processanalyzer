@@ -21,7 +21,7 @@ Description : CPU and Memory Analyzer for KPI standards
 #include "print.h"
 #include "kpi.h"
 
-//#define DEBUG
+#define DEBUG
 
 //  Print Usage Message
 int prtUsage ()
@@ -145,7 +145,10 @@ int main(int argc, char *argv[])
 		return 1;
 	    }
 
-	    i += skipParams; //skip over separate params
+	    i += skipParams; //skip over separate params, which are for the just finished process
+#ifdef DEBUG
+	    print_string("Pushing back process.");
+#endif
 	    processes.push_back(currProcess);
 	}
     }
@@ -153,113 +156,125 @@ int main(int argc, char *argv[])
 #ifdef DEBUG
     print_string("Searching for processes");
 #endif
-
     for(std::vector<process>::iterator currProcess=processes.begin(); currProcess!=processes.end(); ++currProcess)
     {
-	if ( !processSearch(*currProcess)) //process not found (searches with pname OR pid based on which is set)
+	if(!processSearch(*currProcess)) //process not found (searches with pname OR pid based on which is set)
 	{
-	    print_string("Process not found");
+	    print_string(currProcess->get_pid() + ":" + currProcess->get_pname() + " not found");
 	    return 1;
 	}
 
 	if(currProcess->get_pid() == 0) //this should not be possible...
 	{
-	    print_string("Process not found  - no PID");
+	    print_string(currProcess->get_pid() + ":" + currProcess->get_pname() + " not found - failed to set PID");
 	    return 1;
 	}
+    }
 
-#ifdef DEBUG
-	print_string("Gathering Data");
-#endif
-	fflush(stdout);
-
-	procinfo pinfo;
-
-	//loop until logtimes is up, or keeploogging stops.
-	for(int currLogTime = 0; (currLogTime < currProcess->get_logTimes()) || currProcess->get_keepLogging(); currLogTime++)
+    int currLogTime = 0; //increased once after iterating through every process
+    bool finished = false;
+    while(!finished) //TODO stop after every process stops
+    {
+	for(std::vector<process>::iterator currProcess=processes.begin(); currProcess!=processes.end(); ++currProcess)
 	{
-	    if(currProcess->get_logTimes()< 0) //negative numbers make no sense
-	    {
-		currProcess->set_logTimes(0);
-	    }
-	    switch(get_proc_info(&pinfo, currProcess->get_pid()))
-	    {
-		case -3: //error condition
-		    //TODO error handling
 #ifdef DEBUG
-		    print_string("Not all pinfo values filled");
+	    print_string("currProcess is: " + std::to_string(currProcess->get_pid()) + ":" + currProcess->get_pname());
 #endif
-		    break;
-		case -2: //error condition
-#ifdef DEBUG
-		    print_string("Extraneous values, some not read");
-#endif
-		    break;
-		case -1: //error condition
-		    currProcess->set_keepLogging();
-		    print_string("Error while opening stat file");
-		    break;
-		case 0: //do nothing
-		    break;
-		default:
-		    currProcess->set_keepLogging();
-		    print_string("Unkown exit condition");
-		    break;
-	    }
 
-	    currProcess->set_pinfo(pinfo);
-
-	    if(currProcess->get_fname() == "") //use the pid
-	    {
 #ifdef DEBUG
-		print_string("Using PID");
+	    print_string("Gathering Data");
 #endif
-		if(currProcess->get_pname() == "") //set the pname for the log file.
+	    fflush(stdout);
+
+	    procinfo pinfo;
+
+	    //loop until logtimes is up, or keeploogging stops.
+	    if((currLogTime < currProcess->get_logTimes()) || currProcess->get_keepLogging())
+	    {
+		if(currProcess->get_logTimes()< 0) //negative numbers make no sense
+		{
+		    currProcess->set_logTimes(0);
+		}
+		switch(get_proc_info(&pinfo, currProcess->get_pid()))
+		{
+		    case -3: //error condition
+			//TODO error handling
+#ifdef DEBUG
+			print_string("Not all pinfo values filled");
+#endif
+			break;
+		    case -2: //error condition
+#ifdef DEBUG
+			print_string("Extraneous values, some not read");
+#endif
+			break;
+		    case -1: //error condition
+			currProcess->set_keepLogging();
+			print_string("Error while opening stat file");
+			break;
+		    case 0: //do nothing
+			break;
+		    default:
+			currProcess->set_keepLogging();
+			print_string("Unkown exit condition");
+			break;
+		}
+
+		currProcess->set_pinfo(pinfo);
+
+		if(currProcess->get_fname() == "") //use the pid
 		{
 #ifdef DEBUG
-		    print_string("Setting pname");
+		    print_string("Using PID");
 #endif
-		    currProcess->set_pname(pinfo.values[cpu_comm]);
-		    if(currProcess->get_terminalOutput())
+		    if(currProcess->get_pname() == "") //set the pname for the log file.
 		    {
-			print_string("pname is: " + currProcess->get_pname());
+#ifdef DEBUG
+			print_string("Setting pname");
+#endif
+			currProcess->set_pname(pinfo.values[cpu_comm]);
+			if(currProcess->get_terminalOutput())
+			{
+			    print_string("pname is: " + currProcess->get_pname());
+			}
+		    }
+		    if(!currProcess->get_terminalOutput()) //don't care about the log file if not logging....
+		    {
+#ifdef DEBUG
+			print_string("Setting logname");
+#endif
+			currProcess->set_fname(currProcess->get_pname()+ "." + pinfo.values[cpu_pid] + ".log");
 		    }
 		}
-		if(!currProcess->get_terminalOutput()) //don't care about the log file if not logging....
+
+		//only show logname once, and only if outputting to a log
+		if(currProcess->get_showOnce() && !currProcess->get_terminalOutput())
 		{
 #ifdef DEBUG
-		    print_string("Setting logname");
+		    print_string("Show Once, not terminalOutput");
 #endif
-		    currProcess->set_fname(currProcess->get_pname()+ "." + pinfo.values[cpu_pid] + ".log");
+		    print_string("Log File: " + currProcess->get_fpath() + currProcess->get_fname());
 		}
-	    }
 
-	    //only show logname once, and only if outputting to a log
-	    if(currProcess->get_showOnce() && !currProcess->get_terminalOutput())
-	    {
+		if(pinfo.values[cpu_state] == "D") //D for DEAD
+		{
 #ifdef DEBUG
-		print_string("Show Once, not terminalOutput");
+		    print_string("DEAD");
 #endif
-		print_string("Log File: " + currProcess->get_fpath() + currProcess->get_fname());
-	    }
-
-	    if(pinfo.values[cpu_state] == "D") //D for DEAD
-	    {
-#ifdef DEBUG
-		print_string("DEAD");
-#endif
-		currProcess->set_keepLogging();
-	    }
+		    currProcess->set_keepLogging();
+		}
 
 #ifdef DEBUG
-	    print_string("Clearing show once");
+		print_string("Clearing show once");
 #endif
-	    currProcess->set_showOnce();
+		currProcess->set_showOnce();
 #ifdef DEBUG
-	    print_string("Outputting Data");
+		print_string("Outputting Data");
 #endif
-	    currProcess->outputData();
+		currProcess->outputData();
+	    }
 	}
+	currLogTime++;
     }
     return 0;
 }
