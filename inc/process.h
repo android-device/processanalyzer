@@ -42,8 +42,8 @@ class process {
 	void set_pinfo(procinfo npinfo);
 
 	//only ever cleared, start set and are cleared once shown
-	void set_keepLogging() { keepLogging = false; } 
-	void set_showOnce() { showOnce = false; }
+	void clear_keepLogging() { keepLogging = false; } 
+	void clear_showOnce() { showOnce = false; }
 
 	int get_pid() { return pid; }
 	std::string get_pname() { return pname; }

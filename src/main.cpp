@@ -148,7 +148,7 @@ int main(int argc, char *argv[])
 	    i += skipParams; //skip over separate params, which are for the just finished process
 	    if(currProcess.get_logTimes() > 0) //has execution times, don't keep logging
 	    {
-		currProcess.set_keepLogging();
+		currProcess.clear_keepLogging();
 	    }
 #ifdef DEBUG
 	    print_string("Pushing back process.");
@@ -162,23 +162,27 @@ int main(int argc, char *argv[])
 #endif
     for(std::vector<process>::iterator currProcess=processes.begin(); currProcess!=processes.end(); ++currProcess)
     {
+	//TODO remove bad processes instead of quitting
 	if(!processSearch(*currProcess)) //process not found (searches with pname OR pid based on which is set)
 	{
 	    print_string(currProcess->get_pid() + ":" + currProcess->get_pname() + " not found");
 	    return 1;
 	}
-
 	if(currProcess->get_pid() == 0) //this should not be possible...
 	{
 	    print_string(currProcess->get_pid() + ":" + currProcess->get_pname() + " not found - failed to set PID");
 	    return 1;
+	}
+	if(currProcess->get_logTimes()< 0) //negative numbers make no sense
+	{
+	    currProcess->set_logTimes(0);
 	}
     }
 
     int currLogTime = 0; //increased once after iterating through every process
     int finishedProcesses = 0;
     bool finished = false;
-    while(!finished) //TODO stop after every process stops
+    while(!finished)
     {
 	for(std::vector<process>::iterator currProcess=processes.begin(); currProcess!=processes.end(); ++currProcess)
 	{
@@ -196,10 +200,6 @@ int main(int argc, char *argv[])
 	    //loop until logtimes is up, or keeploogging stops.
 	    if((currLogTime < currProcess->get_logTimes()) || currProcess->get_keepLogging())
 	    {
-		if(currProcess->get_logTimes()< 0) //negative numbers make no sense
-		{
-		    currProcess->set_logTimes(0);
-		}
 		switch(get_proc_info(&pinfo, currProcess->get_pid()))
 		{
 		    case -3: //error condition
@@ -214,13 +214,13 @@ int main(int argc, char *argv[])
 #endif
 			break;
 		    case -1: //error condition
-			currProcess->set_keepLogging();
+			currProcess->clear_keepLogging();
 			print_string("Error while opening stat file");
 			break;
 		    case 0: //do nothing
 			break;
 		    default:
-			currProcess->set_keepLogging();
+			currProcess->clear_keepLogging();
 			print_string("Unkown exit condition");
 			break;
 		}
@@ -266,22 +266,25 @@ int main(int argc, char *argv[])
 #ifdef DEBUG
 		    print_string("DEAD");
 #endif
-		    currProcess->set_keepLogging();
+		    currProcess->clear_keepLogging();
 		}
 
 #ifdef DEBUG
 		print_string("Clearing show once");
 #endif
-		currProcess->set_showOnce();
+		currProcess->clear_showOnce();
 #ifdef DEBUG
 		print_string("Outputting Data");
 #endif
 		currProcess->outputData();
 	    } else { //process keepLogging is false and count is exceeded
-		finishedProcesses++;
+		if(currLogTime == currProcess->get_logTimes()) { //only add once per process
+		    finishedProcesses++;
+		}
 	    }
 	}
 	currLogTime++;
+	//TODO remove finished processes from list.
 	finished = (finishedProcesses == processes.size());
 #ifdef DEBUG
 	print_string("Log Time: " + std::to_string(currLogTime));
