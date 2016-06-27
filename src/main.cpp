@@ -21,7 +21,7 @@ Description : CPU and Memory Analyzer for KPI standards
 #include "print.h"
 #include "kpi.h"
 
-#define DEBUG
+//#define DEBUG
 
 //  Print Usage Message
 int prtUsage ()
@@ -146,6 +146,10 @@ int main(int argc, char *argv[])
 	    }
 
 	    i += skipParams; //skip over separate params, which are for the just finished process
+	    if(currProcess.get_logTimes() > 0) //has execution times, don't keep logging
+	    {
+		currProcess.set_keepLogging();
+	    }
 #ifdef DEBUG
 	    print_string("Pushing back process.");
 #endif
@@ -275,6 +279,9 @@ int main(int argc, char *argv[])
 	    }
 	}
 	currLogTime++;
+#ifdef DEBUG
+	print_string("Log Time: " + std::to_string(currLogTime));
+#endif
     }
     return 0;
 }
