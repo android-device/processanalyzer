@@ -185,8 +185,10 @@ void getAndShow(process &currProcess) {
 #ifdef DEBUG
 	print_string("DEAD");
 #endif
-	currProcess.clear_keepLogging();
+	//currProcess.clear_keepLogging();
 	currProcess.clear_running();
+	//no idea what pid will be if it comes back! pname should be set by now.
+	currProcess.set_pid(0);
     }
     currProcess.clear_showOnce();
 
