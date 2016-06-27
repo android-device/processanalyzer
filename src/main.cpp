@@ -160,6 +160,13 @@ int main(int argc, char *argv[])
 #ifdef DEBUG
     print_string("Searching for processes");
 #endif
+    //TODO skip search processes instead of stopping execution
+    /* Find every available process, quits if any passed processes do not
+     * exist. This has the potential to be an inifite loop, because of the use
+     * of process search - any processes that are being 'searched' for that
+     * never come into existence will stop the execution of the rest of the
+     * program - until they ALL exist.
+     */
     for(std::vector<process>::iterator currProcess=processes.begin(); currProcess!=processes.end(); ++currProcess)
     {
 	//TODO remove bad processes instead of quitting
@@ -180,9 +187,8 @@ int main(int argc, char *argv[])
     }
 
     int currLogTime = 0; //increased once after iterating through every process
-    int finishedProcesses = 0;
-    bool finished = false;
-    while(!finished)
+    int finishedProcesses = 0; //count of finished processes, used to decide when to stop looping
+    while(!(finishedProcesses == processes.size())) //loop until every process finishes
     {
 	for(std::vector<process>::iterator currProcess=processes.begin(); currProcess!=processes.end(); ++currProcess)
 	{
@@ -285,7 +291,6 @@ int main(int argc, char *argv[])
 	}
 	currLogTime++;
 	//TODO remove finished processes from list.
-	finished = (finishedProcesses == processes.size());
 #ifdef DEBUG
 	print_string("Log Time: " + std::to_string(currLogTime));
 #endif
