@@ -9,23 +9,17 @@
  *
  * This function is not public.
  */
-bool processSearch(bool search, int id) //overloaded
+bool processSearch(int id) //overloaded
 {
     procFile = "/proc/" + std::to_string(id) + "/stat";
 
 #ifdef DEBUG
-    if(search)
-    {
-	print_string("Will Search");
-    }
     print_string(procFile);
 #endif
 
-    do {
-	if(checkFile(procFile) != 0) { //read OR write, doesn't matter for the process
-	    return true;
-	}
-    } while(search); //if search is set, loop until the process is found
+    if(checkFile(procFile) != 0) { //read OR write, doesn't matter for the process
+	return true;
+    }
     return false;
 }
 
@@ -33,22 +27,21 @@ bool processSearch(bool search, int id) //overloaded
  * 
  * This function is not public.
  */
-bool processSearch(bool search, std::string pname, int *pid) //overloaded
+bool processSearch(std::string pname, int *pid) //overloaded
 {
     if(pname == "")
     {
-	print_string("Something terrible has happened.");
+	print_string("No pname specified.");
 	return false;
     }
-    do {
-	//TODO multiple PIDs
-	std::string pidofCmd = "pidof " + pname;
-	std::string result = exec(pidofCmd.c_str());
-	if(result != "") {
-	    *pid = stoi(result);
-	    return true;
-	}
-    } while(search); //keep searching until process is found
+
+    //TODO multiple PIDs
+    std::string pidofCmd = "pidof " + pname;
+    std::string result = exec(pidofCmd.c_str());
+    if(result != "") {
+	*pid = stoi(result);
+	return true;
+    }
     return false;
 }
 
@@ -61,7 +54,7 @@ bool processSearch(process &currProcess)
 	print_string("Using Name Search");
 #endif
 	int pid = 0; //will be set in currprocess, can't be done by called function
-	result = processSearch(currProcess.get_search(), currProcess.get_pname(), &pid);
+	result = processSearch(currProcess.get_pname(), &pid);
 	currProcess.set_pid(pid);
 #ifdef DEBUG
 	print_string(std::to_string(currProcess.get_pid()));
@@ -70,7 +63,7 @@ bool processSearch(process &currProcess)
 #ifdef DEBUG
 	print_string("Using PID Search");
 #endif
-	result = processSearch(currProcess.get_search(), currProcess.get_pid());
+	result = processSearch(currProcess.get_pid());
     }
     return result;
 }

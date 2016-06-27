@@ -170,17 +170,17 @@ int main(int argc, char *argv[])
     for(std::vector<process>::iterator currProcess=processes.begin(); currProcess!=processes.end(); ++currProcess)
     {
 	//TODO remove bad processes instead of quitting
-	if(!processSearch(*currProcess)) //process not found (searches with pname OR pid based on which is set)
+	if(processSearch(*currProcess)) //process found (searches with pname OR pid based on which is set)
 	{
-	    print_string(currProcess->get_pid() + ":" + currProcess->get_pname() + " not found");
-	    return 1;
+	    currProcess->set_running();
+	} else { //process not found
+	    if(!currProcess->get_search()) //should already be executing, don't search
+	    {
+		print_string(currProcess->get_pid() + ":" + currProcess->get_pname() + " not found");
+		return 1;
+	    }
 	}
-	if(currProcess->get_pid() == 0) //this should not be possible...
-	{
-	    print_string(currProcess->get_pid() + ":" + currProcess->get_pname() + " not found - failed to set PID");
-	    return 1;
-	}
-	if(currProcess->get_logTimes()< 0) //negative numbers make no sense
+	if(currProcess->get_logTimes() < 0) //negative numbers make no sense
 	{
 	    currProcess->set_logTimes(0);
 	}
@@ -194,17 +194,22 @@ int main(int argc, char *argv[])
 	{
 #ifdef DEBUG
 	    print_string("currProcess is: " + std::to_string(currProcess->get_pid()) + ":" + currProcess->get_pname());
-#endif
-
-#ifdef DEBUG
 	    print_string("Gathering Data");
 #endif
 	    fflush(stdout);
-
 	    procinfo pinfo;
 
-	    //loop until logtimes is up, or keeploogging stops.
-	    if((currLogTime < currProcess->get_logTimes()) || currProcess->get_keepLogging())
+
+	    /* If:
+	     * 	Haven't reached log limit OR is set to log indefinitely
+	     * 	AND is running
+	     *
+	     * 	Do nothing if the process is not running, regardless of the
+	     * 	first two conditions - no point!
+	     */
+	    if( ( (currLogTime < currProcess->get_logTimes()) ||
+			currProcess->get_keepLogging() ) &&
+		    currProcess->is_running())
 	    {
 		switch(get_proc_info(&pinfo, currProcess->get_pid()))
 		{
@@ -275,21 +280,49 @@ int main(int argc, char *argv[])
 		    currProcess->clear_keepLogging();
 		}
 
-#ifdef DEBUG
-		print_string("Clearing show once");
-#endif
 		currProcess->clear_showOnce();
 #ifdef DEBUG
 		print_string("Outputting Data");
 #endif
 		currProcess->outputData();
-	    } else { //process keepLogging is false and count is exceeded
+	    } else { //process (keepLogging is false AND count is exceeded) OR is not running
+		currLogTime++;
+		//keep searching, isn't running yet
+		if(currProcess->get_search() && !currProcess->is_running()) {
+		    currProcess->set_logTimes(currProcess->get_logTimes() + 1);
+		}
 		if(currLogTime == currProcess->get_logTimes()) { //only add once per process
+		    print_string("Finished " + std::to_string(currProcess->get_pid()) + ":" + currProcess->get_pname() + "," + std::to_string(finishedProcesses));
 		    finishedProcesses++;
+
+		    //not running, should continue searching for it
+		    if(!currProcess->is_running() && currProcess->get_search() &&
+			    (currProcess->get_logTimes() < currLogTime) )
+		    {
+			if(processSearch(*currProcess)) { //process found (searches with pname OR pid based on which is set)
+			    currProcess->set_running();
+			} else {
+			    /* not running YET, don't want to affect the number of
+			     * times to log it. If the process stops partway through
+			     * the number of times to log, it will resume logging if it
+			     * is found again.
+			     *
+			     * If the log limit is reached, incrementing this will have
+			     * no effect - as the log limit and current execution
+			     * increase at the same rate (max of once per iteration).
+			     *
+			     * NOTE potential to overflow
+			     */
+			    if(currProcess->get_logTimes() != 0) //actually has log times!
+			    {
+				currProcess->set_logTimes(currProcess->get_logTimes() + 1);
+			    }
+			}
+		    }
+
 		}
 	    }
 	}
-	currLogTime++;
 	//TODO remove finished processes from list.
 #ifdef DEBUG
 	print_string("Log Time: " + std::to_string(currLogTime));

@@ -18,6 +18,7 @@ class process {
 
 	bool search; //default is to quit immediately if process is not found
 	bool terminalOutput; //default is to output to file
+	bool running; //used to determine whether to search for a process before attempting to read it's data
 	int logTimes;
 
 	bool keepLogging; //if logTimes is zero, keep logging until the process dies
@@ -44,6 +45,8 @@ class process {
 	//only ever cleared, start set and are cleared once shown
 	void clear_keepLogging() { keepLogging = false; } 
 	void clear_showOnce() { showOnce = false; }
+	void set_running() { running = true; }
+	void clear_running() { running = false; } //used if the state becomes DEAD
 
 	int get_pid() { return pid; }
 	std::string get_pname() { return pname; }
@@ -54,6 +57,7 @@ class process {
 	int get_logTimes() { return logTimes; }
 	bool get_keepLogging() { return keepLogging; }
 	bool get_showOnce() { return showOnce; }
+	bool is_running() { return running; }
 
 	void outputData();
 };

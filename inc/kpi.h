@@ -30,8 +30,8 @@
  * Becaues pname search calls an external application (pidof), pid search is
  * preferred.
  */
-//bool processSearch(bool search, int id);
-//bool processSearch(bool search, std::string pname, int *pid);
+//bool processSearch(int id);
+//bool processSearch(std::string pname, int *pid);
 bool processSearch(process &currProcess);
 
 //get the process info, using the pid, and put it in a pinfo

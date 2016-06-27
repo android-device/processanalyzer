@@ -8,10 +8,22 @@ process::process() {
 
     search = false; //default is to quit immediately if process is not found
     terminalOutput = false; //default is to output to file
+    running = false;
     logTimes = 0; //default is never stop
 
     keepLogging = true; //if logTimes is zero, keep logging until the process dies
     showOnce = true; //show the process details, only once
+
+    pid = 0;
+    pname = "";
+
+    /* Default every pinfo value to NA, to prevent bad values from causing
+     * errors; especially if the process will be searched for
+     */
+    for(int currIndex=0; currIndex<NUMVALUES; currIndex++)
+    {
+	pinfo.values[currIndex] = "NA";
+    }
 }
 
 process& process::operator=(const process &nprocess)
