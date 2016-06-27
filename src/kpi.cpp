@@ -185,9 +185,14 @@ void getAndShow(process &currProcess) {
 #ifdef DEBUG
 	print_string("DEAD");
 #endif
-	//currProcess.clear_keepLogging();
+	if(!currProcess.get_search()) {
+	    currProcess.clear_keepLogging();
+	}
 	currProcess.clear_running();
-	//no idea what pid will be if it comes back! pname should be set by now.
+	/* No idea what pid will be if  it comes back! Execution will never
+	 * stop if search is set and it never comes back. pname should be set
+	 * by now.
+	 */
 	currProcess.set_pid(0);
     }
     currProcess.clear_showOnce();
