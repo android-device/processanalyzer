@@ -39,6 +39,7 @@ class process {
 	void set_search(bool nsearch) { search = nsearch; }
 	void set_terminalOutput() { terminalOutput = true; } //defaults to false, only ever set
 	void set_logTimes(int nlogTimes) { logTimes = nlogTimes; }
+	void increment_logTimes() { logTimes++; }
 
 	void set_pinfo(procinfo npinfo);
 

@@ -183,6 +183,11 @@ int main(int argc, char *argv[])
 	if(currProcess->get_logTimes() < 0) //negative numbers make no sense
 	{
 	    currProcess->set_logTimes(0);
+	    if(!currProcess->get_keepLogging()) //logging is messed up
+	    {
+		print_string("Not logging at all!");
+		return 1;
+	    }
 	}
     }
 
@@ -197,8 +202,6 @@ int main(int argc, char *argv[])
 	    print_string("Gathering Data");
 #endif
 	    fflush(stdout);
-	    procinfo pinfo;
-
 
 	    /* If:
 	     * 	Haven't reached log limit OR is set to log indefinitely
@@ -207,101 +210,29 @@ int main(int argc, char *argv[])
 	     * 	Do nothing if the process is not running, regardless of the
 	     * 	first two conditions - no point!
 	     */
-	    if( ( (currLogTime < currProcess->get_logTimes()) ||
-			currProcess->get_keepLogging() ) &&
-		    currProcess->is_running())
+	    if(currProcess->is_running())
 	    {
-		switch(get_proc_info(&pinfo, currProcess->get_pid()))
-		{
-		    case -3: //error condition
-			//TODO error handling
-#ifdef DEBUG
-			print_string("Not all pinfo values filled");
-#endif
-			break;
-		    case -2: //error condition
-#ifdef DEBUG
-			print_string("Extraneous values, some not read");
-#endif
-			break;
-		    case -1: //error condition
-			currProcess->clear_keepLogging();
-			print_string("Error while opening stat file");
-			break;
-		    case 0: //do nothing
-			break;
-		    default:
-			currProcess->clear_keepLogging();
-			print_string("Unkown exit condition");
-			break;
-		}
-
-		currProcess->set_pinfo(pinfo);
-
-		if(currProcess->get_fname() == "") //use the pid
-		{
-#ifdef DEBUG
-		    print_string("Using PID");
-#endif
-		    if(currProcess->get_pname() == "") //set the pname for the log file.
-		    {
-#ifdef DEBUG
-			print_string("Setting pname");
-#endif
-			currProcess->set_pname(pinfo.values[cpu_comm]);
-			if(currProcess->get_terminalOutput())
-			{
-			    print_string(std::to_string(currProcess->get_pid()) + " pname is: " + currProcess->get_pname());
-			}
-		    }
-		    if(!currProcess->get_terminalOutput()) //don't care about the log file if not logging....
-		    {
-#ifdef DEBUG
-			print_string("Setting logname");
-#endif
-			currProcess->set_fname(currProcess->get_pname()+ "." + pinfo.values[cpu_pid] + ".log");
-		    }
-		}
-
-		//only show logname once, and only if outputting to a log
-		if(currProcess->get_showOnce() && !currProcess->get_terminalOutput())
-		{
-#ifdef DEBUG
-		    print_string("Show Once, not terminalOutput");
-#endif
-		    print_string("Log File: " + currProcess->get_fpath() + currProcess->get_fname());
-		}
-
-		if(pinfo.values[cpu_state] == "D") //D for DEAD
-		{
-#ifdef DEBUG
-		    print_string("DEAD");
-#endif
-		    currProcess->clear_keepLogging();
-		}
-
-		currProcess->clear_showOnce();
-#ifdef DEBUG
-		print_string("Outputting Data");
-#endif
-		currProcess->outputData();
-	    } else { //process (keepLogging is false AND count is exceeded) OR is not running
-		currLogTime++;
-		//keep searching, isn't running yet
-		if(currProcess->get_search() && !currProcess->is_running()) {
-		    currProcess->set_logTimes(currProcess->get_logTimes() + 1);
-		}
-		if(currLogTime == currProcess->get_logTimes()) { //only add once per process
-		    print_string("Finished " + std::to_string(currProcess->get_pid()) + ":" + currProcess->get_pname() + "," + std::to_string(finishedProcesses));
+		if(currProcess->get_keepLogging()) { //log indefinitely
+		    getAndShow(*currProcess);
+		} else if(currLogTime < currProcess->get_logTimes()) {
+		    getAndShow(*currProcess);
+		} else if(currLogTime == currProcess->get_logTimes()) { //not log indefinetly and log times exceeded
 		    finishedProcesses++;
-
-		    //not running, should continue searching for it
-		    if(!currProcess->is_running() && currProcess->get_search() &&
-			    (currProcess->get_logTimes() < currLogTime) )
+		}
+	    } else { //not running
+		if(currProcess->get_search()) //keep searching for it
+		{
+		    if(currProcess->get_keepLogging()) //log indefinitely
 		    {
-			if(processSearch(*currProcess)) { //process found (searches with pname OR pid based on which is set)
+			if(processSearch(*currProcess)) {
 			    currProcess->set_running();
-			} else {
+			}
+		    } else { //if don't log indefinitely
+			if(currLogTime < currProcess->get_logTimes()) //if not done logging
+			{
+			    if(processSearch(*currProcess)) {
+				currProcess->set_running();
+			    } else { //look again next time
 			    /* not running YET, don't want to affect the number of
 			     * times to log it. If the process stops partway through
 			     * the number of times to log, it will resume logging if it
@@ -313,15 +244,13 @@ int main(int argc, char *argv[])
 			     *
 			     * NOTE potential to overflow
 			     */
-			    if(currProcess->get_logTimes() != 0) //actually has log times!
-			    {
-				currProcess->set_logTimes(currProcess->get_logTimes() + 1);
+				currProcess->increment_logTimes();
 			    }
 			}
 		    }
-
 		}
 	    }
+	    currLogTime++;
 	}
 	//TODO remove finished processes from list.
 #ifdef DEBUG

@@ -32,12 +32,12 @@
  */
 //bool processSearch(int id);
 //bool processSearch(std::string pname, int *pid);
-bool processSearch(process &currProcess);
+bool processSearch(process&);
 
 //get the process info, using the pid, and put it in a pinfo
 //based on: https://www.redhat.com/archives/axp-list/2001-January/msg00355.html
-int get_proc_info(procinfo *pinfo, int pid);
+int get_proc_info(procinfo*, int);
 
-static std::string procFile = "";
+void getAndShow(process&);
 
 #endif

@@ -11,7 +11,7 @@
  */
 bool processSearch(int id) //overloaded
 {
-    procFile = "/proc/" + std::to_string(id) + "/stat";
+    std::string procFile = "/proc/" + std::to_string(id) + "/stat";
 
 #ifdef DEBUG
     print_string(procFile);
@@ -115,4 +115,83 @@ int get_proc_info(procinfo *pinfo, int pid)
     }
     statFile.close();
     return -3; //less value available than are being used.
+}
+
+void getAndShow(process &currProcess) {
+    procinfo pinfo;
+    switch(get_proc_info(&pinfo, currProcess.get_pid()))
+    {
+	case -3: //error condition
+	    //TODO error handling
+#ifdef DEBUG
+	    print_string("Not all pinfo values filled");
+#endif
+	    break;
+	case -2: //error condition
+#ifdef DEBUG
+	    print_string("Extraneous values, some not read");
+#endif
+	    break;
+	case -1: //error condition
+	    currProcess.clear_keepLogging();
+	    print_string("Error while opening stat file");
+	    break;
+	case 0: //do nothing
+	    break;
+	default:
+	    currProcess.clear_keepLogging();
+	    print_string("Unkown exit condition");
+	    break;
+    }
+
+    currProcess.set_pinfo(pinfo);
+
+    if(currProcess.get_fname() == "") //use the pid
+    {
+#ifdef DEBUG
+	print_string("Using PID");
+#endif
+	if(currProcess.get_pname() == "") //set the pname for the log file.
+	{
+#ifdef DEBUG
+	    print_string("Setting pname");
+#endif
+	    currProcess.set_pname(pinfo.values[cpu_comm]);
+	    if(currProcess.get_terminalOutput()) //show pname if not set and outputting to terminal
+	    {
+		print_string(std::to_string(currProcess.get_pid()) + " pname is: " + currProcess.get_pname());
+	    }
+	}
+	if(!currProcess.get_terminalOutput()) //don't care about the log file if not logging....
+	{
+#ifdef DEBUG
+	    print_string("Setting logname");
+#endif
+	    currProcess.set_fname(currProcess.get_pname()+ "." + pinfo.values[cpu_pid] + ".log");
+	}
+    }
+
+    //only show logname once, and only if outputting to a log
+    if(currProcess.get_showOnce() && !currProcess.get_terminalOutput())
+    {
+#ifdef DEBUG
+	print_string("Show Once, not terminalOutput");
+#endif
+	print_string("Log File: " + currProcess.get_fpath() + currProcess.get_fname());
+    }
+
+    if(pinfo.values[cpu_state] == "D") //D for DEAD
+    {
+#ifdef DEBUG
+	print_string("DEAD");
+#endif
+	currProcess.clear_keepLogging();
+	currProcess.clear_running();
+    }
+    currProcess.clear_showOnce();
+
+#ifdef DEBUG
+    print_string("Outputting Data");
+#endif
+    currProcess.outputData();
 }
