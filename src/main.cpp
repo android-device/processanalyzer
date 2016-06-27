@@ -156,9 +156,7 @@ int main(int argc, char *argv[])
 
     for(std::vector<process>::iterator currProcess=processes.begin(); currProcess!=processes.end(); ++currProcess)
     {
-	if ( //process not found (searches with pname OR pid based on which is set)
-		!processSearch(*currProcess)
-	   ) 
+	if ( !processSearch(*currProcess)) //process not found (searches with pname OR pid based on which is set)
 	{
 	    print_string("Process not found");
 	    return 1;
@@ -166,7 +164,7 @@ int main(int argc, char *argv[])
 
 	if(currProcess->get_pid() == 0) //this should not be possible...
 	{
-	    print_string("Process not found");
+	    print_string("Process not found  - no PID");
 	    return 1;
 	}
 

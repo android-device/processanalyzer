@@ -4,17 +4,17 @@
 process::process() {
     //log file information
     fpath = "/tmp/"; //default location is /tmp
-    fname; //default file name is pname.log
+    fname; //default file name is pname.log, which is set later
 
     search = false; //default is to quit immediately if process is not found
     terminalOutput = false; //default is to output to file
-    logTimes = 0;
+    logTimes = 0; //default is never stop
 
     keepLogging = true; //if logTimes is zero, keep logging until the process dies
     showOnce = true; //show the process details, only once
 }
 
-process& process::operator=(process nprocess)
+process& process::operator=(const process &nprocess)
 {
     pid = nprocess.pid;
     pname = nprocess.pname;

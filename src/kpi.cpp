@@ -6,6 +6,8 @@
  * matching process is found - leading to an infinite loop! Use it only on
  * processes you know will eventually exist; this is very useful for measuring
  * the startup usage of a process.
+ *
+ * This function is not public.
  */
 bool processSearch(bool search, int id) //overloaded
 {
@@ -27,7 +29,10 @@ bool processSearch(bool search, int id) //overloaded
     return false;
 }
 
-/* Overload for searching with pname instead of pid */
+/* Overload for searching with pname instead of pid
+ * 
+ * This function is not public.
+ */
 bool processSearch(bool search, std::string pname, int *pid) //overloaded
 {
     if(pname == "")
@@ -47,7 +52,7 @@ bool processSearch(bool search, std::string pname, int *pid) //overloaded
     return false;
 }
 
-bool processSearch(process currProcess)
+bool processSearch(process &currProcess)
 {
     bool result = false;;
     if((currProcess.get_pname() != "") && (currProcess.get_pid() == 0)) //pname set, pid not set, search with pname

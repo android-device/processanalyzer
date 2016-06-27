@@ -32,7 +32,7 @@
  */
 //bool processSearch(bool search, int id);
 //bool processSearch(bool search, std::string pname, int *pid);
-bool processSearch(process currProcess);
+bool processSearch(process &currProcess);
 
 //get the process info, using the pid, and put it in a pinfo
 //based on: https://www.redhat.com/archives/axp-list/2001-January/msg00355.html

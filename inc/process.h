@@ -28,7 +28,7 @@ class process {
 
     public:
 	process();
-	process& operator=(process);
+	process& operator=(const process&);
 	process(const process&);
 
 	void set_pid(int npid) { pid = npid; }
