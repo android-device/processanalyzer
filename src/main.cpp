@@ -194,7 +194,7 @@ int main(int argc, char *argv[])
     int currLogTime = 0; //increased once after iterating through every process
     while(!(processes.size() == 0)) //loop until every process finishes
     {
-	if(!paused) //use pauses by pressing enter -- application must be in foreground for this to work!
+	if(!paused) //user pauses by pressing enter -- application must be in foreground for this to work!
 	{
 	    for(std::vector<process>::iterator currProcess=processes.begin(); currProcess!=processes.end();)
 	    {
@@ -262,10 +262,11 @@ int main(int argc, char *argv[])
 		}
 	    } //end vector iterator (for)
 	    currLogTime++;
+	} //end paused
 #ifdef DEBUG
 	    print_string("Log Time: " + std::to_string(currLogTime));
 #endif
-	} //end paused
+	    sleep(1);
     } //end log loop (while)
     return 0;
 }
