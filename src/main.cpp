@@ -21,7 +21,7 @@ Description : CPU and Memory Analyzer for KPI standards
 #include "print.h"
 #include "kpi.h"
 
-#define DEBUG
+//#define DEBUG
 
 //  Print Usage Message
 int prtUsage ()
@@ -150,16 +150,10 @@ int main(int argc, char *argv[])
 	    {
 		currProcess.clear_keepLogging();
 	    }
-#ifdef DEBUG
-	    print_string("Pushing back process.");
-#endif
 	    processes.push_back(currProcess);
 	}
     }
 
-#ifdef DEBUG
-    print_string("Searching for processes");
-#endif
     /* Find every available process, quits if any passed processes do not
      * exist. This has the potential to be an inifite loop, because of the use
      * of process search - any processes that are being 'searched' for that
@@ -190,9 +184,6 @@ int main(int argc, char *argv[])
 	}
 
 	if(erase) {
-#ifdef DEBUG
-			    print_string("Is Erased: " + currProcess->get_pname() + std::to_string(currProcess->is_running()));
-#endif
 	    currProcess=processes.erase(currProcess);
 	} else {
 	    ++currProcess;
@@ -208,7 +199,6 @@ int main(int argc, char *argv[])
 	    bool erase = false;
 #ifdef DEBUG
 	    print_string("currProcess is: " + std::to_string(currProcess->get_pid()) + ":" + currProcess->get_pname());
-	    print_string("Gathering Data");
 #endif
 	    fflush(stdout);
 
@@ -221,9 +211,6 @@ int main(int argc, char *argv[])
 	     */
 	    if(currProcess->is_running())
 	    {
-#ifdef DEBUG
-	    print_string("currProcess is running: " + std::to_string(currProcess->get_pid()) + ":" + currProcess->get_pname());
-#endif
 		if(currProcess->get_keepLogging()) { //log indefinitely
 		    getAndShow(*currProcess);
 		} else if(currLogTime < currProcess->get_logTimes()) {
@@ -231,36 +218,21 @@ int main(int argc, char *argv[])
 		} else if(currLogTime == currProcess->get_logTimes()) { //not log indefinitely and log times exceeded
 		    //TODO remove finished processes from list.
 		    //finishedProcesses++;
-#ifdef DEBUG
-	    print_string("currProcess is erased: " + std::to_string(currProcess->get_pid()) + ":" + currProcess->get_pname());
-#endif
 		    erase = true;
 		    currProcess->clear_running();
 		}
 	    } else { //not running
-		currProcess->clear_running();
 		if(currProcess->get_search()) //keep searching for it
 		{
 		    if(currProcess->get_keepLogging()) //log indefinitely
 		    {
 			if(processSearch(*currProcess)) {
-#ifdef DEBUG
-			    print_string("Is Running: " + currProcess->get_pname() + std::to_string(currProcess->is_running()));
-#endif
 			    currProcess->set_running();
 			}
-#ifdef DEBUG
-			else {
-			    print_string("Is NOT Running: " + currProcess->get_pname() + std::to_string(currProcess->is_running()));
-			}
-#endif
 		    } else { //if don't log indefinitely
 			if(currLogTime < currProcess->get_logTimes()) //if not done logging
 			{
 			    if(processSearch(*currProcess)) {
-#ifdef DEBUG
-				print_string("Is Running: " + currProcess->get_pname() + std::to_string(currProcess->is_running()));
-#endif
 				currProcess->set_running();
 			    } else { //look again next time
 				/* not running YET, don't want to affect the number of
@@ -274,9 +246,6 @@ int main(int argc, char *argv[])
 				 *
 				 * NOTE potential to overflow
 				 */
-#ifdef DEBUG
-				print_string("Is NOT Running: " + currProcess->get_pname() + std::to_string(currProcess->is_running()));
-#endif
 				currProcess->increment_logTimes();
 				currProcess->clear_running();
 			    }
@@ -288,13 +257,7 @@ int main(int argc, char *argv[])
 	    if(erase) {
 		currProcess = processes.erase(currProcess);
 	    } else {
-#ifdef DEBUG
-		print_string((currProcess+1)->get_pname() + std::to_string((currProcess+1)->is_running()));
-#endif
 		++currProcess;
-#ifdef DEBUG
-		print_string(currProcess->get_pname() + std::to_string(currProcess->is_running()));
-#endif
 	    }
 	} //end vector iterator (for)
 	currLogTime++;

@@ -1,5 +1,5 @@
 #include "kpi.h"
-#define DEBUG
+//#define DEBUG
 
 /* Search for a process, using the pid or the pname version of this overloaded
  * function. Note that if search is true, this function will NOT return until a
@@ -13,10 +13,6 @@ bool processSearch(int id) //overloaded
 {
     bool result = false;
     std::string procFile = "/proc/" + std::to_string(id) + "/stat";
-
-#ifdef DEBUG
-    print_string(procFile);
-#endif
 
     if(checkFile(procFile) != 0) { //read OR write, doesn't matter for the process
 	result = true;
@@ -59,9 +55,6 @@ bool processSearch(process &currProcess)
 	int pid = 0; //will be set in currprocess, can't be done by this function
 	result = processSearch(currProcess.get_pname(), &pid);
 	currProcess.set_pid(pid);
-#ifdef DEBUG
-	print_string(std::to_string(currProcess.get_pid()));
-#endif
     } else {
 #ifdef DEBUG
 	print_string("Using PID Search");
@@ -104,12 +97,6 @@ int get_proc_info(procinfo *pinfo, int pid)
 
 	if(currIndex < NUMVALUES) //is within valid range
 	{
-#ifdef DEBUG
-	    if((pinfo->values[currIndex] != "") && (pinfo->values[currIndex] != currVal))
-	    {
-		print_string("Changed: " + headers[currIndex] + " : " + pinfo->values[currIndex] + "->" + currVal);
-	    }
-#endif
 	    pinfo->values[currIndex] = currVal;
 	}
 
@@ -201,8 +188,5 @@ void getAndShow(process &currProcess) {
     }
     currProcess.clear_showOnce();
 
-#ifdef DEBUG
-    print_string("Outputting Data");
-#endif
     currProcess.outputData();
 }
