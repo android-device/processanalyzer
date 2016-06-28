@@ -190,6 +190,9 @@ int main(int argc, char *argv[])
 	}
 
 	if(erase) {
+#ifdef DEBUG
+			    print_string("Is Erased: " + currProcess->get_pname() + std::to_string(currProcess->is_running()));
+#endif
 	    currProcess=processes.erase(currProcess);
 	} else {
 	    ++currProcess;
@@ -200,8 +203,9 @@ int main(int argc, char *argv[])
     int finishedProcesses = 0; //count of finished processes, used to decide when to stop looping
     while(!(finishedProcesses == processes.size())) //loop until every process finishes
     {
-	for(std::vector<process>::iterator currProcess=processes.begin(); currProcess!=processes.end(); ++currProcess)
+	for(std::vector<process>::iterator currProcess=processes.begin(); currProcess!=processes.end();)
 	{
+	    bool erase = false;
 #ifdef DEBUG
 	    print_string("currProcess is: " + std::to_string(currProcess->get_pid()) + ":" + currProcess->get_pname());
 	    print_string("Gathering Data");
@@ -217,45 +221,81 @@ int main(int argc, char *argv[])
 	     */
 	    if(currProcess->is_running())
 	    {
+#ifdef DEBUG
+	    print_string("currProcess is running: " + std::to_string(currProcess->get_pid()) + ":" + currProcess->get_pname());
+#endif
 		if(currProcess->get_keepLogging()) { //log indefinitely
 		    getAndShow(*currProcess);
 		} else if(currLogTime < currProcess->get_logTimes()) {
 		    getAndShow(*currProcess);
-		} else if(currLogTime == currProcess->get_logTimes()) { //not log indefinetly and log times exceeded
+		} else if(currLogTime == currProcess->get_logTimes()) { //not log indefinitely and log times exceeded
 		    //TODO remove finished processes from list.
-		    finishedProcesses++;
+		    //finishedProcesses++;
+#ifdef DEBUG
+	    print_string("currProcess is erased: " + std::to_string(currProcess->get_pid()) + ":" + currProcess->get_pname());
+#endif
+		    erase = true;
+		    currProcess->clear_running();
 		}
 	    } else { //not running
+		currProcess->clear_running();
 		if(currProcess->get_search()) //keep searching for it
 		{
 		    if(currProcess->get_keepLogging()) //log indefinitely
 		    {
 			if(processSearch(*currProcess)) {
+#ifdef DEBUG
+			    print_string("Is Running: " + currProcess->get_pname() + std::to_string(currProcess->is_running()));
+#endif
 			    currProcess->set_running();
 			}
+#ifdef DEBUG
+			else {
+			    print_string("Is NOT Running: " + currProcess->get_pname() + std::to_string(currProcess->is_running()));
+			}
+#endif
 		    } else { //if don't log indefinitely
 			if(currLogTime < currProcess->get_logTimes()) //if not done logging
 			{
 			    if(processSearch(*currProcess)) {
+#ifdef DEBUG
+				print_string("Is Running: " + currProcess->get_pname() + std::to_string(currProcess->is_running()));
+#endif
 				currProcess->set_running();
 			    } else { //look again next time
-			    /* not running YET, don't want to affect the number of
-			     * times to log it. If the process stops partway through
-			     * the number of times to log, it will resume logging if it
-			     * is found again.
-			     *
-			     * If the log limit is reached, incrementing this will have
-			     * no effect - as the log limit and current execution
-			     * increase at the same rate (max of once per iteration).
-			     *
-			     * NOTE potential to overflow
-			     */
+				/* not running YET, don't want to affect the number of
+				 * times to log it. If the process stops partway through
+				 * the number of times to log, it will resume logging if it
+				 * is found again.
+				 *
+				 * If the log limit is reached, incrementing this will have
+				 * no effect - as the log limit and current execution
+				 * increase at the same rate (max of once per iteration).
+				 *
+				 * NOTE potential to overflow
+				 */
+#ifdef DEBUG
+				print_string("Is NOT Running: " + currProcess->get_pname() + std::to_string(currProcess->is_running()));
+#endif
 				currProcess->increment_logTimes();
+				currProcess->clear_running();
 			    }
 			}
 		    } //end if(keepLogging)
 		} //end if(search)
 	    } //end if(running)
+
+	    if(erase) {
+		currProcess = processes.erase(currProcess);
+	    } else {
+#ifdef DEBUG
+		print_string((currProcess+1)->get_pname() + std::to_string((currProcess+1)->is_running()));
+#endif
+		++currProcess;
+#ifdef DEBUG
+		print_string(currProcess->get_pname() + std::to_string(currProcess->is_running()));
+#endif
+	    }
 	} //end vector iterator (for)
 	currLogTime++;
 #ifdef DEBUG

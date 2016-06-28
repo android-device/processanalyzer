@@ -37,6 +37,7 @@ process& process::operator=(const process &nprocess)
     logTimes = nprocess.logTimes;
     keepLogging = nprocess.keepLogging;
     showOnce = nprocess.showOnce;
+    running = nprocess.running;
 }
 process::process(const process &nprocess)
 {
@@ -49,6 +50,7 @@ process::process(const process &nprocess)
     logTimes = nprocess.logTimes;
     keepLogging = nprocess.keepLogging;
     showOnce = nprocess.showOnce;
+    running = nprocess.running;
 }
 
 void process::outputData()
