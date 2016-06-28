@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
      */
     for(int i=0; i<argc; i++)
     {
-	if(argv[i][0]=='-') //is a parameter
+	if(argv[i][0]=='-') //denotes a new process
 	{
 	    /* Each process' parameters are grouped, such as:
 	     * -inco <pid> <pname> <count>
@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
 		switch(argv[i][currParam])
 		{
 		    case 'p': //file path parameter
-			currProcess.set_fpath(argv[i+currParam]);
+			currProcess.set_fpath(argv[i+skipParams+1]);
 			skipParams++; //path is separate param
 #ifdef DEBUG
 			print_string("p");
@@ -82,7 +82,7 @@ int main(int argc, char *argv[])
 			break;
 
 		    case 'f': //file name parameter
-			currProcess.set_fname(argv[i+currParam]);
+			currProcess.set_fname(argv[i+skipParams+1]);
 			skipParams++; //fname is separate param
 #ifdef DEBUG
 			print_string("f");
@@ -98,7 +98,7 @@ int main(int argc, char *argv[])
 			break;
 
 		    case 'i': //given the pid!
-			currProcess.set_pid(std::stoi(argv[i+currParam]));
+			currProcess.set_pid(std::stoi(argv[i+skipParams+1]));
 			skipParams++; //pid is separate
 #ifdef DEBUG
 			print_string("i");
@@ -107,7 +107,7 @@ int main(int argc, char *argv[])
 			break;
 
 		    case 'n': //process name, which will be used to find the pid
-			currProcess.set_pname(argv[i+currParam]);
+			currProcess.set_pname(argv[i+skipParams+1]);
 			skipParams++; //pname is separate
 #ifdef DEBUG
 			print_string("n");
@@ -116,7 +116,7 @@ int main(int argc, char *argv[])
 			break;
 
 		    case 'c':
-			currProcess.set_logTimes(std::stoi(argv[i+currParam]));
+			currProcess.set_logTimes(std::stoi(argv[i+skipParams+1]));
 			skipParams++; //count is separate
 #ifdef DEBUG
 			print_string("c");
@@ -160,7 +160,6 @@ int main(int argc, char *argv[])
 #ifdef DEBUG
     print_string("Searching for processes");
 #endif
-    //TODO skip search processes instead of stopping execution
     /* Find every available process, quits if any passed processes do not
      * exist. This has the potential to be an inifite loop, because of the use
      * of process search - any processes that are being 'searched' for that
@@ -170,13 +169,12 @@ int main(int argc, char *argv[])
     for(std::vector<process>::iterator currProcess=processes.begin(); currProcess!=processes.end(); ++currProcess)
     {
 	//TODO remove bad processes instead of quitting
-	if(processSearch(*currProcess)) //process found (searches with pname OR pid based on which is set)
-	{
+	if(processSearch(*currProcess)) { //process found (searches with pname OR pid based on which is set)
 	    currProcess->set_running();
 	} else { //process not found
 	    if(!currProcess->get_search()) //should already be executing, don't search
 	    {
-		print_string(currProcess->get_pid() + ":" + currProcess->get_pname() + " not found");
+		print_string(currProcess->get_pid() + ":" + currProcess->get_pname() + " not found, not searching");
 		return 1;
 	    }
 	}
@@ -217,6 +215,7 @@ int main(int argc, char *argv[])
 		} else if(currLogTime < currProcess->get_logTimes()) {
 		    getAndShow(*currProcess);
 		} else if(currLogTime == currProcess->get_logTimes()) { //not log indefinetly and log times exceeded
+		    //TODO remove finished processes from list.
 		    finishedProcesses++;
 		}
 	    } else { //not running
@@ -247,15 +246,14 @@ int main(int argc, char *argv[])
 				currProcess->increment_logTimes();
 			    }
 			}
-		    }
-		}
-	    }
-	}
+		    } //end if(keepLogging)
+		} //end if(search)
+	    } //end if(running)
+	} //end vector iterator (for)
 	currLogTime++;
-	//TODO remove finished processes from list.
 #ifdef DEBUG
 	print_string("Log Time: " + std::to_string(currLogTime));
 #endif
-    }
+    } //end log loop (while)
     return 0;
 }

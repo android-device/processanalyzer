@@ -22,7 +22,7 @@ process::process() {
      */
     for(int currIndex=0; currIndex<NUMVALUES; currIndex++)
     {
-	pinfo.values[currIndex] = "NA";
+	pinfo.values[currIndex] = "0";
     }
 }
 

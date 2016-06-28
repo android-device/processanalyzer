@@ -23,7 +23,7 @@ static const std::string outputSeparatorTerminal = ",\t";
  * o Output to terminal
  * h show Help
  */
-static const std::string helpMessage = "KPI Analyzer logs the cpu and memory usage of a process\n-i <pid>\n-n <process name>\tWill search in ps with grep to find the pid\n-f <filename>\n-p <path>\t\tPath to where the output log should be written\n-s\t\t\tDo no stop execution if the program is not found, keep searching for it until it starts - useful if running the analyzer before the process is started.\n-o\t\t\tOutput to terminal instead of file\n-h\t\t\tShow this message";
+static const std::string helpMessage = "KPI Analyzer logs the cpu and memory usage of a process\ni <pid>\nn <process name>\tWill search in ps with grep to find the pid\nf <filename>\t\tName of the log file\np <path>\t\tPath to where the output log should be written\nc\t\t\tNumber of times to log\ns\t\t\tDo no stop execution if the program is not found, keep searching for it until it starts - useful if running the analyzer before the process is started. If running before the process is started, it is recommended to use the pname rather than pid, as the pid will be different each time the process is started.\no\t\t\tOutput to terminal instead of file\nh\t\t\tShow this message\nMultiple processes can be watched simultaneously, simply separate each process' options with '-'. For example: '-nsco <pname> 3' will search for <pname> and output three times to terminal instead of file.";
 
 /* The name of this exectuble. This is changed to the first argument in argv -
  * unless the first argument is null. If the first argument is null, the
