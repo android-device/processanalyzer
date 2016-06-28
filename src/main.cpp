@@ -191,7 +191,7 @@ int main(int argc, char *argv[])
     }
 
     int currLogTime = 0; //increased once after iterating through every process
-    while(!(processes.size() == 0)) //loop until every process finishes
+    while(processes.size() != 0) //loop until every process finishes
     {
 	for(std::vector<process>::iterator currProcess=processes.begin(); currProcess!=processes.end();)
 	{
