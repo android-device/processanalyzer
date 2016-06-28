@@ -8,19 +8,18 @@ ARFLAGS	etc/Makefile	/^ARFLAGS  = -r -s --target=elf64-x86-64 $/;"	m
 ARFLAGS	src/Makefile	/^ARFLAGS  = -r -s$/;"	m
 CC	etc/Makefile	/^CC = \/opt\/intel-fca-socp-distro\/2015.12\/sysroots\/i686-melsdk-linux\/usr\/bin\/x86_64-mel-linux\/x86_64-mel-linux-gcc$/;"	m
 CC	src/Makefile	/^CC = gcc$/;"	m
-DEBUG	src/file.cpp	2;"	d	file:
-DEBUG	src/kpi.cpp	2;"	d	file:
 ETCDIR	etc/Makefile	/^ETCDIR=..\/etc$/;"	m
 ETCDIR	src/Makefile	/^ETCDIR=..\/etc$/;"	m
-FILECHECK	inc/file.h	4;"	d
 INCDIR	etc/Makefile	/^INCDIR=..\/inc$/;"	m
 INCDIR	src/Makefile	/^INCDIR=..\/inc$/;"	m
 KPI	inc/kpi.h	4;"	d
 KPI_CONSTS	inc/kpi_consts.h	6;"	d
 LIB_OBJS	etc/Makefile	/^LIB_OBJS = $(addprefix $(OBJDIR), $(subst $(SRCDIR), , $(TMP_OBJS)))$/;"	m
 LIB_OBJS	src/Makefile	/^LIB_OBJS = $(addprefix $(OBJDIR), $(subst $(SRCDIR), , $(TMP_OBJS)))$/;"	m
+NUMVALUES	inc/kpi_consts.h	57;"	d
 OBJDIR	etc/Makefile	/^OBJDIR=..\/obj$/;"	m
 OBJDIR	src/Makefile	/^OBJDIR=..\/obj$/;"	m
+PROCESS	inc/process.h	2;"	d
 PROG	etc/Makefile	/^PROG     = $(RELDIR)\/kpiAnalyzer$/;"	m
 PROG	src/Makefile	/^PROG     = $(RELDIR)\/kpiAnalyzer$/;"	m
 RELDIR	etc/Makefile	/^RELDIR=..\/rel$/;"	m
@@ -29,63 +28,123 @@ SRCDIR	etc/Makefile	/^SRCDIR=..\/src$/;"	m
 SRCDIR	src/Makefile	/^SRCDIR=..\/src$/;"	m
 SRCS	etc/Makefile	/^SRCS     = $(wildcard $(SRCDIR)\/*.cpp)$/;"	m
 SRCS	src/Makefile	/^SRCS     = $(wildcard $(SRCDIR)\/*.cpp)$/;"	m
+SYS	inc/sys.h	4;"	d
 TMP_OBJS	etc/Makefile	/^TMP_OBJS = $(subst .cpp,.o,$(filter %.cpp, $(SRCS)))$/;"	m
 TMP_OBJS	src/Makefile	/^TMP_OBJS = $(subst .cpp,.o,$(filter %.cpp, $(SRCS)))$/;"	m
 VPATH	etc/Makefile	/^VPATH    = $(SRCDIR)$/;"	m
 VPATH	src/Makefile	/^VPATH    = $(SRCDIR)$/;"	m
-blocked	inc/kpi_consts.h	/^	blocked,	\/** 30 **\/       \/** The bitmap of blocked signals **\/$/;"	m	struct:statstruct_proc
-checkFile	src/file.cpp	/^bool checkFile(std::string filename)$/;"	f
-closeFile	src/print.cpp	/^void closeFile()$/;"	f
-cmajflt	inc/kpi_consts.h	/^	cmajflt,	\/** The number of major faults with childs **\/$/;"	m	struct:statstruct_proc
-cminflt	inc/kpi_consts.h	/^	cminflt,	\/** The number of minor faults with childs **\/$/;"	m	struct:statstruct_proc
-counter	inc/kpi_consts.h	/^	counter,	\/** process's next timeslice **\/$/;"	m	struct:statstruct_proc
-cstime	inc/kpi_consts.h	/^	cstime,		\/** kernel mode jiffies with childs **\/$/;"	m	struct:statstruct_proc
-cutime	inc/kpi_consts.h	/^	cutime,		\/** user mode jiffies with childs **\/$/;"	m	struct:statstruct_proc
-egid	inc/kpi_consts.h	/^	egid,		\/** effective group id *\/$/;"	m	struct:statstruct_proc
-endcode	inc/kpi_consts.h	/^	endcode,	\/** The address below which program text can run **\/$/;"	m	struct:statstruct_proc
-euid	inc/kpi_consts.h	/^	euid,		\/** effective user id **\/$/;"	m	struct:statstruct_proc
-exName	inc/kpi_consts.h	/^	exName,		\/** The filename of the executable **\/$/;"	m	struct:statstruct_proc
-flags	inc/kpi_consts.h	/^	flags,		\/** The flags of the process. **\/$/;"	m	struct:statstruct_proc
-format_message	src/print.cpp	/^std::string format_message (procinfo pinfo)$/;"	f
-get_proc_info	src/kpi.cpp	/^int get_proc_info(procinfo *pinfo, std::string pid)$/;"	f
-helpMessage	inc/kpi_consts.h	/^static const std::string helpMessage = "KPI Analyzer logs the cpu and memory usage of a process\\n-i <pid>\\n-n <process name>\\tWill search in ps with grep to find the pid\\n-f <filename>\\n-p <path>\\t\\tPath to where the output log should be written\\n-s\\t\\t\\tDo no stop execution if the program is not found, keep searching for it until it starts - useful if running the analyzer before the process is started.\\n-o\\t\\t\\tOutput to terminal instead of file\\n-h\\t\\t\\tShow this message";$/;"	v
-itrealvalue	inc/kpi_consts.h	/^	itrealvalue,	\/** The time before the next SIGALRM is sent to the process **\/$/;"	m	struct:statstruct_proc
+checkFile	src/sys.cpp	/^int checkFile(std::string filename)$/;"	f
+clear_keepLogging	inc/process.h	/^	void clear_keepLogging() { keepLogging = false; } $/;"	f	class:process
+clear_running	inc/process.h	/^	void clear_running() { running = false; } \/\/used if the state becomes DEAD$/;"	f	class:process
+clear_showOnce	inc/process.h	/^	void clear_showOnce() { showOnce = false; }$/;"	f	class:process
+cpu_arg_end	inc/kpi_consts.h	/^    cpu_arg_end,$/;"	e	enum:pinfoVal
+cpu_arg_start	inc/kpi_consts.h	/^    cpu_arg_start,$/;"	e	enum:pinfoVal
+cpu_blocked	inc/kpi_consts.h	/^    cpu_blocked,$/;"	e	enum:pinfoVal
+cpu_cguest_time	inc/kpi_consts.h	/^    cpu_cguest_time,$/;"	e	enum:pinfoVal
+cpu_cmajflt	inc/kpi_consts.h	/^    cpu_cmajflt,$/;"	e	enum:pinfoVal
+cpu_cminflt	inc/kpi_consts.h	/^    cpu_cminflt,$/;"	e	enum:pinfoVal
+cpu_cnswap	inc/kpi_consts.h	/^    cpu_cnswap,$/;"	e	enum:pinfoVal
+cpu_comm	inc/kpi_consts.h	/^    cpu_comm,$/;"	e	enum:pinfoVal
+cpu_cstime	inc/kpi_consts.h	/^    cpu_cstime,$/;"	e	enum:pinfoVal
+cpu_cutime	inc/kpi_consts.h	/^    cpu_cutime,$/;"	e	enum:pinfoVal
+cpu_delayacct_blkio_ticks	inc/kpi_consts.h	/^    cpu_delayacct_blkio_ticks,$/;"	e	enum:pinfoVal
+cpu_end_data	inc/kpi_consts.h	/^    cpu_end_data,$/;"	e	enum:pinfoVal
+cpu_endcode	inc/kpi_consts.h	/^    cpu_endcode,$/;"	e	enum:pinfoVal
+cpu_env_end	inc/kpi_consts.h	/^    cpu_env_end,$/;"	e	enum:pinfoVal
+cpu_env_start	inc/kpi_consts.h	/^    cpu_env_start,$/;"	e	enum:pinfoVal
+cpu_exit_code	inc/kpi_consts.h	/^    cpu_exit_code$/;"	e	enum:pinfoVal
+cpu_exit_signal	inc/kpi_consts.h	/^    cpu_exit_signal,$/;"	e	enum:pinfoVal
+cpu_flags	inc/kpi_consts.h	/^    cpu_flags,$/;"	e	enum:pinfoVal
+cpu_guest_time	inc/kpi_consts.h	/^    cpu_guest_time,$/;"	e	enum:pinfoVal
+cpu_itrealvalue	inc/kpi_consts.h	/^    cpu_itrealvalue,$/;"	e	enum:pinfoVal
+cpu_kstkeip	inc/kpi_consts.h	/^    cpu_kstkeip,$/;"	e	enum:pinfoVal
+cpu_kstkesp	inc/kpi_consts.h	/^    cpu_kstkesp,$/;"	e	enum:pinfoVal
+cpu_majflt	inc/kpi_consts.h	/^    cpu_majflt,$/;"	e	enum:pinfoVal
+cpu_minflt	inc/kpi_consts.h	/^    cpu_minflt,$/;"	e	enum:pinfoVal
+cpu_nice	inc/kpi_consts.h	/^    cpu_nice,$/;"	e	enum:pinfoVal
+cpu_nswap	inc/kpi_consts.h	/^    cpu_nswap,$/;"	e	enum:pinfoVal
+cpu_numThreads	inc/kpi_consts.h	/^    cpu_numThreads,$/;"	e	enum:pinfoVal
+cpu_pgrp	inc/kpi_consts.h	/^    cpu_pgrp,$/;"	e	enum:pinfoVal
+cpu_pid	inc/kpi_consts.h	/^    cpu_pid,$/;"	e	enum:pinfoVal
+cpu_policy	inc/kpi_consts.h	/^    cpu_policy,$/;"	e	enum:pinfoVal
+cpu_ppid	inc/kpi_consts.h	/^    cpu_ppid,$/;"	e	enum:pinfoVal
+cpu_priority	inc/kpi_consts.h	/^    cpu_priority,$/;"	e	enum:pinfoVal
+cpu_processor	inc/kpi_consts.h	/^    cpu_processor,$/;"	e	enum:pinfoVal
+cpu_rlim	inc/kpi_consts.h	/^    cpu_rlim,$/;"	e	enum:pinfoVal
+cpu_rss	inc/kpi_consts.h	/^    cpu_rss,$/;"	e	enum:pinfoVal
+cpu_rt_priority	inc/kpi_consts.h	/^    cpu_rt_priority,$/;"	e	enum:pinfoVal
+cpu_session	inc/kpi_consts.h	/^    cpu_session,$/;"	e	enum:pinfoVal
+cpu_sigcatch	inc/kpi_consts.h	/^    cpu_sigcatch,$/;"	e	enum:pinfoVal
+cpu_sigignore	inc/kpi_consts.h	/^    cpu_sigignore,$/;"	e	enum:pinfoVal
+cpu_signal	inc/kpi_consts.h	/^    cpu_signal,$/;"	e	enum:pinfoVal
+cpu_start_brk	inc/kpi_consts.h	/^    cpu_start_brk,$/;"	e	enum:pinfoVal
+cpu_start_data	inc/kpi_consts.h	/^    cpu_start_data,$/;"	e	enum:pinfoVal
+cpu_startcode	inc/kpi_consts.h	/^    cpu_startcode,$/;"	e	enum:pinfoVal
+cpu_startstack	inc/kpi_consts.h	/^    cpu_startstack,$/;"	e	enum:pinfoVal
+cpu_starttime	inc/kpi_consts.h	/^    cpu_starttime,$/;"	e	enum:pinfoVal
+cpu_state	inc/kpi_consts.h	/^    cpu_state,$/;"	e	enum:pinfoVal
+cpu_stime	inc/kpi_consts.h	/^    cpu_stime,$/;"	e	enum:pinfoVal
+cpu_tpgid	inc/kpi_consts.h	/^    cpu_tpgid,$/;"	e	enum:pinfoVal
+cpu_tty_nr	inc/kpi_consts.h	/^    cpu_tty_nr,$/;"	e	enum:pinfoVal
+cpu_utime	inc/kpi_consts.h	/^    cpu_utime,$/;"	e	enum:pinfoVal
+cpu_vsize	inc/kpi_consts.h	/^    cpu_vsize,$/;"	e	enum:pinfoVal
+cpu_wchan	inc/kpi_consts.h	/^    cpu_wchan,$/;"	e	enum:pinfoVal
+exec	src/sys.cpp	/^std::string exec(const char* cmd)$/;"	f
+fname	inc/process.h	/^	std::string fname; \/\/default file name is pname.log$/;"	m	class:process
+format_message	src/print.cpp	/^std::string format_message (procinfo pinfo, std::string outputSeparator)$/;"	f
+fpath	inc/process.h	/^	std::string fpath; \/\/default location is \/tmp$/;"	m	class:process
+getAndShow	src/kpi.cpp	/^void getAndShow(process &currProcess) {$/;"	f
+get_cpuLoad	src/print.cpp	/^std::string get_cpuLoad(procinfo pinfo)$/;"	f
+get_fname	inc/process.h	/^	std::string get_fname() { return fname; }$/;"	f	class:process
+get_fpath	inc/process.h	/^	std::string get_fpath() { return fpath; }$/;"	f	class:process
+get_keepLogging	inc/process.h	/^	bool get_keepLogging() { return keepLogging; }$/;"	f	class:process
+get_logTimes	inc/process.h	/^	int get_logTimes() { return logTimes; }$/;"	f	class:process
+get_pid	inc/process.h	/^	int get_pid() { return pid; }$/;"	f	class:process
+get_pname	inc/process.h	/^	std::string get_pname() { return pname; }$/;"	f	class:process
+get_proc_info	src/kpi.cpp	/^int get_proc_info(procinfo *pinfo, int pid)$/;"	f
+get_search	inc/process.h	/^	bool get_search() { return search; }$/;"	f	class:process
+get_showOnce	inc/process.h	/^	bool get_showOnce() { return showOnce; }$/;"	f	class:process
+get_terminalOutput	inc/process.h	/^	bool get_terminalOutput() { return terminalOutput; }$/;"	f	class:process
+headers	inc/kpi_consts.h	/^static const std::string headers[NUMVALUES] = {$/;"	v
+helpMessage	inc/kpi_consts.h	/^static const std::string helpMessage = "KPI Analyzer logs the cpu and memory usage of a process\\ni <pid>\\nn <process name>\\tWill search in ps with grep to find the pid\\nf <filename>\\t\\tName of the log file\\np <path>\\t\\tPath to where the output log should be written\\nc\\t\\t\\tNumber of times to log\\ns\\t\\t\\tDo no stop execution if the program is not found, keep searching for it until it starts - useful if running the analyzer before the process is started. If running before the process is started, it is recommended to use the pname rather than pid, as the pid will be different each time the process is started.\\no\\t\\t\\tOutput to terminal instead of file\\nh\\t\\t\\tShow this message\\nMultiple processes can be watched simultaneously, simply separate each process' options with '-'. For example: '-nsco <pname> 3' will search for <pname> and output three times to terminal instead of file.";$/;"	v
+increment_logTimes	inc/process.h	/^	void increment_logTimes() { logTimes++; }$/;"	f	class:process
+is_running	inc/process.h	/^	bool is_running() { return running; }$/;"	f	class:process
+keepLogging	inc/process.h	/^	bool keepLogging; \/\/if logTimes is zero, keep logging until the process dies$/;"	m	class:process
 kpiProg	inc/kpi_consts.h	/^static std::string kpiProg = "CPU\/Mem Analyzer";$/;"	v
-kstkeip	inc/kpi_consts.h	/^	kstkeip,	\/** The current value of EIP **\/$/;"	m	struct:statstruct_proc
-kstkesp	inc/kpi_consts.h	/^	kstkesp,	\/** The current value of ESP **\/$/;"	m	struct:statstruct_proc
-logHeader	inc/kpi_consts.h	/^static const std::string  logHeader = "state,utime,stime,cutime,cstime,priority,vsize,rss,rlim,starttime";$/;"	v
+logTimes	inc/process.h	/^	int logTimes;$/;"	m	class:process
 main	src/main.cpp	/^int main(int argc, char *argv[])$/;"	f
-majflt	inc/kpi_consts.h	/^	majflt,		\/** The number of major faults **\/$/;"	m	struct:statstruct_proc
-minflt	inc/kpi_consts.h	/^	minflt,		\/** The number of minor faults **\/$/;"	m	struct:statstruct_proc
-openFile	src/print.cpp	/^void openFile(const std::string  fname)$/;"	f
-openFile	src/print.cpp	/^void openFile(const std::string  fname, const std::string path)$/;"	f
-outputData	src/print.cpp	/^void outputData(procinfo pinfo, bool terminalOutput)$/;"	f
-pgrp	inc/kpi_consts.h	/^	pgrp,		\/** The pgrp of the process. **\/$/;"	m	struct:statstruct_proc
-pid	inc/kpi_consts.h	/^    std::string pid,	\/** The process id. **\/$/;"	m	struct:statstruct_proc
-ppid	inc/kpi_consts.h	/^	ppid,		\/** The pid of the parent. **\/$/;"	m	struct:statstruct_proc
+operator =	src/process.cpp	/^process& process::operator=(const process &nprocess)$/;"	f	class:process
+outputData	src/process.cpp	/^void process::outputData()$/;"	f	class:process
+outputFile	inc/process.h	/^	std::ofstream outputFile;$/;"	m	class:process
+outputSeparatorFile	inc/kpi_consts.h	/^static const std::string outputSeparatorFile = ",";$/;"	v
+outputSeparatorTerminal	inc/kpi_consts.h	/^static const std::string outputSeparatorTerminal = ",\\t";$/;"	v
+pid	inc/process.h	/^	int pid;$/;"	m	class:process
+pinfo	inc/process.h	/^	procinfo pinfo; \/\/uses more memory, but makes it easier to use in the future for trend analysis, etc$/;"	m	class:process
+pinfoVal	inc/kpi_consts.h	/^enum pinfoVal {$/;"	g
+pname	inc/process.h	/^	std::string pname;$/;"	m	class:process
 print_string	src/print.cpp	/^void print_string(std::string message)$/;"	f
-priority	inc/kpi_consts.h	/^	priority,	\/** the standard nice value, plus fifteen **\/$/;"	m	struct:statstruct_proc
-procFile	inc/kpi.h	/^static std::string procFile = "";$/;"	v
-processSearch	src/kpi.cpp	/^bool processSearch(bool search, std::string id, bool pnameSearch)$/;"	f
+process	inc/process.h	/^class process {$/;"	c
+process	src/process.cpp	/^process::process() {$/;"	f	class:process
+process	src/process.cpp	/^process::process(const process &nprocess)$/;"	f	class:process
+processSearch	src/kpi.cpp	/^bool processSearch(int id) \/\/overloaded$/;"	f
+processSearch	src/kpi.cpp	/^bool processSearch(process &currProcess)$/;"	f
+processSearch	src/kpi.cpp	/^bool processSearch(std::string pname, int *pid) \/\/overloaded$/;"	f
 procinfo	inc/kpi_consts.h	/^} procinfo;$/;"	t	typeref:struct:statstruct_proc
 prtUsage	src/main.cpp	/^int prtUsage ()$/;"	f
-rlim	inc/kpi_consts.h	/^	rlim,		\/** Current limit in bytes on the rss **\/$/;"	m	struct:statstruct_proc
-rss	inc/kpi_consts.h	/^	rss,		\/** Resident Set Size **\/$/;"	m	struct:statstruct_proc
-sched	inc/kpi_consts.h	/^	sched,		\/** scheduler **\/$/;"	m	struct:statstruct_proc
-sched_priority	inc/kpi_consts.h	/^	sched_priority;	\/** scheduler priority **\/$/;"	m	struct:statstruct_proc
-session	inc/kpi_consts.h	/^	session,	\/** The session id of the process. **\/$/;"	m	struct:statstruct_proc
-sigcatch	inc/kpi_consts.h	/^	sigcatch,	\/** The bitmap of catched signals **\/$/;"	m	struct:statstruct_proc
-sigignore	inc/kpi_consts.h	/^	sigignore,	\/** The bitmap of ignored signals **\/$/;"	m	struct:statstruct_proc
-signal	inc/kpi_consts.h	/^	signal,		\/** The bitmap of pending signals **\/$/;"	m	struct:statstruct_proc
-startcode	inc/kpi_consts.h	/^	startcode,	\/** The address above which program text can run **\/$/;"	m	struct:statstruct_proc
-startstack	inc/kpi_consts.h	/^	startstack,	\/** The address of the start of the stack **\/$/;"	m	struct:statstruct_proc
-starttime	inc/kpi_consts.h	/^	starttime,	\/** 20 **\/     \/** Time the process started after system boot **\/$/;"	m	struct:statstruct_proc
-state	inc/kpi_consts.h	/^	state,		\/** R is running, S is sleeping, $/;"	m	struct:statstruct_proc
+roundVal	src/print.cpp	/^std::string roundVal(double d)$/;"	f
+running	inc/process.h	/^	bool running; \/\/used to determine whether to search for a process before attempting to read it's data$/;"	m	class:process
+search	inc/process.h	/^	bool search; \/\/default is to quit immediately if process is not found$/;"	m	class:process
+set_fname	inc/process.h	/^	void set_fname(std::string nfname) { fname = nfname; }$/;"	f	class:process
+set_fpath	inc/process.h	/^	void set_fpath(std::string nfpath) { fpath = nfpath; }$/;"	f	class:process
+set_logTimes	inc/process.h	/^	void set_logTimes(int nlogTimes) { logTimes = nlogTimes; }$/;"	f	class:process
+set_pid	inc/process.h	/^	void set_pid(int npid) { pid = npid; }$/;"	f	class:process
+set_pinfo	src/process.cpp	/^void process::set_pinfo(const procinfo npinfo) {$/;"	f	class:process
+set_pname	src/process.cpp	/^void process::set_pname(std::string npname)$/;"	f	class:process
+set_running	inc/process.h	/^	void set_running() { running = true; }$/;"	f	class:process
+set_search	inc/process.h	/^	void set_search(bool nsearch) { search = nsearch; }$/;"	f	class:process
+set_terminalOutput	inc/process.h	/^	void set_terminalOutput() { terminalOutput = true; } \/\/defaults to false, only ever set$/;"	f	class:process
+showOnce	inc/process.h	/^	bool showOnce; \/\/show the process details, only once$/;"	m	class:process
 statstruct_proc	inc/kpi_consts.h	/^typedef struct statstruct_proc {$/;"	s
-stime	inc/kpi_consts.h	/^	stime,		\/** kernel mode jiffies **\/$/;"	m	struct:statstruct_proc
-timeout	inc/kpi_consts.h	/^	timeout,	\/** The time in jiffies of the next timeout **\/$/;"	m	struct:statstruct_proc
-tpgid	inc/kpi_consts.h	/^	tpgid,		\/** (too long) **\/$/;"	m	struct:statstruct_proc
-tty	inc/kpi_consts.h	/^	tty,		\/** The tty the process uses **\/$/;"	m	struct:statstruct_proc
-utime	inc/kpi_consts.h	/^	utime,		\/** user mode jiffies **\/$/;"	m	struct:statstruct_proc
-vsize	inc/kpi_consts.h	/^	vsize,		\/** Virtual memory size **\/$/;"	m	struct:statstruct_proc
-wchan	inc/kpi_consts.h	/^	wchan,		\/** 33 **\/        \/** (too long) **\/$/;"	m	struct:statstruct_proc
+terminalOutput	inc/process.h	/^	bool terminalOutput; \/\/default is to output to file$/;"	m	class:process
+uptimeFname	inc/kpi_consts.h	/^static const std::string uptimeFname = "\/proc\/uptime";$/;"	v
+values	inc/kpi_consts.h	/^    std::string values[NUMVALUES];$/;"	m	struct:statstruct_proc

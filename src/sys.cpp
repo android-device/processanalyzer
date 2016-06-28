@@ -1,5 +1,5 @@
 #include "sys.h"
-//#define DEBUG
+#define DEBUG
 
 int checkFile(std::string filename)
 {

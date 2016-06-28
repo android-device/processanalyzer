@@ -21,7 +21,7 @@ Description : CPU and Memory Analyzer for KPI standards
 #include "print.h"
 #include "kpi.h"
 
-//#define DEBUG
+#define DEBUG
 
 //  Print Usage Message
 int prtUsage ()
@@ -166,16 +166,17 @@ int main(int argc, char *argv[])
      * never come into existence will stop the execution of the rest of the
      * program - until they ALL exist.
      */
-    for(std::vector<process>::iterator currProcess=processes.begin(); currProcess!=processes.end(); ++currProcess)
+    for(std::vector<process>::iterator currProcess=processes.begin(); currProcess!=processes.end();)
     {
-	//TODO remove bad processes instead of quitting
+	bool erase=false;
 	if(processSearch(*currProcess)) { //process found (searches with pname OR pid based on which is set)
 	    currProcess->set_running();
 	} else { //process not found
 	    if(!currProcess->get_search()) //should already be executing, don't search
 	    {
+		//TODO remove bad processes instead of quitting
 		print_string(currProcess->get_pid() + ":" + currProcess->get_pname() + " not found, not searching");
-		return 1;
+		erase = true;
 	    }
 	}
 	if(currProcess->get_logTimes() < 0) //negative numbers make no sense
@@ -183,9 +184,15 @@ int main(int argc, char *argv[])
 	    currProcess->set_logTimes(0);
 	    if(!currProcess->get_keepLogging()) //logging is messed up
 	    {
-		print_string("Not logging at all!");
+		print_string(currProcess->get_pid() + ":" + currProcess->get_pname() + " Logging error");
 		return 1;
 	    }
+	}
+
+	if(erase) {
+	    currProcess=processes.erase(currProcess);
+	} else {
+	    ++currProcess;
 	}
     }
 

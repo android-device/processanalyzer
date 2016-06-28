@@ -1,5 +1,5 @@
 #include "kpi.h"
-//#define DEBUG
+#define DEBUG
 
 /* Search for a process, using the pid or the pname version of this overloaded
  * function. Note that if search is true, this function will NOT return until a
@@ -11,6 +11,7 @@
  */
 bool processSearch(int id) //overloaded
 {
+    bool result = false;
     std::string procFile = "/proc/" + std::to_string(id) + "/stat";
 
 #ifdef DEBUG
@@ -18,9 +19,9 @@ bool processSearch(int id) //overloaded
 #endif
 
     if(checkFile(procFile) != 0) { //read OR write, doesn't matter for the process
-	return true;
+	result = true;
     }
-    return false;
+    return result;
 }
 
 /* Overload for searching with pname instead of pid
@@ -29,20 +30,22 @@ bool processSearch(int id) //overloaded
  */
 bool processSearch(std::string pname, int *pid) //overloaded
 {
+    bool result = false;
     if(pname == "")
     {
 	print_string("No pname specified.");
-	return false;
+	result = false;
+    } else { //pname specified
+	//TODO multiple PIDs
+	std::string pidofCmd = "pidof " + pname;
+	std::string result_str = exec(pidofCmd.c_str());
+	if(result_str != "")
+	{
+	    *pid = stoi(result_str);
+	    result = true;
+	}
     }
-
-    //TODO multiple PIDs
-    std::string pidofCmd = "pidof " + pname;
-    std::string result = exec(pidofCmd.c_str());
-    if(result != "") {
-	*pid = stoi(result);
-	return true;
-    }
-    return false;
+    return result;
 }
 
 bool processSearch(process &currProcess)
@@ -53,7 +56,7 @@ bool processSearch(process &currProcess)
 #ifdef DEBUG
 	print_string("Using Name Search");
 #endif
-	int pid = 0; //will be set in currprocess, can't be done by called function
+	int pid = 0; //will be set in currprocess, can't be done by this function
 	result = processSearch(currProcess.get_pname(), &pid);
 	currProcess.set_pid(pid);
 #ifdef DEBUG
