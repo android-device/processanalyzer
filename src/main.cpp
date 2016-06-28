@@ -191,8 +191,7 @@ int main(int argc, char *argv[])
     }
 
     int currLogTime = 0; //increased once after iterating through every process
-    int finishedProcesses = 0; //count of finished processes, used to decide when to stop looping
-    while(!(finishedProcesses == processes.size())) //loop until every process finishes
+    while(!(processes.size() == 0)) //loop until every process finishes
     {
 	for(std::vector<process>::iterator currProcess=processes.begin(); currProcess!=processes.end();)
 	{
@@ -217,7 +216,6 @@ int main(int argc, char *argv[])
 		    getAndShow(*currProcess);
 		} else if(currLogTime == currProcess->get_logTimes()) { //not log indefinitely and log times exceeded
 		    //TODO remove finished processes from list.
-		    //finishedProcesses++;
 		    erase = true;
 		    currProcess->clear_running();
 		}
