@@ -33,6 +33,7 @@ int prtUsage ()
 */
 int main(int argc, char *argv[])
 {
+    bool paused = false;
     std::vector<process> processes;
 
     if(argv[0] != NULL)
@@ -191,79 +192,80 @@ int main(int argc, char *argv[])
     }
 
     int currLogTime = 0; //increased once after iterating through every process
-    int finishedProcesses = 0; //count of finished processes, used to decide when to stop looping
-    while(!(finishedProcesses == processes.size())) //loop until every process finishes
+    while(!(processes.size() == 0)) //loop until every process finishes
     {
-	for(std::vector<process>::iterator currProcess=processes.begin(); currProcess!=processes.end();)
+	if(!paused)
 	{
-	    bool erase = false;
-#ifdef DEBUG
-	    print_string("currProcess is: " + std::to_string(currProcess->get_pid()) + ":" + currProcess->get_pname());
-#endif
-	    fflush(stdout);
-
-	    /* If:
-	     * 	Haven't reached log limit OR is set to log indefinitely
-	     * 	AND is running
-	     *
-	     * 	Do nothing if the process is not running, regardless of the
-	     * 	first two conditions - no point!
-	     */
-	    if(currProcess->is_running())
+	    for(std::vector<process>::iterator currProcess=processes.begin(); currProcess!=processes.end();)
 	    {
-		if(currProcess->get_keepLogging()) { //log indefinitely
-		    getAndShow(*currProcess);
-		} else if(currLogTime < currProcess->get_logTimes()) {
-		    getAndShow(*currProcess);
-		} else if(currLogTime == currProcess->get_logTimes()) { //not log indefinitely and log times exceeded
-		    //TODO remove finished processes from list.
-		    //finishedProcesses++;
-		    erase = true;
-		    currProcess->clear_running();
-		}
-	    } else { //not running
-		if(currProcess->get_search()) //keep searching for it
+		bool erase = false;
+#ifdef DEBUG
+		print_string("currProcess is: " + std::to_string(currProcess->get_pid()) + ":" + currProcess->get_pname());
+#endif
+		fflush(stdout);
+
+		/* If:
+		 * 	Haven't reached log limit OR is set to log indefinitely
+		 * 	AND is running
+		 *
+		 * 	Do nothing if the process is not running, regardless of the
+		 * 	first two conditions - no point!
+		 */
+		if(currProcess->is_running())
 		{
-		    if(currProcess->get_keepLogging()) //log indefinitely
+		    if(currProcess->get_keepLogging()) { //log indefinitely
+			getAndShow(*currProcess);
+		    } else if(currLogTime < currProcess->get_logTimes()) {
+			getAndShow(*currProcess);
+		    } else if(currLogTime == currProcess->get_logTimes()) { //not log indefinitely and log times exceeded
+			//TODO remove finished processes from list.
+			erase = true;
+			currProcess->clear_running();
+		    }
+		} else { //not running
+		    if(currProcess->get_search()) //keep searching for it
 		    {
-			if(processSearch(*currProcess)) {
-			    currProcess->set_running();
-			}
-		    } else { //if don't log indefinitely
-			if(currLogTime < currProcess->get_logTimes()) //if not done logging
+			if(currProcess->get_keepLogging()) //log indefinitely
 			{
 			    if(processSearch(*currProcess)) {
 				currProcess->set_running();
-			    } else { //look again next time
-				/* not running YET, don't want to affect the number of
-				 * times to log it. If the process stops partway through
-				 * the number of times to log, it will resume logging if it
-				 * is found again.
-				 *
-				 * If the log limit is reached, incrementing this will have
-				 * no effect - as the log limit and current execution
-				 * increase at the same rate (max of once per iteration).
-				 *
-				 * NOTE potential to overflow
-				 */
-				currProcess->increment_logTimes();
-				currProcess->clear_running();
 			    }
-			}
-		    } //end if(keepLogging)
-		} //end if(search)
-	    } //end if(running)
+			} else { //if don't log indefinitely
+			    if(currLogTime < currProcess->get_logTimes()) //if not done logging
+			    {
+				if(processSearch(*currProcess)) {
+				    currProcess->set_running();
+				} else { //look again next time
+				    /* not running YET, don't want to affect the number of
+				     * times to log it. If the process stops partway through
+				     * the number of times to log, it will resume logging if it
+				     * is found again.
+				     *
+				     * If the log limit is reached, incrementing this will have
+				     * no effect - as the log limit and current execution
+				     * increase at the same rate (max of once per iteration).
+				     *
+				     * NOTE potential to overflow
+				     */
+				    currProcess->increment_logTimes();
+				    currProcess->clear_running();
+				}
+			    }
+			} //end if(keepLogging)
+		    } //end if(search)
+		} //end if(running)
 
-	    if(erase) {
-		currProcess = processes.erase(currProcess);
-	    } else {
-		++currProcess;
-	    }
-	} //end vector iterator (for)
-	currLogTime++;
+		if(erase) {
+		    currProcess = processes.erase(currProcess);
+		} else {
+		    ++currProcess;
+		}
+	    } //end vector iterator (for)
+	    currLogTime++;
 #ifdef DEBUG
-	print_string("Log Time: " + std::to_string(currLogTime));
+	    print_string("Log Time: " + std::to_string(currLogTime));
 #endif
+	} //end paused
     } //end log loop (while)
     return 0;
 }
