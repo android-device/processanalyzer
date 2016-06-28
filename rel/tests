@@ -1,0 +1,8 @@
+-ncso chrome 15
+-ic 2668 20
+-ncso chrome 20 chrome.log
+-ncsof chrome 20 chrome.log
+-ncsf chrome 20 chrome.log
+-ncsfp chrome 20 chrome.log ~
+-ncsfp chrome 20 chrome.log ~/
+-nco chrome 5 -ioc 2668 10 -ncs gedit 500 -no no
