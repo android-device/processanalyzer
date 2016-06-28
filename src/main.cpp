@@ -262,6 +262,7 @@ int main(int argc, char *argv[])
 #ifdef DEBUG
 	print_string("Log Time: " + std::to_string(currLogTime));
 #endif
+	sleep(1);
     } //end log loop (while)
     return 0;
 }
