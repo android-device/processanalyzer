@@ -24,7 +24,10 @@ class process {
 	bool keepLogging; //if logTimes is zero, keep logging until the process dies
 	bool showOnce; //show the process details, only once
 
-	procinfo pinfo; //uses more memory, but makes it easier to use in the future for trend analysis, etc
+	procinfo pinfo; 
+	/* uses more memory, as it doesn't really need to be saved, but makes
+	 * it easier to use in the future for trend analysis, etc */
+
 	std::ofstream outputFile;
 
     public:

@@ -29,8 +29,7 @@ int prtUsage ()
     print_string(helpMessage);
 }
 
-/* Main Function. Expects file name as argument.
-*/
+/* Main Function. Expects file name as argument. */
 int main(int argc, char *argv[])
 {
     bool paused = false;
@@ -58,15 +57,13 @@ int main(int argc, char *argv[])
      * o Output to terminal
      * c number of times to log
      * h show Help
-     * anything else: show help
-     */
+     * anything else: show help */
     for(int i=0; i<argc; i++)
     {
 	if(argv[i][0]=='-') //denotes a new process
 	{
 	    /* Each process' parameters are grouped, such as:
-	     * -inco <pid> <pname> <count>
-	     */
+	     * -inco <pid> <pname> <count> */
 	    process currProcess; //to put into vector
 	    int skipParams = 0;
 	    for(int currParam = 1; currParam < strlen(argv[i]); currParam++)
@@ -159,8 +156,7 @@ int main(int argc, char *argv[])
      * exist. This has the potential to be an inifite loop, because of the use
      * of process search - any processes that are being 'searched' for that
      * never come into existence will stop the execution of the rest of the
-     * program - until they ALL exist.
-     */
+     * program - until they ALL exist. */
     for(std::vector<process>::iterator currProcess=processes.begin(); currProcess!=processes.end();)
     {
 	bool erase=false;
@@ -209,8 +205,7 @@ int main(int argc, char *argv[])
 		 * 	AND is running
 		 *
 		 * 	Do nothing if the process is not running, regardless of the
-		 * 	first two conditions - no point!
-		 */
+		 * 	first two conditions - no point! */
 		if(currProcess->is_running())
 		{
 		    if(currProcess->get_keepLogging()) { //log indefinitely
@@ -245,8 +240,7 @@ int main(int argc, char *argv[])
 				     * no effect - as the log limit and current execution
 				     * increase at the same rate (max of once per iteration).
 				     *
-				     * NOTE potential to overflow
-				     */
+				     * NOTE potential to overflow */
 				    currProcess->increment_logTimes();
 				    currProcess->clear_running();
 				}

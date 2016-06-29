@@ -1,5 +1,4 @@
-/* Header file specifying the functions used by the kpiAnalyzer
-*/
+/* Header file specifying the functions used by the kpiAnalyzer */
 #ifndef KPI
 #define KPI
 
@@ -28,8 +27,7 @@
  * The specific functions to search should never be accessed outside kpi.cpp
  *
  * Becaues pname search calls an external application (pidof), pid search is
- * preferred.
- */
+ * preferred. */
 //bool processSearch(int id);
 //bool processSearch(std::string pname, int *pid);
 bool processSearch(process&);

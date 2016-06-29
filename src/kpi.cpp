@@ -7,8 +7,7 @@
  * processes you know will eventually exist; this is very useful for measuring
  * the startup usage of a process.
  *
- * This function is not public.
- */
+ * This function is not public. */
 bool processSearch(int id) //overloaded
 {
     bool result = false;
@@ -22,8 +21,7 @@ bool processSearch(int id) //overloaded
 
 /* Overload for searching with pname instead of pid
  * 
- * This function is not public.
- */
+ * This function is not public. */
 bool processSearch(std::string pname, int *pid) //overloaded
 {
     bool result = false;
@@ -89,8 +87,7 @@ int get_proc_info(procinfo *pinfo, int pid)
 	statFile >> currVal;
 	/* add to pinfo based on the index of the current value being read. If
 	 * reordering, refer to kpi_consts.h for the names of each.
-	 * Based on: http://linux.die.net/man/5/proc
-	 */
+	 * Based on: http://linux.die.net/man/5/proc */
 #ifdef DEBUG
 	print_string(std::to_string(currIndex) + ", " + currVal);
 #endif
@@ -178,8 +175,7 @@ void getAndShow(process &currProcess) {
 	/* No idea what pid will be if  it comes back! Execution will never
 	 * stop if search is set and it never comes back. pname should be set
 	 * by now.
-	 * Will continue to search, by pname only.
-	 */
+	 * Will continue to search, by pname only. */
 	currProcess.set_pid(0);
 	currProcess.clear_running();
 	if(!currProcess.get_search()) {

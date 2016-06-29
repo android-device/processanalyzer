@@ -1,15 +1,16 @@
-/* Constant values for use in various functions throughout execution.
- * This is where all the static values and constants are kept, so they can be
- * easily changed later.
- */
+/* Constant values for use in various functions throughout execution. This is
+ * where all the static values and constants are kept, so they can be
+ * easily changed later. */
 #ifndef KPI_CONSTS
 #define KPI_CONSTS
 
 #include <string>
 #include <fstream>
 
-/* This separator is used for both the file output and the terminal output. Using only a comma for the file output means it can be imported as a csv - useful for having another program interpret this data. Using a comma followed by a tab makes it much easier to manually interpret, imo.
- */
+/* This separator is used for both the file output and the terminal output.
+ * Using only a comma for the file output means it can be imported as a csv -
+ * useful for having another program interpret this data. Using a comma
+ * followed by a tab makes it much easier to manually interpret, imo. */
 static const std::string outputSeparatorFile = ",";
 static const std::string outputSeparatorTerminal = ",\t";
 
@@ -21,14 +22,12 @@ static const std::string outputSeparatorTerminal = ",\t";
  * f File name
  * s keep Searching
  * o Output to terminal
- * h show Help
- */
+ * h show Help */
 static const std::string helpMessage = "KPI Analyzer logs the cpu and memory usage of a process\ni <pid>\nn <process name>\tWill search in ps with grep to find the pid\nf <filename>\t\tName of the log file\np <path>\t\tPath to where the output log should be written\nc\t\t\tNumber of times to log\ns\t\t\tDo no stop execution if the program is not found, keep searching for it until it starts - useful if running the analyzer before the process is started. If running before the process is started, it is recommended to use the pname rather than pid, as the pid will be different each time the process is started.\no\t\t\tOutput to terminal instead of file\nh\t\t\tShow this message\nMultiple processes can be watched simultaneously, simply separate each process' options with '-'. For example: '-nsco <pname> 3' will search for <pname> and output three times to terminal instead of file.";
 
 /* The name of this exectuble. This is changed to the first argument in argv -
  * unless the first argument is null. If the first argument is null, the
- * default value (see below) is used.
- */
+ * default value (see below) is used. */
 static std::string kpiProg = "CPU/Mem Analyzer";
 
 /* Refer to http://man7.org/linux/man-pages/man5/proc.5.html for the
@@ -52,8 +51,7 @@ static std::string kpiProg = "CPU/Mem Analyzer";
  * corresponds to.
  *
  * If changing the order, change the headers below too! Otherwise the headers
- * will not match up with the data!
- */
+ * will not match up with the data! */
 #define NUMVALUES 52
 enum pinfoVal {
     cpu_pid,
@@ -111,13 +109,13 @@ enum pinfoVal {
 };
 
 /* The uptime file. This is used to determine the cpu percentage load used by
- * the process being analyzed.
- */
+ * the process being analyzed. */
 static const std::string uptimeFname = "/proc/uptime";
 
-//struct from: https://www.redhat.com/archives/axp-list/2001-January/msg00355.html
-// NOTE: Every value has been changed to a string to facilitate reading/writing
-// in files
+/* struct from:
+ * https://www.redhat.com/archives/axp-list/2001-January/msg00355.html NOTE:
+ * Every value has been changed to a string to facilitate reading/writing with
+ * files */
 typedef struct statstruct_proc {
     std::string values[NUMVALUES];
 } procinfo;

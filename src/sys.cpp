@@ -6,8 +6,7 @@ int checkFile(std::string filename)
     /* Determine the permissions available on the file. When executing
      * normally, only care about access - the caller would use the error code
      * returned if they cared about a specific permission. We only care about
-     * the specific error message when in debug mode.
-     */
+     * the specific error message when in debug mode. */
     if(access(filename.c_str(), F_OK) == -1) //error
     {
 #ifdef DEBUG

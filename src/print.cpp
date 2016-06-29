@@ -13,8 +13,7 @@ void print_string(std::string message)
  * 
  * The exception is CPU usage. Because that has to be calculated using utime,
  * stime, cutime, and cstime, it cannot simply be added - use the
- * get_cpuLoad(pinfo) function made available in print.h/cpp
- */
+ * get_cpuLoad(pinfo) function made available in print.h/cpp */
 std::string format_message (procinfo pinfo, std::string outputSeparator)
 {
     std::string formattedVal = "";
@@ -25,8 +24,7 @@ std::string format_message (procinfo pinfo, std::string outputSeparator)
 }
 
 /* Refer to:
- * http://stackoverflow.com/questions/16726779/how-do-i-get-the-total-cpu-usage-of-an-application-from-proc-pid-stat
- */
+ * http://stackoverflow.com/questions/16726779/how-do-i-get-the-total-cpu-usage-of-an-application-from-proc-pid-stat */
 std::string get_cpuLoad(procinfo pinfo)
 {
     std::ifstream uptimeFile(uptimeFname.c_str());

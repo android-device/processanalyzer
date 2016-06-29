@@ -1,5 +1,4 @@
-/* Used to check whether a file exists
-*/
+/* Used to check whether a file exists */
 #ifndef SYS
 #define SYS
 #include <string>
@@ -17,15 +16,13 @@
  * Returns:
  * 	0 not available
  * 	1 read only
- * 	2 read and write
- */
+ * 	2 read and write */
 int checkFile(std::string filename);
 
 /* Run a system command and get the output.
  *
  * This could be used for any system command, but it will mostly be used for
- * pidof when searching with pname instead of pid
- */
+ * pidof when searching with pname instead of pid */
 std::string exec(const char* cmd);
 
 #endif
